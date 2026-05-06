@@ -6,6 +6,7 @@ Static course website with a lightweight SQLite data layer for learning content.
 
 ```text
 index.html
+english.html
 agentic-ai.html
 assets/
   css/
@@ -37,6 +38,12 @@ Agentic AI course page:
 
 ```text
 file:///Users/luuhoangtrong/Project/course_learning/agentic-ai.html
+```
+
+English course page:
+
+```text
+file:///Users/luuhoangtrong/Project/course_learning/english.html
 ```
 
 ## How to extend

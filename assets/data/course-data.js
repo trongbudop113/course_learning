@@ -44,10 +44,11 @@ window.COURSE_DATA = {
         code: "EN",
         title: "Tiếng Anh ứng dụng",
         copy: "Luyện nghe, nói, đọc, viết theo tình huống học tập và công việc. Tập trung từ vựng thực dụng, phản xạ câu và bài tập ngắn mỗi ngày.",
-        meta: ["Giao tiếp", "Từ vựng", "Bài tập hằng ngày"],
-        status: "Sắp mở",
-        action: "Xem khóa học",
-        href: "#courses"
+        meta: ["12 tuần", "CEFR A1-B1", "Nguồn học liệu"],
+        status: "Đang học",
+        action: "Vào khóa học",
+        href: "./english.html#roadmap",
+        primary: true
       },
       {
         code: "JP",
@@ -75,7 +76,7 @@ window.COURSE_DATA = {
         status: "Đang học",
         action: "Vào khóa học",
         href: "./agentic-ai.html#map",
-        primary: true
+        primary: false
       }
     ],
     modules: [
@@ -307,10 +308,11 @@ Final JSON:
         code: "EN",
         title: "Practical English",
         copy: "Practice listening, speaking, reading, and writing through study and work situations, with useful vocabulary and short daily exercises.",
-        meta: ["Speaking", "Vocabulary", "Daily practice"],
-        status: "Coming soon",
-        action: "View course",
-        href: "#courses"
+        meta: ["12 weeks", "CEFR A1-B1", "Learning sources"],
+        status: "Active",
+        action: "Open course",
+        href: "./english.html#roadmap",
+        primary: true
       },
       {
         code: "JP",
@@ -338,7 +340,7 @@ Final JSON:
         status: "Active",
         action: "Open course",
         href: "./agentic-ai.html#map",
-        primary: true
+        primary: false
       }
     ],
     modules: [
