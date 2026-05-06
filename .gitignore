@@ -1,3 +1,8 @@
 .DS_Store
 assets/.DS_Store
-
+data/*.sqlite
+data/*.sqlite-shm
+data/*.sqlite-wal
+data/imports/
+__pycache__/
+*.pyc
