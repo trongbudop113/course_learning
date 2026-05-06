@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Course Learning</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#courses" aria-label="Course selection home">
+        <span class="mark">AI</span>
+        <span data-i18n="brand">Course Learning</span>
+      </a>
+
+      <nav class="nav" aria-label="Course navigation">
+        <a href="#courses" data-i18n="navCourses">Khóa học</a>
+        <a href="./agentic-ai.html#map" data-i18n="navAgenticAI">Agentic AI</a>
+      </nav>
+
+      <div class="lang-switch" aria-label="Language switcher">
+        <button class="lang-btn active" type="button" data-lang="vi">VI</button>
+        <button class="lang-btn" type="button" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="shell course-select" id="courses">
+      <div class="course-select-copy">
+        <div class="eyebrow"><span class="pulse"></span><span data-i18n="courseSelectEyebrow">Chọn khóa học</span></div>
+        <h1 data-i18n="courseSelectTitle">Bạn muốn học gì hôm nay?</h1>
+        <p class="lead" data-i18n="courseSelectLead">Chọn một lộ trình phù hợp với mục tiêu hiện tại. Mỗi khóa học được thiết kế thành các bài ngắn, có bài tập và luồng thực hành rõ ràng.</p>
+      </div>
+
+      <div class="course-picker" id="coursePicker"></div>
+    </section>
+  </main>
+
+  <footer class="shell footer" data-i18n="courseFooter">Course Learning. Chọn khóa học và bắt đầu theo lộ trình phù hợp.</footer>
+
+  <script src="./assets/data/course-data.js"></script>
+  <script src="./assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agentic AI Course</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="./index.html#courses" aria-label="Course selection home">
+        <span class="mark">AI</span>
+        <span data-i18n="brand">Agentic AI Course</span>
+      </a>
+
+      <nav class="nav" aria-label="Course navigation">
+        <a href="./index.html#courses" data-i18n="navCourses">Khóa học</a>
+        <a href="#map" data-i18n="navMap">Lộ trình</a>
+        <a href="#lesson" data-i18n="navLesson">Bài 1</a>
+        <a href="#next-lessons" data-i18n="navNext">Bài 2-8</a>
+        <a href="#lab" data-i18n="navLab">Lab</a>
+      </nav>
+
+      <div class="lang-switch" aria-label="Language switcher">
+        <button class="lang-btn active" type="button" data-lang="vi">VI</button>
+        <button class="lang-btn" type="button" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="shell hero">
+      <div>
+        <div class="eyebrow"><span class="pulse"></span><span data-i18n="heroEyebrow">Khóa học thực hành</span></div>
+        <h1 data-i18n="heroTitle">Agentic AI từ mô hình đến sản phẩm</h1>
+        <p class="lead" data-i18n="heroLead">Một trang học trực quan giúp bạn nhìn thấy agent hoạt động như một hệ thống: nhận mục tiêu, lập kế hoạch, gọi công cụ, ghi nhớ, đánh giá và trả kết quả.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#lesson" data-i18n="startLesson">Bắt đầu bài 1</a>
+          <a class="btn" href="#map" data-i18n="viewRoadmap">Xem lộ trình</a>
+        </div>
+      </div>
+
+      <div class="agent-board" aria-label="Agentic AI diagram">
+        <div class="wire one"></div>
+        <div class="wire two"></div>
+        <div class="wire three"></div>
+        <div class="brain">LLM</div>
+        <div class="node goal"><strong>Goal</strong><span data-i18n="nodeGoal">Người dùng đưa mục tiêu cần hoàn thành.</span></div>
+        <div class="node plan"><strong>Planner</strong><span data-i18n="nodePlan">Chia mục tiêu thành các bước nhỏ.</span></div>
+        <div class="node tools"><strong>Tools</strong><span data-i18n="nodeTools">Gọi API, file, database hoặc browser.</span></div>
+        <div class="node memory"><strong>Memory</strong><span data-i18n="nodeMemory">Lưu context, lịch sử, tri thức ngoài.</span></div>
+        <div class="node eval"><strong>Evaluator</strong><span data-i18n="nodeEval">Kiểm tra kết quả trước khi trả lời.</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="map">
+      <div class="shell">
+        <div class="section-head">
+          <h2 data-i18n="roadmapTitle">Lộ trình học</h2>
+          <p class="section-note" data-i18n="roadmapNote">Mỗi module tập trung vào một năng lực lõi. Học xong từng phần là có thể ghép thành agent hoàn chỉnh.</p>
+        </div>
+        <div class="modules" id="moduleGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="lesson">
+      <div class="shell split">
+        <div class="lesson-panel">
+          <div class="eyebrow"><span class="pulse"></span><span data-i18n="lessonOneLabel">Bài 1</span></div>
+          <h2 data-i18n="lessonOneTitle">Prompting có cấu trúc</h2>
+          <ul class="lesson-list" id="lessonOneList"></ul>
+        </div>
+
+        <div class="visual-panel">
+          <div class="terminal">
+            <div class="terminal-head">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <pre id="lessonOneCode"></pre>
+          </div>
+          <div class="flow-steps" id="lessonOneFlow"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="exercise">
+      <div class="shell">
+        <div class="section-head">
+          <h2 data-i18n="exerciseTitle">Bài tập đầu tiên</h2>
+          <p class="section-note" data-i18n="exerciseNote">Viết prompt cho agent phân loại ticket. Checklist bên phải giúp tự kiểm tra prompt đã đủ chặt chưa.</p>
+        </div>
+        <div class="quiz">
+          <textarea id="promptBox" aria-label="Prompt exercise"></textarea>
+          <div class="lesson-panel">
+            <div class="eyebrow"><span class="pulse"></span><span>Prompt QA</span></div>
+            <div class="checklist" id="promptChecklist"></div>
+            <div class="hero-actions">
+              <button class="btn primary" id="copyBtn" type="button" data-i18n="copyPrompt">Copy prompt</button>
+              <button class="btn" id="resetBtn" type="button" data-i18n="reset">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="next-lessons">
+      <div class="shell">
+        <div class="section-head">
+          <h2 data-i18n="nextLessonsTitle">Các bài tiếp theo</h2>
+          <p class="section-note" data-i18n="nextLessonsNote">Mỗi bài có một hình dung hệ thống, một mục tiêu kỹ năng và một bài thực hành nhỏ để ghép dần thành agent hoàn chỉnh.</p>
+        </div>
+        <div class="course-grid" id="courseGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="lab">
+      <div class="shell">
+        <div class="section-head">
+          <h2 data-i18n="labTitle">Lab thực hành một lượt</h2>
+          <p class="section-note" data-i18n="labNote">Bài tổng hợp này dùng cùng một kịch bản để luyện đủ Prompting, Tool Calling, Agent Loop, Planning, Memory, Guardrails và Evaluation.</p>
+        </div>
+
+        <div class="lab">
+          <div class="lab-board">
+            <h3 id="labName"></h3>
+            <ol id="labSteps"></ol>
+            <div class="rubric" id="labRubric"></div>
+          </div>
+
+          <div class="lesson-panel">
+            <div class="eyebrow"><span class="pulse"></span><span data-i18n="fullTemplate">Template hoàn chỉnh</span></div>
+            <textarea id="labBox" aria-label="Complete lab template"></textarea>
+            <div class="hero-actions">
+              <button class="btn primary" id="copyLabBtn" type="button" data-i18n="copyLab">Copy lab</button>
+              <button class="btn" id="resetLabBtn" type="button" data-i18n="resetLab">Reset lab</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell footer" data-i18n="footer">Agentic AI Course Map. Học một lượt: Prompting -> Tool Calling -> Agent Loop -> Memory -> Planning -> Guardrails -> Multi-Agent -> Production.</footer>
+
+  <script src="./assets/data/course-data.js"></script>
+  <script src="./assets/js/app.js"></script>
+</body>
+</html>
