@@ -53,11 +53,12 @@ window.COURSE_DATA = {
       {
         code: "JP",
         title: "Rèn luyện tiếng Nhật",
-        copy: "Lộ trình rèn kanji, ngữ pháp, nghe hiểu và hội thoại theo cấp độ. Mỗi bài có mẫu câu, luyện tập và checklist tự đánh giá.",
-        meta: ["Kanji", "Ngữ pháp", "Hội thoại"],
-        status: "Sắp mở",
-        action: "Xem khóa học",
-        href: "#courses"
+        copy: "Lộ trình N5 tới N2 với kanji, ngữ pháp, nghe hiểu, đọc hiểu và hội thoại. Kanji lấy khung tham chiếu từ Kanji Look and Learn.",
+        meta: ["N5-N2", "Kanji", "JLPT + Can-do"],
+        status: "Đang học",
+        action: "Vào khóa học",
+        href: "./japanese.html#roadmap",
+        primary: true
       },
       {
         code: "DM",
@@ -317,11 +318,12 @@ Final JSON:
       {
         code: "JP",
         title: "Japanese Training",
-        copy: "Train kanji, grammar, listening, and conversation by level. Each lesson includes sentence patterns, drills, and a self-checklist.",
-        meta: ["Kanji", "Grammar", "Conversation"],
-        status: "Coming soon",
-        action: "View course",
-        href: "#courses"
+        copy: "A path from N5 to N2 with kanji, grammar, listening, reading, and conversation. Kanji planning references Kanji Look and Learn.",
+        meta: ["N5-N2", "Kanji", "JLPT + Can-do"],
+        status: "Active",
+        action: "Open course",
+        href: "./japanese.html#roadmap",
+        primary: true
       },
       {
         code: "DM",
