@@ -17,6 +17,8 @@
       <nav class="nav" aria-label="Vibe design navigation">
         <a href="./index.html#courses">Khóa học</a>
         <a href="#map">Bản đồ</a>
+        <a href="#learning-path">Lộ trình</a>
+        <a href="#practice">Thực hành</a>
         <a href="#artifacts">Artifacts</a>
         <a href="#qa">QA</a>
         <a href="#checklist">Checklist</a>
@@ -125,6 +127,124 @@
               <li>QA chấm business fit, UX clarity, visual hierarchy, consistency, accessibility, prompt fidelity.</li>
               <li>Strict mode cần <code>handoff.md</code>, <code>contract.md</code>, <code>fidelity_review.md</code>.</li>
               <li>Codegen Flutter chỉ chạy sau khi handoff/contract hợp lệ.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="learning-path">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Lộ trình học</h2>
+          <p class="section-note">Học theo 4 chặng. Mỗi chặng kết thúc bằng một output cụ thể để tránh chỉ đọc quy trình mà không tự chạy được.</p>
+        </div>
+
+        <div class="learning-path-grid">
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W1</span><h3>Nắm pipeline</h3></div>
+            <ul>
+              <li>Hiểu 3 mode: fast, standard, strict và khi nào phải dùng từng mode.</li>
+              <li>Tập phân tích prompt thành goal, audience, screen type, state, assumption.</li>
+              <li>Output cuối tuần: 3 file <code>prompt.md</code> cho card, modal và full screen.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W2</span><h3>Spec hóa màn hình</h3></div>
+            <ul>
+              <li>Viết <code>normalized_brief.json</code>, <code>ux_plan.json</code>, <code>visual_system.json</code>.</li>
+              <li>Tập mô tả component anatomy, hierarchy, CTA và overflow rule.</li>
+              <li>Output cuối tuần: 1 bộ standard artifacts cho dashboard hoặc form.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W3</span><h3>Render và QA</h3></div>
+            <ul>
+              <li>Render Pencil từ <code>design_spec.json</code>, không render từ raw prompt.</li>
+              <li>Chạy layout/screenshot check và viết <code>design_qa.md</code>.</li>
+              <li>Output cuối tuần: 1 screen pass UX clarity, visual hierarchy và prompt fidelity.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W4</span><h3>Strict handoff</h3></div>
+            <ul>
+              <li>Làm một màn hình critical: checkout, auth, onboarding hoặc pricing.</li>
+              <li>Freeze <code>handoff.md</code>, tạo <code>contract.md</code> và review fidelity.</li>
+              <li>Output cuối tuần: strict package đủ để codegen hoặc bàn giao developer.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="practice">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Ví dụ thực hành</h2>
+          <p class="section-note">Các bài dưới đây tăng dần độ khó. Mỗi bài có prompt mẫu, mode đề xuất và artifact cần nộp.</p>
+        </div>
+
+        <div class="practice-lab-grid">
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">01</span><h3>Empty state học tập</h3></div>
+            <p><strong>Prompt:</strong> “Tạo empty state cho app học tiếng Anh khi người dùng chưa có flashcard nào.”</p>
+            <ul>
+              <li>Mode: <code>fast</code>.</li>
+              <li>Focus: hierarchy, CTA tạo flashcard đầu tiên, illustration placeholder không generic.</li>
+              <li>Nộp: <code>prompt.md</code>, <code>design_spec.json</code>, <code>design_qa.md</code>.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">02</span><h3>Dashboard tiến độ</h3></div>
+            <p><strong>Prompt:</strong> “Thiết kế dashboard theo dõi tiến độ học tiếng Nhật N5-N2, có kanji, grammar, listening và mock test.”</p>
+            <ul>
+              <li>Mode: <code>standard</code>.</li>
+              <li>Focus: data density, scanning, state empty/loading, card không lồng card.</li>
+              <li>Nộp: normalized brief, UX plan, visual system, spec, QA, revision log.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">03</span><h3>Form nhập nguồn cào</h3></div>
+            <p><strong>Prompt:</strong> “Tạo màn nhập nguồn học liệu để lưu URL, provider, license note, trust level và course mapping.”</p>
+            <ul>
+              <li>Mode: <code>standard</code>.</li>
+              <li>Focus: form anatomy, validation, disabled state, error copy, data contract.</li>
+              <li>Nộp: design spec có đầy đủ field, validation rule và overflow rule.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">04</span><h3>Checkout khóa học</h3></div>
+            <p><strong>Prompt:</strong> “Thiết kế checkout mua khóa Vibe design, có coupon, billing info, order summary và confirm payment.”</p>
+            <ul>
+              <li>Mode: <code>strict</code>.</li>
+              <li>Focus: accessibility, validation, trust, review gate, no hidden cost.</li>
+              <li>Nộp: full standard artifacts + handoff, contract, fidelity review.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">05</span><h3>Mobile onboarding</h3></div>
+            <p><strong>Prompt:</strong> “Tạo onboarding mobile cho người mới chọn mục tiêu: tiếng Anh, tiếng Nhật, Agentic AI hoặc Vibe design.”</p>
+            <ul>
+              <li>Mode: <code>strict</code> nếu có codegen, <code>standard</code> nếu chỉ render design.</li>
+              <li>Focus: one-screen scope, segmented control, primary CTA, selected/disabled states.</li>
+              <li>Nộp: design spec có viewport mobile và state coverage.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">06</span><h3>QA revision drill</h3></div>
+            <p><strong>Prompt:</strong> “Review một screen bị generic, thiếu state và CTA không rõ; sửa upstream artifact đúng chỗ.”</p>
+            <ul>
+              <li>Mode: <code>standard</code>.</li>
+              <li>Focus: phát hiện lỗi thuộc intent, UX, visual, component hay renderer.</li>
+              <li>Nộp: <code>design_qa.md</code> và <code>revision_log.md</code> giải thích sửa layer nào.</li>
             </ul>
           </article>
         </div>
