@@ -19,6 +19,7 @@
         <a href="#roadmap">Lộ trình</a>
         <a href="#lessons">Bài học</a>
         <a href="#labs">Lab</a>
+        <a href="#visual-labs">Visual labs</a>
         <a href="#workspace">Workspace</a>
       </nav>
     </div>
@@ -283,6 +284,80 @@
             <div class="flow-step"><code>Model</code><p>Model có baseline, metric, limitation và reproducible split.</p></div>
             <div class="flow-step"><code>Story</code><p>Kết quả chuyển thành insight và hành động đề xuất.</p></div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="visual-labs">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Visual Lab Gallery</h2>
+          <p class="section-note">Các lab trực quan để học bằng hình dung dữ liệu trước, sau đó mới viết notebook. Mỗi lab có chart mục tiêu, kỹ thuật và deliverable rõ ràng.</p>
+        </div>
+
+        <div class="visual-lab-grid">
+          <article class="visual-lab-card">
+            <div class="mini-chart bars"><span></span><span></span><span></span><span></span></div>
+            <h3>Missing value heatmap</h3>
+            <p>Nhìn pattern thiếu dữ liệu theo column và group trước khi impute.</p>
+            <ul><li>Kỹ thuật: profiling, missingness matrix.</li><li>Nộp: heatmap + cleaning decision.</li></ul>
+          </article>
+
+          <article class="visual-lab-card">
+            <div class="mini-chart scatter"><span></span><span></span><span></span><span></span><span></span></div>
+            <h3>Outlier detective</h3>
+            <p>Tách outlier thật, lỗi nhập liệu và điểm dữ liệu hiếm nhưng hợp lệ.</p>
+            <ul><li>Kỹ thuật: boxplot, IQR, z-score.</li><li>Nộp: anomaly review table.</li></ul>
+          </article>
+
+          <article class="visual-lab-card">
+            <div class="mini-chart line"><span></span></div>
+            <h3>Trend mining</h3>
+            <p>Phát hiện mùa vụ, spike, drop và điểm đổi hành vi theo thời gian.</p>
+            <ul><li>Kỹ thuật: rolling mean, period compare.</li><li>Nộp: trend story 5 insight.</li></ul>
+          </article>
+
+          <article class="visual-lab-card">
+            <div class="mini-chart clusters"><span></span><span></span><span></span></div>
+            <h3>Customer clusters</h3>
+            <p>Phân cụm khách hàng, đặt tên persona và đề xuất hành động.</p>
+            <ul><li>Kỹ thuật: RFM, scaling, K-means.</li><li>Nộp: cluster profile.</li></ul>
+          </article>
+
+          <article class="visual-lab-card">
+            <div class="mini-chart matrix"><span></span><span></span><span></span><span></span></div>
+            <h3>Confusion matrix clinic</h3>
+            <p>Đọc lỗi model bằng matrix thay vì chỉ nhìn accuracy.</p>
+            <ul><li>Kỹ thuật: precision, recall, F1.</li><li>Nộp: error analysis.</li></ul>
+          </article>
+
+          <article class="visual-lab-card">
+            <div class="mini-chart rules"><span></span><span></span><span></span></div>
+            <h3>Basket rule map</h3>
+            <p>Tìm item đi kèm, khóa học hay được học chung, bài tiếp theo nên gợi ý.</p>
+            <ul><li>Kỹ thuật: support, confidence, lift.</li><li>Nộp: top rules + action.</li></ul>
+          </article>
+
+          <article class="visual-lab-card">
+            <div class="mini-chart bars alt"><span></span><span></span><span></span><span></span></div>
+            <h3>Feature importance review</h3>
+            <p>Giải thích model dựa trên feature quan trọng và kiểm tra feature đáng nghi.</p>
+            <ul><li>Kỹ thuật: tree importance, permutation.</li><li>Nộp: model limitation.</li></ul>
+          </article>
+
+          <article class="visual-lab-card">
+            <div class="mini-chart scatter alt"><span></span><span></span><span></span><span></span><span></span></div>
+            <h3>Dimensionality map</h3>
+            <p>Giảm chiều để nhìn cụm, overlap và điểm bất thường trong dữ liệu nhiều biến.</p>
+            <ul><li>Kỹ thuật: PCA, t-SNE/UMAP concept.</li><li>Nộp: embedding interpretation.</li></ul>
+          </article>
+
+          <article class="visual-lab-card">
+            <div class="mini-chart matrix alt"><span></span><span></span><span></span><span></span></div>
+            <h3>Data leakage hunt</h3>
+            <p>Truy tìm feature nhìn có vẻ mạnh nhưng thực ra rò rỉ thông tin tương lai.</p>
+            <ul><li>Kỹ thuật: split audit, feature audit.</li><li>Nộp: leakage checklist.</li></ul>
+          </article>
         </div>
       </div>
     </section>

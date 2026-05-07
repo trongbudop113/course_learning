@@ -171,6 +171,46 @@ h1 {
   gap: 18px;
 }
 
+.course-nav-section {
+  padding-top: 24px;
+}
+
+.course-navigator {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.navigator-tile {
+  min-height: 230px;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  border: 3px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  padding: 18px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.navigator-tile:nth-child(2n) { background: #fff1b8; }
+.navigator-tile:nth-child(3n) { background: #d9f2ee; }
+.navigator-tile:nth-child(4n) { background: #ffe1df; }
+
+.navigator-tile strong {
+  font-size: 24px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.navigator-tile small {
+  color: #475467;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 .picker-card {
   min-height: 330px;
   display: grid;
@@ -966,11 +1006,162 @@ textarea {
 .data-cell:nth-child(3n) { background: #fff1b8; }
 
 .data-roadmap,
-.data-lesson-grid {
+.data-lesson-grid,
+.visual-lab-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 18px;
 }
+
+.visual-lab-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.visual-lab-card {
+  min-height: 390px;
+  display: grid;
+  grid-template-rows: 140px auto auto 1fr;
+  gap: 12px;
+  border: 3px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.visual-lab-card:nth-child(2n) { background: #fff1b8; }
+.visual-lab-card:nth-child(3n) { background: #d9f2ee; }
+
+.visual-lab-card h3 {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.visual-lab-card p {
+  margin: 0;
+  color: #344054;
+  line-height: 1.4;
+}
+
+.visual-lab-card ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 20px;
+  color: #475467;
+  line-height: 1.35;
+}
+
+.mini-chart {
+  position: relative;
+  overflow: hidden;
+  border: 3px solid var(--line);
+  border-radius: 14px;
+  background: #fffaf0;
+  min-height: 138px;
+}
+
+.mini-chart.bars,
+.mini-chart.bars.alt {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  padding: 16px;
+}
+
+.mini-chart.bars span,
+.mini-chart.bars.alt span {
+  flex: 1;
+  border: 3px solid var(--line);
+  border-radius: 10px 10px 0 0;
+  background: var(--cyan);
+}
+
+.mini-chart.bars span:nth-child(1) { height: 36%; }
+.mini-chart.bars span:nth-child(2) { height: 74%; background: var(--yellow); }
+.mini-chart.bars span:nth-child(3) { height: 52%; background: var(--red); }
+.mini-chart.bars span:nth-child(4) { height: 88%; background: var(--green); }
+
+.mini-chart.scatter span,
+.mini-chart.scatter.alt span,
+.mini-chart.clusters span {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 3px solid var(--line);
+  border-radius: 50%;
+  background: var(--red);
+}
+
+.mini-chart.scatter span:nth-child(1) { left: 18%; top: 54%; }
+.mini-chart.scatter span:nth-child(2) { left: 34%; top: 38%; background: var(--yellow); }
+.mini-chart.scatter span:nth-child(3) { left: 50%; top: 62%; background: var(--cyan); }
+.mini-chart.scatter span:nth-child(4) { left: 70%; top: 28%; background: var(--green); }
+.mini-chart.scatter span:nth-child(5) { left: 82%; top: 72%; }
+
+.mini-chart.line::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: 70px;
+  border-top: 4px dashed var(--line);
+}
+
+.mini-chart.line span {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: 28px;
+  height: 82px;
+  border: 5px solid var(--red);
+  border-left: 0;
+  border-bottom: 0;
+  transform: skewY(-12deg);
+}
+
+.mini-chart.clusters span:nth-child(1) { left: 18%; top: 24%; background: var(--cyan); box-shadow: 22px 20px 0 -2px var(--cyan), 12px 48px 0 -3px var(--cyan); }
+.mini-chart.clusters span:nth-child(2) { left: 58%; top: 28%; background: var(--yellow); box-shadow: 26px 22px 0 -2px var(--yellow), -12px 50px 0 -3px var(--yellow); }
+.mini-chart.clusters span:nth-child(3) { left: 44%; top: 72%; background: var(--red); }
+
+.mini-chart.matrix,
+.mini-chart.matrix.alt {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 14px;
+}
+
+.mini-chart.matrix span {
+  border: 3px solid var(--line);
+  border-radius: 10px;
+  background: var(--green);
+}
+
+.mini-chart.matrix span:nth-child(2),
+.mini-chart.matrix span:nth-child(3) {
+  background: var(--red);
+}
+
+.mini-chart.rules {
+  display: grid;
+  place-items: center;
+}
+
+.mini-chart.rules span {
+  position: absolute;
+  width: 76px;
+  height: 42px;
+  border: 3px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+}
+
+.mini-chart.rules span:nth-child(1) { left: 18px; top: 26px; background: var(--cyan); }
+.mini-chart.rules span:nth-child(2) { right: 18px; top: 48px; background: var(--yellow); }
+.mini-chart.rules span:nth-child(3) { left: 50%; bottom: 22px; transform: translateX(-50%); background: var(--red); }
 
 .pipeline-board {
   display: grid;
@@ -1176,11 +1367,13 @@ textarea {
   .data-hero,
   .hero { min-height: auto; }
   .nav { justify-content: flex-start; }
+  .course-navigator { grid-template-columns: repeat(2, 1fr); }
   .principles,
   .english-roadmap,
   .japanese-roadmap,
   .data-roadmap,
   .data-lesson-grid,
+  .visual-lab-grid,
   .vibe-steps,
   .learning-path-grid,
   .practice-lab-grid,
@@ -1209,6 +1402,7 @@ textarea {
   .data-board { grid-template-columns: 1fr; }
   .level-stack { margin-top: 26px; }
   .course-picker,
+  .course-navigator,
   .saved-run-list,
   .modules { grid-template-columns: 1fr; }
   .flow-step,
