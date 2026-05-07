@@ -22,10 +22,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Create or update the learning database.")
     parser.add_argument("--db", default=str(DEFAULT_DB), help="SQLite database path.")
     parser.add_argument("--no-seed", action="store_true", help="Skip seed data.")
+    parser.add_argument("--reset", action="store_true", help="Delete the existing database before creating it.")
     args = parser.parse_args()
 
     db_path = Path(args.db).expanduser().resolve()
     db_path.parent.mkdir(parents=True, exist_ok=True)
+    if args.reset and db_path.exists():
+        db_path.unlink()
 
     with sqlite3.connect(db_path) as conn:
         conn.execute("PRAGMA foreign_keys = ON")

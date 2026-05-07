@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vibe design | Course Learning</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="./index.html#courses" aria-label="Course Learning home">
+        <span class="mark">VD</span>
+        <span>Course Learning</span>
+      </a>
+
+      <nav class="nav" aria-label="Vibe design navigation">
+        <a href="./index.html#courses">Khóa học</a>
+        <a href="#map">Bản đồ</a>
+        <a href="#artifacts">Artifacts</a>
+        <a href="#qa">QA</a>
+        <a href="#checklist">Checklist</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="vibe-hero shell">
+      <div class="english-hero-copy">
+        <div class="eyebrow"><span class="pulse"></span><span>Vibe design</span></div>
+        <h1>Prompt -> Design Spec -> Pencil -> QA -> Handoff</h1>
+        <p class="lead">Hướng dẫn từ A tới Z để biến một yêu cầu màn hình đơn thành thiết kế có kiểm soát theo skill <strong>single-input-screen-pipeline</strong>.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#map">Bắt đầu quy trình</a>
+          <a class="btn" href="#checklist">Checklist chạy thật</a>
+        </div>
+      </div>
+
+      <div class="pipeline-board" aria-label="Single input screen pipeline">
+        <div class="pipeline-node">Prompt</div>
+        <div class="pipeline-node">Brief</div>
+        <div class="pipeline-node">UX Plan</div>
+        <div class="pipeline-node">Visual</div>
+        <div class="pipeline-node">Spec</div>
+        <div class="pipeline-node">Pencil</div>
+        <div class="pipeline-node">QA</div>
+        <div class="pipeline-node">Handoff</div>
+      </div>
+    </section>
+
+    <section class="section" id="map">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Bản đồ A-Z</h2>
+          <p class="section-note">Nguyên tắc chính: không nhảy từ prompt thô sang Pencil hoặc code. Mọi thứ phải đi qua artifact, validation và QA.</p>
+        </div>
+
+        <div class="vibe-steps">
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">01</span><h3>Chọn mode</h3></div>
+            <ul>
+              <li><strong>fast</strong>: card, modal, empty state, ý tưởng nhỏ.</li>
+              <li><strong>standard</strong>: màn hình đầy đủ thông thường.</li>
+              <li><strong>strict</strong>: checkout, auth, pricing, onboarding, handoff, contract hoặc codegen.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">02</span><h3>Tạo run folder</h3></div>
+            <ul>
+              <li>Tạo slug ổn định, ví dụ: <code>login_screen</code>.</li>
+              <li>Mọi artifact nằm trong <code>artifacts/{slug}/</code>.</li>
+              <li>Tạo <code>screen_run.yaml</code> trước để tracking mode, gate, Pencil frame và next step.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">03</span><h3>Chuẩn hóa prompt</h3></div>
+            <ul>
+              <li>Biến yêu cầu thô thành goal, audience, screen type, content, state và assumption.</li>
+              <li>Fast mode có thể dùng <code>prompt.md</code>.</li>
+              <li>Standard/strict dùng <code>normalized_brief.json</code>.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">04</span><h3>Lập UX plan</h3></div>
+            <ul>
+              <li>Xác định hierarchy: dominant content, secondary content, CTA.</li>
+              <li>Liệt kê states: default, loading, empty, error, disabled, validation.</li>
+              <li>Quy định overflow cho title, label, CTA và content dài.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">05</span><h3>Định nghĩa visual system</h3></div>
+            <ul>
+              <li>Chọn tone, density, typography, color, spacing, component style.</li>
+              <li>Không để output generic hoặc chỉ là card/block rỗng.</li>
+              <li>Style phải phục vụ domain, không chỉ trang trí.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">06</span><h3>Tạo design spec</h3></div>
+            <ul>
+              <li><code>design_spec.json</code> là source of truth trước Pencil.</li>
+              <li><code>design_spec.summary.md</code> mô tả hierarchy và component anatomy.</li>
+              <li>Validate bằng <code>python3 scripts/validate_screen.py artifacts/{slug}</code>.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">07</span><h3>Render Pencil</h3></div>
+            <ul>
+              <li>Chỉ render từ <code>design_spec.json</code>, không render từ raw prompt.</li>
+              <li>Dùng một file chung: <code>pencil/screen_design.pen</code>.</li>
+              <li>Append frame mới, không xóa frame cũ nếu user không yêu cầu.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">08</span><h3>QA, handoff, codegen</h3></div>
+            <ul>
+              <li>QA chấm business fit, UX clarity, visual hierarchy, consistency, accessibility, prompt fidelity.</li>
+              <li>Strict mode cần <code>handoff.md</code>, <code>contract.md</code>, <code>fidelity_review.md</code>.</li>
+              <li>Codegen Flutter chỉ chạy sau khi handoff/contract hợp lệ.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="artifacts">
+      <div class="shell split">
+        <div class="lesson-panel">
+          <div class="eyebrow"><span class="pulse"></span><span>Artifact sets</span></div>
+          <h2>Bộ file cần có</h2>
+          <ul class="lesson-list">
+            <li><div class="badge">F</div><div><strong>Fast</strong><span>screen_run.yaml, prompt.md, design_spec.summary.md, design_spec.json, design_qa.md.</span></div></li>
+            <li><div class="badge">S</div><div><strong>Standard</strong><span>Thêm normalized_brief.json, ux_plan.json, visual_system.json, revision_log.md.</span></div></li>
+            <li><div class="badge">X</div><div><strong>Strict</strong><span>Thêm prompt.md, handoff.md, contract.md, fidelity_review.md cho handoff/codegen.</span></div></li>
+          </ul>
+        </div>
+
+        <div class="visual-panel">
+          <div class="terminal">
+            <div class="terminal-head">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <pre>artifacts/login_screen/
+  screen_run.yaml
+  normalized_brief.json
+  ux_plan.json
+  visual_system.json
+  design_spec.json
+  design_spec.summary.md
+  design_qa.md
+  revision_log.md
+  handoff.md
+  contract.md
+  fidelity_review.md</pre>
+          </div>
+          <div class="flow-steps">
+            <div class="flow-step"><code>Track</code><p>screen_run.yaml giữ trạng thái gate và next step.</p></div>
+            <div class="flow-step"><code>Freeze</code><p>design_spec.json là nguồn thật trước Pencil.</p></div>
+            <div class="flow-step"><code>Compare</code><p>Mỗi bước phải so với bước trước để tránh drift.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="qa">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Cổng chất lượng</h2>
+          <p class="section-note">Nếu QA fail, sửa đúng artifact upstream gây lỗi. Không vá downstream để che lỗi gốc.</p>
+        </div>
+
+        <div class="principles">
+          <article class="principle-card">
+            <span class="module-num">8+</span>
+            <h3>UX clarity</h3>
+            <p>Màn hình phải rõ mục tiêu, luồng thao tác và hierarchy. User biết phải nhìn đâu và làm gì tiếp.</p>
+          </article>
+          <article class="principle-card">
+            <span class="module-num">8+</span>
+            <h3>Prompt fidelity</h3>
+            <p>Output phải bám đúng scope prompt. Không tự thêm flow, section hoặc chức năng ngoài yêu cầu.</p>
+          </article>
+          <article class="principle-card">
+            <span class="module-num">7+</span>
+            <h3>Accessibility</h3>
+            <p>Text readable, button đủ rõ, state đầy đủ, overflow không phá layout.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="checklist">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Checklist chạy thật</h2>
+          <p class="section-note">Dùng checklist này trước khi render Pencil hoặc codegen. Nếu có điểm chưa đạt, quay lại artifact tương ứng.</p>
+        </div>
+
+        <div class="checklist-grid">
+          <div class="check good"><span class="box">✓</span><span>Đã chọn mode và tạo <code>screen_run.yaml</code>.</span></div>
+          <div class="check good"><span class="box">✓</span><span>Prompt đã được normalize thành brief rõ scope.</span></div>
+          <div class="check good"><span class="box">✓</span><span>UX plan có hierarchy, state và overflow rule.</span></div>
+          <div class="check good"><span class="box">✓</span><span>Visual system đủ cụ thể, không generic.</span></div>
+          <div class="check good"><span class="box">✓</span><span><code>design_spec.json</code> validate pass.</span></div>
+          <div class="check good"><span class="box">✓</span><span>Pencil render chỉ dùng design spec.</span></div>
+          <div class="check good"><span class="box">✓</span><span>QA đạt threshold: fidelity 8, UX 8, hierarchy 8, accessibility 7.</span></div>
+          <div class="check good"><span class="box">✓</span><span>Strict/codegen có handoff, contract và fidelity review.</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell footer">Vibe design. Học cách vận hành single-input-screen-pipeline từ prompt thô tới thiết kế, QA, handoff và codegen có kiểm soát.</footer>
+</body>
+</html>

@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS courses (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   slug TEXT NOT NULL UNIQUE,
   title TEXT NOT NULL,
-  category TEXT NOT NULL CHECK (category IN ('english', 'japanese', 'data_mining', 'agentic_ai')),
+  category TEXT NOT NULL CHECK (category IN ('english', 'japanese', 'data_mining', 'agentic_ai', 'vibe_design')),
   level TEXT NOT NULL DEFAULT 'all',
   description TEXT NOT NULL DEFAULT '',
   status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'active', 'archived')),

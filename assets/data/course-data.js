@@ -70,6 +70,16 @@ window.COURSE_DATA = {
         href: "#courses"
       },
       {
+        code: "VD",
+        title: "Vibe design",
+        copy: "Học quy trình biến prompt thô thành design spec, Pencil render, QA, handoff, contract và codegen theo single-input-screen-pipeline.",
+        meta: ["Prompt -> Spec", "Pencil QA", "Handoff"],
+        status: "Đang học",
+        action: "Vào bài học",
+        href: "./vibe-design.html#map",
+        primary: true
+      },
+      {
         code: "AI",
         title: "Agentic AI",
         copy: "Khóa hiện có về prompt, tool calling, agent loop, memory, planning, guardrails và production để biến LLM thành hệ thống làm việc.",
@@ -333,6 +343,16 @@ Final JSON:
         status: "Coming soon",
         action: "View course",
         href: "#courses"
+      },
+      {
+        code: "VD",
+        title: "Vibe design",
+        copy: "Learn the path from raw prompt to design spec, Pencil render, QA, handoff, contract, and codegen with single-input-screen-pipeline.",
+        meta: ["Prompt -> Spec", "Pencil QA", "Handoff"],
+        status: "Active",
+        action: "Open lesson",
+        href: "./vibe-design.html#map",
+        primary: true
       },
       {
         code: "AI",

@@ -8,6 +8,7 @@ Static course website with a lightweight SQLite data layer for learning content.
 index.html
 english.html
 japanese.html
+vibe-design.html
 agentic-ai.html
 assets/
   css/
@@ -53,6 +54,12 @@ Japanese course page:
 file:///Users/luuhoangtrong/Project/course_learning/japanese.html
 ```
 
+Vibe design lesson page:
+
+```text
+file:///Users/luuhoangtrong/Project/course_learning/vibe-design.html
+```
+
 ## How to extend
 
 - Add or edit course content in `assets/data/course-data.js`.
@@ -68,6 +75,12 @@ Create the database:
 
 ```bash
 python3 tools/init_db.py
+```
+
+Reset and recreate the database after schema changes:
+
+```bash
+python3 tools/init_db.py --reset
 ```
 
 This creates:
