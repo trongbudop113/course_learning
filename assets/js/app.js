@@ -314,6 +314,121 @@ function initVibePracticeWorkspace() {
   renderPracticeRuns();
 }
 
+function getDmLabs() {
+  try {
+    return JSON.parse(localStorage.getItem("data_mining_labs") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveDmLabs(labs) {
+  localStorage.setItem("data_mining_labs", JSON.stringify(labs.slice(0, 12)));
+}
+
+function buildDmLabOutline(lab) {
+  const folder = `data_mining_labs/${lab.slug}/`;
+  const techniqueSteps = {
+    eda: ["profile data", "define questions", "clean fields", "visualize distributions", "write insights"],
+    clustering: ["profile data", "create features", "scale numeric features", "run clustering", "evaluate silhouette", "write cluster profile"],
+    classification: ["profile data", "define target", "split train/test", "build baseline", "evaluate metrics", "write error analysis"],
+    association_rules: ["prepare transactions", "encode baskets", "mine rules", "rank by lift", "filter weak rules", "write recommendations"],
+    anomaly_detection: ["profile data", "define anomaly candidates", "create features", "run detector", "review false positives", "write risk notes"]
+  };
+  const steps = techniqueSteps[lab.technique] || techniqueSteps.eda;
+
+  return `# ${lab.title}
+
+Technique: ${lab.technique}
+Slug: ${lab.slug}
+Folder: ${folder}
+
+## Dataset và mục tiêu
+${lab.prompt}
+
+## Pipeline đề xuất
+${steps.map((step, index) => `${index + 1}. ${step}`).join("\n")}
+
+## Deliverables
+- ${folder}notebook.ipynb
+- ${folder}data_profile.md
+- ${folder}cleaning_log.md
+- ${folder}evaluation_report.md
+- ${folder}insight_summary.md
+
+## Quality gate
+- Có data dictionary hoặc mô tả column.
+- Có xử lý missing/duplicate/outlier rõ quyết định.
+- Có metric phù hợp với kỹ thuật đã chọn.
+- Có limitation và next step.
+- Insight phải gắn với bằng chứng từ dữ liệu.`;
+}
+
+function renderDmLabs() {
+  const list = $("#savedDmLabs");
+  if (!list) return;
+  const labs = getDmLabs();
+  list.innerHTML = "";
+
+  if (!labs.length) {
+    list.append(createEl("p", "section-note", "Chưa có lab nào được lưu trong trình duyệt này."));
+    return;
+  }
+
+  labs.forEach((lab) => {
+    const button = createEl("button", "saved-run");
+    button.type = "button";
+    button.append(createEl("strong", "", lab.title));
+    button.append(createEl("span", "", `${lab.technique} · ${lab.slug}`));
+    button.addEventListener("click", () => {
+      $("#dmLabOutput").textContent = buildDmLabOutline(lab);
+      $("#dmLabTitle").value = lab.title;
+      $("#dmLabTechnique").value = lab.technique;
+      $("#dmLabPrompt").value = lab.prompt;
+    });
+    list.append(button);
+  });
+}
+
+function initDataMiningWorkspace() {
+  const form = $("#dataMiningLabForm");
+  if (!form) return;
+
+  const title = $("#dmLabTitle");
+  const technique = $("#dmLabTechnique");
+  const prompt = $("#dmLabPrompt");
+  const output = $("#dmLabOutput");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const lab = {
+      id: Date.now(),
+      title: title.value.trim() || "Data Mining Lab",
+      technique: technique.value,
+      prompt: prompt.value.trim(),
+      slug: slugifyPractice(title.value)
+    };
+    output.textContent = buildDmLabOutline(lab);
+    saveDmLabs([lab, ...getDmLabs()]);
+    renderDmLabs();
+  });
+
+  $("#loadDmSample")?.addEventListener("click", () => {
+    title.value = "Predict student pass/fail";
+    technique.value = "classification";
+    prompt.value = "Dataset gồm study_hours, attendance_rate, previous_score, assignment_score và final_result. Mục tiêu: dự đoán pass/fail, đánh giá precision/recall/F1, phân tích lỗi và đề xuất nhóm học sinh cần hỗ trợ.";
+    output.textContent = "Đã nạp mẫu classification. Bấm “Tạo outline lab” để lưu lab.";
+  });
+
+  $("#clearDmLabs")?.addEventListener("click", () => {
+    localStorage.removeItem("data_mining_labs");
+    output.textContent = "Đã xóa lịch sử lab trong trình duyệt này.";
+    renderDmLabs();
+  });
+
+  renderDmLabs();
+}
+
 function render() {
   const data = getData();
   renderI18n(data);
@@ -323,6 +438,7 @@ function render() {
   renderCourseCards(data);
   renderLab(data);
   initVibePracticeWorkspace();
+  initDataMiningWorkspace();
 
   $$(".lang-btn").forEach((button) => {
     button.classList.toggle("active", button.dataset.lang === state.lang);

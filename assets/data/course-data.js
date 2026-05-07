@@ -63,11 +63,12 @@ window.COURSE_DATA = {
       {
         code: "DM",
         title: "Data Mining",
-        copy: "Học cách khai phá dữ liệu từ làm sạch, trực quan hóa, phân cụm, phân lớp đến đánh giá mô hình bằng các bài lab có dữ liệu mẫu.",
-        meta: ["Dataset", "Mô hình", "Lab phân tích"],
-        status: "Sắp mở",
-        action: "Xem khóa học",
-        href: "#courses"
+        copy: "Học khai phá dữ liệu từ profiling, cleaning, EDA, feature engineering, clustering, classification, association rules đến capstone portfolio.",
+        meta: ["10 tuần", "Notebook lab", "Portfolio"],
+        status: "Đang học",
+        action: "Vào khóa học",
+        href: "./data-mining.html#roadmap",
+        primary: true
       },
       {
         code: "VD",
@@ -338,11 +339,12 @@ Final JSON:
       {
         code: "DM",
         title: "Data Mining",
-        copy: "Learn data exploration from cleaning, visualization, clustering, classification, and model evaluation through sample-data labs.",
-        meta: ["Datasets", "Models", "Analysis lab"],
-        status: "Coming soon",
-        action: "View course",
-        href: "#courses"
+        copy: "Learn data mining from profiling, cleaning, EDA, feature engineering, clustering, classification, association rules, and capstone portfolio work.",
+        meta: ["10 weeks", "Notebook labs", "Portfolio"],
+        status: "Active",
+        action: "Open course",
+        href: "./data-mining.html#roadmap",
+        primary: true
       },
       {
         code: "VD",

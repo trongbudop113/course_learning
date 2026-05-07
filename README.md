@@ -8,6 +8,7 @@ Static course website with a lightweight SQLite data layer for learning content.
 index.html
 english.html
 japanese.html
+data-mining.html
 vibe-design.html
 agentic-ai.html
 assets/
@@ -52,6 +53,12 @@ Japanese course page:
 
 ```text
 file:///Users/luuhoangtrong/Project/course_learning/japanese.html
+```
+
+Data Mining course page:
+
+```text
+file:///Users/luuhoangtrong/Project/course_learning/data-mining.html
 ```
 
 Vibe design lesson page:

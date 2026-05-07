@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Data Mining | Course Learning</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="./index.html#courses" aria-label="Course Learning home">
+        <span class="mark">DM</span>
+        <span>Course Learning</span>
+      </a>
+
+      <nav class="nav" aria-label="Data mining navigation">
+        <a href="./index.html#courses">Khóa học</a>
+        <a href="#roadmap">Lộ trình</a>
+        <a href="#lessons">Bài học</a>
+        <a href="#labs">Lab</a>
+        <a href="#workspace">Workspace</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="data-hero shell">
+      <div class="english-hero-copy">
+        <div class="eyebrow"><span class="pulse"></span><span>Data Mining</span></div>
+        <h1>Từ dữ liệu thô tới insight có thể kiểm chứng</h1>
+        <p class="lead">Lộ trình học khai phá dữ liệu theo hướng thực hành: làm sạch, khám phá, biến đổi, phân cụm, phân lớp, luật kết hợp, đánh giá mô hình và kể chuyện bằng dữ liệu.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#roadmap">Xem lộ trình</a>
+          <a class="btn" href="#workspace">Tạo bài lab</a>
+        </div>
+      </div>
+
+      <div class="data-board" aria-label="Data mining pipeline">
+        <div class="data-cell">Raw</div>
+        <div class="data-cell">Clean</div>
+        <div class="data-cell">EDA</div>
+        <div class="data-cell">Model</div>
+        <div class="data-cell">Eval</div>
+        <div class="data-cell">Insight</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Học để làm gì?</h2>
+          <p class="section-note">Data Mining không chỉ chạy thuật toán. Mục tiêu là biến dữ liệu thành quyết định có căn cứ, biết kiểm tra bias, leakage, overfitting và chất lượng dữ liệu.</p>
+        </div>
+
+        <div class="principles">
+          <article class="principle-card">
+            <span class="module-num">01</span>
+            <h3>Hiểu dữ liệu</h3>
+            <p>Đọc schema, kiểu dữ liệu, missing values, outliers, distribution và quan hệ giữa biến.</p>
+          </article>
+          <article class="principle-card">
+            <span class="module-num">02</span>
+            <h3>Chọn kỹ thuật</h3>
+            <p>Biết khi nào dùng clustering, classification, association rules, anomaly detection hoặc dimensionality reduction.</p>
+          </article>
+          <article class="principle-card">
+            <span class="module-num">03</span>
+            <h3>Đánh giá đúng</h3>
+            <p>Không chỉ nhìn accuracy. Dùng metric phù hợp, validation rõ ràng, giải thích được kết quả cho người dùng.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Lộ trình 10 tuần</h2>
+          <p class="section-note">Mỗi chặng có output rõ ràng. Học xong là có portfolio gồm notebook, báo cáo insight và mô hình được đánh giá.</p>
+        </div>
+
+        <div class="data-roadmap">
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W1</span><h3>Nền tảng dữ liệu</h3></div>
+            <ul>
+              <li>Ôn Python, pandas, numpy, notebook workflow.</li>
+              <li>Đọc CSV/JSON, hiểu dataframe, schema, data dictionary.</li>
+              <li>Output: data profiling report cho một dataset nhỏ.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W2</span><h3>Làm sạch dữ liệu</h3></div>
+            <ul>
+              <li>Missing values, duplicate, type conversion, outlier handling.</li>
+              <li>Quyết định giữ/xóa/sửa dữ liệu phải có lý do.</li>
+              <li>Output: cleaning log và before/after quality summary.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W3</span><h3>EDA và trực quan hóa</h3></div>
+            <ul>
+              <li>Distribution, correlation, group comparison, time trend.</li>
+              <li>Biết đặt câu hỏi phân tích trước khi vẽ chart.</li>
+              <li>Output: 6 chart + 5 insight có bằng chứng.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W4</span><h3>Feature engineering</h3></div>
+            <ul>
+              <li>Encoding category, scaling, binning, date features, text features cơ bản.</li>
+              <li>Tránh data leakage khi tạo feature.</li>
+              <li>Output: feature table và giải thích business meaning.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W5</span><h3>Clustering</h3></div>
+            <ul>
+              <li>K-means, hierarchical clustering, chọn số cụm, silhouette score.</li>
+              <li>Ứng dụng: customer segmentation hoặc nhóm hành vi học tập.</li>
+              <li>Output: cluster profile và khuyến nghị hành động.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W6</span><h3>Classification</h3></div>
+            <ul>
+              <li>Train/test split, logistic regression, decision tree, random forest.</li>
+              <li>Metric: precision, recall, F1, confusion matrix, ROC-AUC.</li>
+              <li>Output: baseline model và model card ngắn.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W7</span><h3>Association rules</h3></div>
+            <ul>
+              <li>Apriori/FP-growth, support, confidence, lift.</li>
+              <li>Ứng dụng: market basket, lesson recommendation, combo course.</li>
+              <li>Output: top rules và giải thích rule nào đáng dùng.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W8</span><h3>Anomaly và giảm chiều</h3></div>
+            <ul>
+              <li>Isolation forest, z-score/IQR, PCA/t-SNE/UMAP ở mức ứng dụng.</li>
+              <li>Biết phân biệt anomaly thật và lỗi dữ liệu.</li>
+              <li>Output: anomaly review table và visualization.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W9</span><h3>Evaluation và explainability</h3></div>
+            <ul>
+              <li>Cross-validation, error analysis, feature importance, model limitation.</li>
+              <li>Kiểm tra imbalance, bias, drift và reproducibility.</li>
+              <li>Output: evaluation report đủ để reviewer kiểm tra.</li>
+            </ul>
+          </article>
+
+          <article class="roadmap-phase">
+            <div class="phase-head"><span class="module-num">W10</span><h3>Capstone</h3></div>
+            <ul>
+              <li>Chọn một dataset thật, đặt câu hỏi, làm pipeline end-to-end.</li>
+              <li>Nộp notebook, slide/report, model card và recommendation.</li>
+              <li>Output: portfolio project hoàn chỉnh.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="lessons">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Bài học tích hợp</h2>
+          <p class="section-note">Mỗi bài có mục tiêu, kiến thức chính và bài tập thực hành. Bạn có thể làm bằng Python notebook hoặc lưu mô tả vào DB hiện có.</p>
+        </div>
+
+        <div class="data-lesson-grid">
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">01</span><h3>Data profiling</h3></div>
+            <p>Học cách đọc dataset trước khi xử lý: rows, columns, dtype, missing, duplicate, cardinality.</p>
+            <ul>
+              <li>Thực hành: tạo profile cho Titanic hoặc Student Performance.</li>
+              <li>Nộp: bảng vấn đề dữ liệu và 5 câu hỏi phân tích.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">02</span><h3>Cleaning pipeline</h3></div>
+            <p>Xây pipeline làm sạch có log, không sửa dữ liệu tùy tiện.</p>
+            <ul>
+              <li>Thực hành: xử lý missing age, category sai, outlier numeric.</li>
+              <li>Nộp: cleaning decision table.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">03</span><h3>EDA story</h3></div>
+            <p>Biến chart thành insight. Mỗi chart phải trả lời một câu hỏi.</p>
+            <ul>
+              <li>Thực hành: so sánh nhóm, trend, correlation và distribution.</li>
+              <li>Nộp: 6 chart + insight + caveat.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">04</span><h3>Segmentation</h3></div>
+            <p>Phân nhóm người dùng/khách hàng và đặt tên cụm theo hành vi.</p>
+            <ul>
+              <li>Thực hành: K-means customer segmentation.</li>
+              <li>Nộp: cluster profile và action recommendation.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">05</span><h3>Classification baseline</h3></div>
+            <p>Tạo model baseline và đánh giá metric phù hợp với bài toán.</p>
+            <ul>
+              <li>Thực hành: predict churn, pass/fail hoặc fraud flag.</li>
+              <li>Nộp: confusion matrix, F1, error analysis.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab">
+            <div class="phase-head"><span class="module-num">06</span><h3>Association rules</h3></div>
+            <p>Tìm luật kết hợp giữa item, khóa học, bài học hoặc hành vi.</p>
+            <ul>
+              <li>Thực hành: basket rules với support/confidence/lift.</li>
+              <li>Nộp: top 10 rules và rule đáng hành động.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="labs">
+      <div class="shell split">
+        <div class="lesson-panel">
+          <div class="eyebrow"><span class="pulse"></span><span>Capstone labs</span></div>
+          <h2>Ví dụ thực hành</h2>
+          <ul class="lesson-list">
+            <li><div class="badge">A</div><div><strong>Student performance</strong><span>Dự đoán nhóm học sinh cần hỗ trợ, phân tích yếu tố ảnh hưởng điểm số.</span></div></li>
+            <li><div class="badge">B</div><div><strong>Customer segmentation</strong><span>Phân cụm khách hàng theo hành vi mua, giá trị đơn hàng và tần suất.</span></div></li>
+            <li><div class="badge">C</div><div><strong>Course recommendation</strong><span>Dùng association rules để gợi ý khóa học hoặc bài học tiếp theo.</span></div></li>
+            <li><div class="badge">D</div><div><strong>Anomaly review</strong><span>Tìm giao dịch hoặc log bất thường, phân loại lỗi dữ liệu và rủi ro thật.</span></div></li>
+          </ul>
+        </div>
+
+        <div class="visual-panel">
+          <div class="terminal">
+            <div class="terminal-head">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <pre>{
+  "lab": "customer_segmentation",
+  "dataset": "transactions.csv",
+  "steps": [
+    "profile data",
+    "clean missing and outliers",
+    "create RFM features",
+    "scale numeric features",
+    "run k-means",
+    "evaluate silhouette",
+    "write cluster profile"
+  ],
+  "deliverables": [
+    "notebook.ipynb",
+    "cluster_profile.md",
+    "recommendation.md"
+  ]
+}</pre>
+          </div>
+          <div class="flow-steps">
+            <div class="flow-step"><code>Data</code><p>Dataset có data dictionary, license note và quality issue rõ ràng.</p></div>
+            <div class="flow-step"><code>Model</code><p>Model có baseline, metric, limitation và reproducible split.</p></div>
+            <div class="flow-step"><code>Story</code><p>Kết quả chuyển thành insight và hành động đề xuất.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="workspace">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Lab Workspace</h2>
+          <p class="section-note">Khu này giúp bạn tạo outline bài lab Data Mining ngay trên web. Dữ liệu lưu trong trình duyệt bằng localStorage.</p>
+        </div>
+
+        <div class="workspace-grid">
+          <form class="workspace-panel" id="dataMiningLabForm">
+            <label>
+              <span>Tên bài lab</span>
+              <input id="dmLabTitle" type="text" value="Customer segmentation bằng RFM" />
+            </label>
+
+            <label>
+              <span>Kỹ thuật chính</span>
+              <select id="dmLabTechnique">
+                <option value="eda">EDA</option>
+                <option value="clustering" selected>Clustering</option>
+                <option value="classification">Classification</option>
+                <option value="association_rules">Association rules</option>
+                <option value="anomaly_detection">Anomaly detection</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Mô tả dataset và mục tiêu</span>
+              <textarea id="dmLabPrompt">Dataset giao dịch khách hàng gồm customer_id, order_date, order_value và product_category. Mục tiêu: tạo RFM features, phân cụm khách hàng, đặt tên từng cụm và đề xuất hành động marketing.</textarea>
+            </label>
+
+            <div class="workspace-actions">
+              <button class="btn primary" type="submit">Tạo outline lab</button>
+              <button class="btn" id="loadDmSample" type="button">Dùng mẫu classification</button>
+              <button class="btn" id="clearDmLabs" type="button">Xóa lịch sử</button>
+            </div>
+          </form>
+
+          <div class="workspace-panel">
+            <div class="eyebrow"><span class="pulse"></span><span>Lab outline</span></div>
+            <pre class="workspace-output" id="dmLabOutput">Chưa có lab. Nhập dataset/mục tiêu và bấm “Tạo outline lab”.</pre>
+          </div>
+        </div>
+
+        <div class="saved-runs">
+          <div class="section-head compact-head">
+            <h2>Lịch sử lab</h2>
+            <p class="section-note">Click một lab để xem lại outline. Phần này chỉ lưu trên trình duyệt hiện tại.</p>
+          </div>
+          <div class="saved-run-list" id="savedDmLabs"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sources">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Nguồn dataset</h2>
+          <p class="section-note">Ưu tiên nguồn có license rõ. Khi import vào DB, lưu metadata, provider, URL, license_note và data dictionary.</p>
+        </div>
+
+        <div class="source-grid">
+          <article class="source-card">
+            <h3>UCI ML Repository</h3>
+            <p>Nhiều dataset kinh điển cho classification, regression và clustering.</p>
+            <a href="https://archive.ics.uci.edu/" target="_blank" rel="noreferrer">UCI</a>
+          </article>
+          <article class="source-card">
+            <h3>Kaggle</h3>
+            <p>Nhiều dataset thực hành; cần kiểm tra license từng dataset trước khi dùng.</p>
+            <a href="https://www.kaggle.com/datasets" target="_blank" rel="noreferrer">Kaggle</a>
+          </article>
+          <article class="source-card">
+            <h3>OpenML</h3>
+            <p>Dataset có metadata, task và benchmark hữu ích cho model evaluation.</p>
+            <a href="https://www.openml.org/" target="_blank" rel="noreferrer">OpenML</a>
+          </article>
+          <article class="source-card">
+            <h3>Google Dataset Search</h3>
+            <p>Công cụ tìm dataset từ nhiều nguồn, dùng để khám phá dữ liệu theo domain.</p>
+            <a href="https://datasetsearch.research.google.com/" target="_blank" rel="noreferrer">Search</a>
+          </article>
+          <article class="source-card">
+            <h3>Our World in Data</h3>
+            <p>Dữ liệu xã hội, y tế, kinh tế, môi trường có giải thích và nguồn rõ.</p>
+            <a href="https://ourworldindata.org/" target="_blank" rel="noreferrer">OWID</a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell footer">Data Mining. Học khai phá dữ liệu bằng notebook, lab thực hành, evaluation report và portfolio project.</footer>
+
+  <script src="./assets/data/course-data.js"></script>
+  <script src="./assets/js/app.js"></script>
+</body>
+</html>

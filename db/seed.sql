@@ -2,7 +2,7 @@ INSERT OR IGNORE INTO courses (slug, title, category, level, description, status
 VALUES
   ('english-practical', 'Tiếng Anh ứng dụng', 'english', 'beginner-intermediate', 'Lưu từ vựng, mẫu câu, bài nghe, bài đọc và bài luyện phản xạ tiếng Anh.', 'active'),
   ('japanese-training', 'Rèn luyện tiếng Nhật', 'japanese', 'n5-n3', 'Lưu kanji, từ vựng, ngữ pháp, mẫu câu và bài luyện tiếng Nhật theo cấp độ.', 'active'),
-  ('data-mining', 'Data Mining', 'data_mining', 'intermediate', 'Lưu khái niệm, dataset, bài lab và nguồn tham khảo khai phá dữ liệu.', 'draft'),
+  ('data-mining', 'Data Mining', 'data_mining', 'intermediate', 'Lưu khái niệm, dataset, bài lab, model evaluation và nguồn tham khảo khai phá dữ liệu.', 'active'),
   ('vibe-design', 'Vibe design', 'vibe_design', 'standard', 'Lưu prompt, normalized brief, UX plan, visual system, design spec, QA, handoff và contract cho single-screen pipeline.', 'active'),
   ('agentic-ai', 'Agentic AI', 'agentic_ai', 'intermediate', 'Lưu module, prompt template, tool schema, guardrails và lab Agentic AI.', 'active');
 
