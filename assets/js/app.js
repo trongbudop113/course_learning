@@ -162,6 +162,158 @@ function renderLab(data) {
   });
 }
 
+const practiceArtifacts = {
+  fast: ["screen_run.yaml", "prompt.md", "design_spec.summary.md", "design_spec.json", "design_qa.md"],
+  standard: [
+    "screen_run.yaml",
+    "normalized_brief.json",
+    "ux_plan.json",
+    "visual_system.json",
+    "design_spec.summary.md",
+    "design_spec.json",
+    "design_qa.md",
+    "revision_log.md"
+  ],
+  strict: [
+    "screen_run.yaml",
+    "prompt.md",
+    "normalized_brief.json",
+    "ux_plan.json",
+    "visual_system.json",
+    "design_spec.summary.md",
+    "design_spec.json",
+    "design_qa.md",
+    "revision_log.md",
+    "handoff.md",
+    "contract.md",
+    "fidelity_review.md"
+  ]
+};
+
+function slugifyPractice(value) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 48) || "practice_screen";
+}
+
+function getPracticeRuns() {
+  try {
+    return JSON.parse(localStorage.getItem("vibe_practice_runs") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function savePracticeRuns(runs) {
+  localStorage.setItem("vibe_practice_runs", JSON.stringify(runs.slice(0, 12)));
+}
+
+function buildPracticeOutline(run) {
+  const artifacts = practiceArtifacts[run.mode] || practiceArtifacts.standard;
+  const folder = `artifacts/${run.slug}/`;
+  const gate = run.mode === "strict"
+    ? "Cần approval trước Pencil render, handoff phải freeze trước contract/codegen."
+    : "Validate design_spec.json trước Pencil render, QA fail thì sửa upstream artifact.";
+
+  return `# ${run.title}
+
+Mode: ${run.mode}
+Slug: ${run.slug}
+Folder: ${folder}
+
+## Prompt
+${run.prompt}
+
+## Artifact cần tạo
+${artifacts.map((item) => `- ${folder}${item}`).join("\n")}
+
+## Output chain
+1. Chọn mode và tạo screen_run.yaml.
+2. Normalize prompt thành brief.
+3. Lập UX plan và visual system nếu mode là standard/strict.
+4. Tạo design_spec.json và design_spec.summary.md.
+5. Validate design_spec.json.
+6. Render Pencil từ design_spec.json.
+7. Chạy design_qa.md.
+8. ${run.mode === "strict" ? "Tạo handoff.md, contract.md và fidelity_review.md." : "Ghi revision_log.md nếu có lỗi QA."}
+
+## Gate
+${gate}
+
+## Gợi ý lệnh yêu cầu Codex
+Dùng single-input-screen-pipeline mode ${run.mode} cho prompt sau:
+${run.prompt}`;
+}
+
+function renderPracticeRuns() {
+  const list = $("#savedPracticeRuns");
+  if (!list) return;
+  const runs = getPracticeRuns();
+  list.innerHTML = "";
+
+  if (!runs.length) {
+    list.append(createEl("p", "section-note", "Chưa có run nào được lưu trong trình duyệt này."));
+    return;
+  }
+
+  runs.forEach((run) => {
+    const button = createEl("button", "saved-run");
+    button.type = "button";
+    button.append(createEl("strong", "", run.title));
+    button.append(createEl("span", "", `${run.mode} · ${run.slug}`));
+    button.addEventListener("click", () => {
+      $("#practiceOutput").textContent = buildPracticeOutline(run);
+      $("#practiceTitle").value = run.title;
+      $("#practiceMode").value = run.mode;
+      $("#practicePrompt").value = run.prompt;
+    });
+    list.append(button);
+  });
+}
+
+function initVibePracticeWorkspace() {
+  const form = $("#vibePracticeForm");
+  if (!form) return;
+
+  const title = $("#practiceTitle");
+  const mode = $("#practiceMode");
+  const prompt = $("#practicePrompt");
+  const output = $("#practiceOutput");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const run = {
+      id: Date.now(),
+      title: title.value.trim() || "Bài thực hành Vibe design",
+      mode: mode.value,
+      prompt: prompt.value.trim(),
+      slug: slugifyPractice(title.value)
+    };
+    output.textContent = buildPracticeOutline(run);
+    savePracticeRuns([run, ...getPracticeRuns()]);
+    renderPracticeRuns();
+  });
+
+  $("#loadSamplePractice")?.addEventListener("click", () => {
+    title.value = "Checkout khóa Vibe design";
+    mode.value = "strict";
+    prompt.value = "Thiết kế checkout mua khóa Vibe design, có coupon, billing info, order summary, confirm payment, loading, validation error, disabled state và approval gate trước action thanh toán.";
+    output.textContent = "Đã nạp mẫu strict. Bấm “Tạo bài thực hành” để lưu run.";
+  });
+
+  $("#clearPracticeRuns")?.addEventListener("click", () => {
+    localStorage.removeItem("vibe_practice_runs");
+    output.textContent = "Đã xóa lịch sử thực hành trong trình duyệt này.";
+    renderPracticeRuns();
+  });
+
+  renderPracticeRuns();
+}
+
 function render() {
   const data = getData();
   renderI18n(data);
@@ -170,6 +322,7 @@ function render() {
   renderLessonOne(data);
   renderCourseCards(data);
   renderLab(data);
+  initVibePracticeWorkspace();
 
   $$(".lang-btn").forEach((button) => {
     button.classList.toggle("active", button.dataset.lang === state.lang);

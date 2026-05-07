@@ -19,6 +19,7 @@
         <a href="#map">Bản đồ</a>
         <a href="#learning-path">Lộ trình</a>
         <a href="#practice">Thực hành</a>
+        <a href="#workspace">Workspace</a>
         <a href="#artifacts">Artifacts</a>
         <a href="#qa">QA</a>
         <a href="#checklist">Checklist</a>
@@ -247,6 +248,57 @@
               <li>Nộp: <code>design_qa.md</code> và <code>revision_log.md</code> giải thích sửa layer nào.</li>
             </ul>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="workspace">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Practice Workspace</h2>
+          <p class="section-note">Khu thực hành chạy trực tiếp trên web. Dữ liệu lưu bằng localStorage trong trình duyệt, phù hợp với GitHub Pages.</p>
+        </div>
+
+        <div class="workspace-grid">
+          <form class="workspace-panel" id="vibePracticeForm">
+            <label>
+              <span>Tên bài thực hành</span>
+              <input id="practiceTitle" type="text" value="Empty state học tập" />
+            </label>
+
+            <label>
+              <span>Mode</span>
+              <select id="practiceMode">
+                <option value="fast">fast</option>
+                <option value="standard" selected>standard</option>
+                <option value="strict">strict</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Prompt thực hành</span>
+              <textarea id="practicePrompt">Tạo empty state cho app học tiếng Anh khi người dùng chưa có flashcard nào. Cần có tiêu đề, mô tả ngắn, CTA tạo flashcard đầu tiên và trạng thái minh họa không generic.</textarea>
+            </label>
+
+            <div class="workspace-actions">
+              <button class="btn primary" type="submit">Tạo bài thực hành</button>
+              <button class="btn" id="loadSamplePractice" type="button">Dùng mẫu strict</button>
+              <button class="btn" id="clearPracticeRuns" type="button">Xóa lịch sử</button>
+            </div>
+          </form>
+
+          <div class="workspace-panel">
+            <div class="eyebrow"><span class="pulse"></span><span>Run outline</span></div>
+            <pre class="workspace-output" id="practiceOutput">Chưa có bài thực hành. Nhập prompt và bấm “Tạo bài thực hành”.</pre>
+          </div>
+        </div>
+
+        <div class="saved-runs">
+          <div class="section-head compact-head">
+            <h2>Lịch sử thực hành</h2>
+            <p class="section-note">Click một run để xem lại outline. Khi muốn chạy thật bằng Codex/Pencil, copy prompt và yêu cầu chạy single-input-screen-pipeline.</p>
+          </div>
+          <div class="saved-run-list" id="savedPracticeRuns"></div>
         </div>
       </div>
     </section>

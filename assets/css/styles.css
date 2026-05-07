@@ -1000,6 +1000,101 @@ textarea {
   line-height: 1.4;
 }
 
+.workspace-grid {
+  display: grid;
+  grid-template-columns: .92fr 1.08fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.workspace-panel {
+  border: 3px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+.workspace-panel label {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: #344054;
+  font: 900 13px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: uppercase;
+}
+
+.workspace-panel input,
+.workspace-panel select {
+  width: 100%;
+  min-height: 48px;
+  border: 3px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  padding: 10px 12px;
+  box-shadow: 4px 4px 0 var(--line);
+}
+
+.workspace-panel textarea {
+  min-height: 180px;
+}
+
+.workspace-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.workspace-output {
+  min-height: 460px;
+  margin-top: 18px;
+  border: 3px solid var(--line);
+  border-radius: 14px;
+  background: #202225;
+  color: #f9fafb;
+  box-shadow: 5px 5px 0 var(--line);
+  white-space: pre-wrap;
+  overflow: auto;
+}
+
+.saved-runs {
+  margin-top: 32px;
+}
+
+.compact-head h2 {
+  font-size: clamp(28px, 3.5vw, 44px);
+}
+
+.saved-run-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.saved-run {
+  border: 3px solid var(--line);
+  border-radius: 14px;
+  background: #fff1b8;
+  box-shadow: 5px 5px 0 var(--line);
+  padding: 14px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.saved-run strong {
+  display: block;
+  margin-bottom: 8px;
+  font: 900 16px/1.1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: uppercase;
+}
+
+.saved-run span {
+  color: #475467;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
 .checklist-grid {
   grid-template-columns: repeat(2, 1fr);
 }
@@ -1040,6 +1135,7 @@ textarea {
   .vibe-steps,
   .learning-path-grid,
   .practice-lab-grid,
+  .workspace-grid,
   .checklist-grid,
   .daily-grid,
   .source-grid { grid-template-columns: 1fr; }
@@ -1063,6 +1159,7 @@ textarea {
   .japanese-board { min-height: auto; }
   .level-stack { margin-top: 26px; }
   .course-picker,
+  .saved-run-list,
   .modules { grid-template-columns: 1fr; }
   .flow-step,
   .diagram-row { grid-template-columns: 1fr; }
