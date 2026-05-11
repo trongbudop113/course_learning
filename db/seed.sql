@@ -4,7 +4,8 @@ VALUES
   ('japanese-training', 'Rèn luyện tiếng Nhật', 'japanese', 'n5-n3', 'Lưu kanji, từ vựng, ngữ pháp, mẫu câu và bài luyện tiếng Nhật theo cấp độ.', 'active'),
   ('data-mining', 'Data Mining', 'data_mining', 'intermediate', 'Lưu khái niệm, dataset, bài lab, model evaluation và nguồn tham khảo khai phá dữ liệu.', 'active'),
   ('vibe-design', 'Vibe design', 'vibe_design', 'standard', 'Lưu prompt, normalized brief, UX plan, visual system, design spec, QA, handoff và contract cho single-screen pipeline.', 'active'),
-  ('agentic-ai', 'Agentic AI', 'agentic_ai', 'intermediate', 'Lưu module, prompt template, tool schema, guardrails và lab Agentic AI.', 'active');
+  ('agentic-ai', 'Agentic AI', 'agentic_ai', 'intermediate', 'Lưu module, prompt template, tool schema, guardrails và lab Agentic AI.', 'active'),
+  ('agentic-ai-advanced', 'Agentic AI nâng cao', 'agentic_ai', 'advanced', 'Lưu orchestration, long-term memory, eval harness, human-in-the-loop, observability, cost control và production rollout cho agent.', 'active');
 
 INSERT OR IGNORE INTO course_modules (course_id, module_order, title, summary)
 SELECT id, 1, 'Nền tảng học tập', 'Module khởi động với dữ liệu mẫu và cấu trúc lưu trữ.'

@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agentic AI Lab cho Team IT 10 người</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="./index.html#courses" aria-label="Course Learning home">
+        <span class="mark">IT</span>
+        <span>Agentic IT Lab</span>
+      </a>
+
+      <nav class="nav" aria-label="IT agent lab navigation">
+        <a href="./index.html#courses">Khóa học</a>
+        <a href="./agentic-ai.html#advanced">Agentic AI nâng cao</a>
+        <a href="#system-map">Sơ đồ</a>
+        <a href="#sprint-lab">Sprint lab</a>
+        <a href="#template">Template</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="shell it-agent-hero">
+      <div>
+        <div class="eyebrow"><span class="pulse"></span><span>Bài thực hành nâng cao</span></div>
+        <h1>Xây Agentic AI cho team IT 10 người</h1>
+        <p class="lead">Thiết kế một IT Ops Agent hỗ trợ triage ticket, điều phối incident, tìm runbook, tạo draft phản hồi, mở task và yêu cầu duyệt trước mọi hành động rủi ro.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#sprint-lab">Bắt đầu lab</a>
+          <a class="btn" href="#system-map">Xem sơ đồ hệ thống</a>
+        </div>
+      </div>
+
+      <figure class="it-ops-illustration" aria-label="Sơ đồ agentic AI cho team IT 10 người">
+        <svg viewBox="0 0 760 520" role="img" aria-labelledby="itOpsTitle itOpsDesc">
+          <title id="itOpsTitle">IT team agent workflow</title>
+          <desc id="itOpsDesc">Mười thành viên IT phối hợp với một agent runtime qua ticket, tools, memory, approval và observability.</desc>
+          <rect class="svg-paper" x="18" y="18" width="724" height="484" rx="20"></rect>
+          <path class="svg-wire" d="M154 108 C284 48 418 54 570 120"></path>
+          <path class="svg-wire" d="M132 394 C290 456 454 452 626 374"></path>
+          <path class="svg-wire red" d="M380 132 C456 190 462 288 388 360"></path>
+          <g class="svg-agent">
+            <circle cx="380" cy="254" r="82"></circle>
+            <text x="380" y="246" text-anchor="middle">IT</text>
+            <text x="380" y="290" text-anchor="middle">AGENT</text>
+          </g>
+          <g class="svg-card" transform="translate(54 54)">
+            <rect width="176" height="112" rx="14"></rect>
+            <text x="18" y="34">Ticket Inbox</text>
+            <text x="18" y="66">Jira · Slack · Email</text>
+            <text x="18" y="92">SLA priority</text>
+          </g>
+          <g class="svg-card yellow" transform="translate(530 60)">
+            <rect width="174" height="118" rx="14"></rect>
+            <text x="18" y="34">Tools</text>
+            <text x="18" y="66">GitHub · CI/CD</text>
+            <text x="18" y="92">Logs · Cloud</text>
+          </g>
+          <g class="svg-card cyan" transform="translate(54 330)">
+            <rect width="184" height="122" rx="14"></rect>
+            <text x="18" y="34">Memory</text>
+            <text x="18" y="66">Runbooks</text>
+            <text x="18" y="92">Past incidents</text>
+          </g>
+          <g class="svg-card red" transform="translate(522 326)">
+            <rect width="184" height="122" rx="14"></rect>
+            <text x="18" y="34">Approval</text>
+            <text x="18" y="66">Deploy · restart</text>
+            <text x="18" y="92">Customer update</text>
+          </g>
+          <g class="svg-team">
+            <circle cx="292" cy="96" r="18"></circle>
+            <circle cx="346" cy="84" r="18"></circle>
+            <circle cx="402" cy="84" r="18"></circle>
+            <circle cx="458" cy="98" r="18"></circle>
+            <circle cx="286" cy="422" r="18"></circle>
+            <circle cx="342" cy="436" r="18"></circle>
+            <circle cx="398" cy="436" r="18"></circle>
+            <circle cx="454" cy="422" r="18"></circle>
+            <circle cx="238" cy="252" r="18"></circle>
+            <circle cx="522" cy="252" r="18"></circle>
+          </g>
+          <text class="svg-caption" x="380" y="494" text-anchor="middle">10 người: lead, support, dev, devops, security, QA, data, PM, reviewer, on-call</text>
+        </svg>
+      </figure>
+    </section>
+
+    <section class="section" id="system-map">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Sơ đồ vận hành</h2>
+          <p class="section-note">Mục tiêu không phải thay thế team IT, mà giảm thời gian triage, gom đúng ngữ cảnh và giữ người thật ở các điểm quyết định quan trọng.</p>
+        </div>
+
+        <div class="it-system-grid">
+          <article class="it-system-card">
+            <span class="module-num">01</span>
+            <h3>Intake Agent</h3>
+            <p>Nhận ticket từ Slack, Jira, email. Chuẩn hóa title, severity, affected service, user impact và dữ liệu còn thiếu.</p>
+          </article>
+          <article class="it-system-card">
+            <span class="module-num">02</span>
+            <h3>Runbook Agent</h3>
+            <p>Tìm runbook, incident cũ, dashboard liên quan. Chỉ trả lời dựa trên nguồn có version và owner rõ ràng.</p>
+          </article>
+          <article class="it-system-card">
+            <span class="module-num">03</span>
+            <h3>Action Agent</h3>
+            <p>Tạo draft PR, mở task, gợi ý rollback, chuẩn bị lệnh kiểm tra. Không deploy, restart hoặc gửi thông báo thật nếu chưa được duyệt.</p>
+          </article>
+          <article class="it-system-card">
+            <span class="module-num">04</span>
+            <h3>Reviewer Agent</h3>
+            <p>Kiểm tra risk, SLA, quyền hạn, PII, command nguy hiểm và mức tự tin trước khi trình người duyệt.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Vai trò team 10 người</h2>
+          <p class="section-note">Bài lab yêu cầu phân quyền rõ: ai được xem, ai được duyệt, ai chịu trách nhiệm khi agent đề xuất hành động.</p>
+        </div>
+
+        <div class="it-team-grid">
+          <div class="team-seat lead"><strong>IT Lead</strong><span>Approval cuối, escalation, SLA</span></div>
+          <div class="team-seat"><strong>Support 1</strong><span>Triage L1, customer context</span></div>
+          <div class="team-seat"><strong>Support 2</strong><span>Ticket hygiene, follow-up</span></div>
+          <div class="team-seat"><strong>Backend Dev</strong><span>Service owner, bug fix</span></div>
+          <div class="team-seat"><strong>Frontend Dev</strong><span>UI incident, release note</span></div>
+          <div class="team-seat"><strong>DevOps</strong><span>CI/CD, cloud, rollback</span></div>
+          <div class="team-seat"><strong>Security</strong><span>PII, secrets, policy gate</span></div>
+          <div class="team-seat"><strong>QA</strong><span>Repro steps, regression test</span></div>
+          <div class="team-seat"><strong>Data Eng</strong><span>Query, metrics, anomaly</span></div>
+          <div class="team-seat"><strong>PM</strong><span>Priority, user impact, comms</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sprint-lab">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Sprint lab 5 ngày</h2>
+          <p class="section-note">Mỗi ngày tạo một artifact nhỏ. Cuối lab có thể demo agent xử lý incident giả lập từ intake tới approval.</p>
+        </div>
+
+        <div class="learning-path-grid">
+          <article class="path-card">
+            <div class="phase-head"><span class="module-num">D1</span><h3>Map workflow</h3></div>
+            <ul>
+              <li>Chọn 3 loại ticket thường gặp: bug, access request, incident.</li>
+              <li>Vẽ input, output, owner, SLA và điểm cần người duyệt.</li>
+              <li>Định nghĩa trạng thái: new, investigating, waiting_approval, resolved.</li>
+            </ul>
+          </article>
+          <article class="path-card">
+            <div class="phase-head"><span class="module-num">D2</span><h3>Thiết kế tools</h3></div>
+            <ul>
+              <li>Định nghĩa schema cho search_ticket, search_runbook, get_logs, create_task.</li>
+              <li>Mô tả lỗi dự kiến: not_found, permission_denied, stale_data.</li>
+              <li>Tạo mock response để test agent loop.</li>
+            </ul>
+          </article>
+          <article class="path-card">
+            <div class="phase-head"><span class="module-num">D3</span><h3>Memory và RAG</h3></div>
+            <ul>
+              <li>Tạo 8 runbook ngắn cho service quan trọng.</li>
+              <li>Gắn metadata: service, owner, version, last_reviewed.</li>
+              <li>Bắt agent trích nguồn khi đề xuất action.</li>
+            </ul>
+          </article>
+          <article class="path-card">
+            <div class="phase-head"><span class="module-num">D4</span><h3>Guardrails</h3></div>
+            <ul>
+              <li>Liệt kê allowed, approval_required và blocked actions.</li>
+              <li>Thêm policy cho secrets, PII, production command.</li>
+              <li>Viết approval payload để IT Lead duyệt.</li>
+            </ul>
+          </article>
+          <article class="path-card">
+            <div class="phase-head"><span class="module-num">D5</span><h3>Eval và demo</h3></div>
+            <ul>
+              <li>Tạo 12 test cases cho ticket thật hoặc giả lập.</li>
+              <li>Chấm task success, groundedness, tool accuracy, approval compliance.</li>
+              <li>Demo một incident end-to-end với trace rõ từng bước.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="template">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Prompt template</h2>
+          <p class="section-note">Dùng template này làm đầu vào cho bài thực hành. Có thể copy vào agent builder hoặc dùng làm spec trước khi code.</p>
+        </div>
+
+        <div class="lab">
+          <div class="lab-board">
+            <h3>IT Ops Agent</h3>
+            <ol>
+              <li>Nhận ticket, xác định severity, service, user impact và dữ liệu thiếu.</li>
+              <li>Tìm runbook và incident cũ, kèm nguồn rõ ràng.</li>
+              <li>Đề xuất plan xử lý, nhưng không tự chạy action production.</li>
+              <li>Tạo approval payload cho IT Lead khi cần deploy, restart, rollback hoặc gửi thông báo khách hàng.</li>
+              <li>Ghi trace gồm input, tool call, observation, decision và evaluator note.</li>
+            </ol>
+            <div class="rubric">
+              <div class="rubric-item"><b>1</b><span>Không bịa dữ liệu ngoài tools hoặc runbook.</span></div>
+              <div class="rubric-item"><b>2</b><span>Mọi action rủi ro đều có approval_required = true.</span></div>
+              <div class="rubric-item"><b>3</b><span>Output cuối cùng là JSON hợp lệ và có next_action rõ ràng.</span></div>
+            </div>
+          </div>
+
+          <div class="lesson-panel">
+            <div class="eyebrow"><span class="pulse"></span><span>Template</span></div>
+            <textarea aria-label="IT Ops Agent prompt template">Bạn là IT Ops Agent cho một team IT 10 người.
+
+Team:
+- IT Lead: duyệt action rủi ro, escalation, SLA.
+- Support L1/L2: triage ticket và giao tiếp người dùng.
+- Backend/Frontend Dev: phân tích lỗi ứng dụng.
+- DevOps: CI/CD, cloud, rollback.
+- Security: PII, secrets, policy.
+- QA: repro steps, regression.
+- Data Eng: query, metrics, anomaly.
+- PM: priority và impact.
+
+Nhiệm vụ:
+1. Đọc ticket và xác định severity, affected_service, user_impact, missing_info.
+2. Chỉ dùng dữ liệu từ tools hoặc runbook được cung cấp.
+3. Nếu cần hành động production như deploy, restart, rollback, update permission, gửi email khách hàng: không tự làm, tạo approval_request.
+4. Trả về JSON hợp lệ.
+
+Tools giả lập:
+- search_ticket({ "query": "string" })
+- search_runbook({ "service": "string", "issue": "string" })
+- get_service_logs({ "service": "string", "window": "string" })
+- create_task({ "owner": "string", "title": "string", "priority": "P0 | P1 | P2 | P3" })
+- create_approval_request({ "approver": "string", "risk": "string", "proposed_action": "string" })
+
+Guardrails:
+- Được phép: phân loại ticket, đọc log, tìm runbook, tạo draft task, đề xuất plan.
+- Cần duyệt: deploy, restart service, rollback, đổi quyền truy cập, gửi thông báo khách hàng.
+- Bị cấm: xóa dữ liệu, lộ secrets, tự ý thay đổi production, bỏ qua approval.
+
+Final JSON:
+{
+  "status": "ready_for_review | need_input | blocked | resolved_draft",
+  "severity": "P0 | P1 | P2 | P3",
+  "affected_service": "string",
+  "summary": "string",
+  "evidence": [],
+  "plan": [],
+  "owner_recommendation": "string",
+  "approval_required": true,
+  "approval_request": {},
+  "risks": [],
+  "next_action": "string"
+}</textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell footer">Agentic IT Lab. Thiết kế agent hỗ trợ team IT vận hành nhanh hơn, có kiểm soát hơn.</footer>
+</body>
+</html>

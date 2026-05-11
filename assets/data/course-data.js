@@ -8,6 +8,7 @@ window.COURSE_DATA = {
       navLesson: "Bài 1",
       navNext: "Bài 2-8",
       navLab: "Lab",
+      navAdvanced: "Nâng cao",
       courseSelectEyebrow: "Chọn khóa học",
       courseSelectTitle: "Bạn muốn học gì hôm nay?",
       courseSelectLead: "Chọn một lộ trình phù hợp với mục tiêu hiện tại. Mỗi khóa học được thiết kế thành các bài ngắn, có bài tập và luồng thực hành rõ ràng.",
@@ -36,6 +37,8 @@ window.COURSE_DATA = {
       fullTemplate: "Template hoàn chỉnh",
       copyLab: "Copy lab",
       resetLab: "Reset lab",
+      advancedTitle: "Khóa nâng cao: Agentic AI vận hành thật",
+      advancedNote: "Phần nâng cao dành cho người đã nắm agent loop cơ bản và muốn thiết kế agent bền vững trong workflow thật: có đánh giá, quan sát, phân quyền, chi phí và cải tiến liên tục.",
       footer: "Agentic AI Course Map. Học một lượt: Prompting -> Tool Calling -> Agent Loop -> Memory -> Planning -> Guardrails -> Multi-Agent -> Production.",
       courseFooter: "Course Learning. Chọn khóa học và bắt đầu theo lộ trình phù hợp."
     },
@@ -88,6 +91,26 @@ window.COURSE_DATA = {
         status: "Đang học",
         action: "Vào khóa học",
         href: "./agentic-ai.html#map",
+        primary: false
+      },
+      {
+        code: "A+",
+        title: "Agentic AI nâng cao",
+        copy: "Đi sâu vào orchestration, long-term memory, eval harness, human-in-the-loop, observability, cost control và triển khai agent trong sản phẩm thật.",
+        meta: ["6 module nâng cao", "Production eval", "Ops playbook"],
+        status: "Nâng cao",
+        action: "Vào khóa học",
+        href: "./agentic-ai.html#advanced",
+        primary: false
+      },
+      {
+        code: "IT",
+        title: "IT Agent Lab",
+        copy: "Bài thực hành xây dựng Agentic AI cho team IT 10 người: triage ticket, runbook search, approval gate, observability và eval.",
+        meta: ["Team 10 người", "5 ngày lab", "Ops template"],
+        status: "Thực hành",
+        action: "Vào lab",
+        href: "./agentic-it-team.html#sprint-lab",
         primary: false
       }
     ],
@@ -273,7 +296,51 @@ Final JSON:
   "approval_required": true,
   "evaluation_notes": []
 }`
-    }
+    },
+    advanced: [
+      {
+        number: "A1",
+        title: "Agent Orchestration",
+        copy: "Thiết kế workflow có state machine, queue, retry policy và checkpoint để agent không chỉ chạy một lượt mà có thể tiếp tục sau lỗi.",
+        diagram: [["State", "Định nghĩa pending, running, waiting_review, failed, done."], ["Queue", "Tách tác vụ dài khỏi request/response."], ["Checkpoint", "Lưu step, input, output và quyết định."], ["Resume", "Chạy tiếp từ điểm dừng thay vì làm lại toàn bộ."]],
+        practice: "Vẽ state machine cho Research Agent chạy qua 5 bước: intake, search, synthesize, review, publish. Mỗi state phải có trigger và failure path."
+      },
+      {
+        number: "A2",
+        title: "Long-term Memory Design",
+        copy: "Xây bộ nhớ dài hạn có taxonomy, retention rule, privacy boundary và cơ chế ghi nhớ có kiểm soát thay vì lưu mọi thứ.",
+        diagram: [["Capture", "Chọn dữ kiện đáng nhớ."], ["Classify", "Phân loại preference, fact, decision, artifact."], ["Store", "Ghi kèm nguồn, thời gian, quyền truy cập."], ["Recall", "Truy xuất theo task và độ tin cậy."]],
+        practice: "Thiết kế schema memory cho Personal Learning Agent gồm user preference, skill gap, completed lesson và rejected recommendation."
+      },
+      {
+        number: "A3",
+        title: "Evaluation Harness",
+        copy: "Xây bộ eval cố định để đo agent qua từng phiên bản: task success, tool accuracy, groundedness, latency, cost và approval compliance.",
+        diagram: [["Dataset", "Tập test case đại diện."], ["Runner", "Chạy agent với cùng input."], ["Judge", "Chấm bằng rule, schema và reviewer."], ["Report", "So sánh regression trước khi deploy."]],
+        practice: "Tạo 10 eval case cho Invoice Follow-up Agent, mỗi case có expected status, required tool calls và tiêu chí fail."
+      },
+      {
+        number: "A4",
+        title: "Human-in-the-loop Operations",
+        copy: "Đưa người dùng vào đúng điểm quyết định: duyệt hành động rủi ro, sửa plan, override output và audit quyết định.",
+        diagram: [["Draft", "Agent tạo đề xuất."], ["Review", "Người dùng duyệt, sửa hoặc từ chối."], ["Commit", "Chỉ thực thi khi có approval."], ["Audit", "Lưu ai duyệt, duyệt gì và vì sao."]],
+        practice: "Viết approval contract cho agent gửi email khách hàng: payload cần hiện, action được phép, timeout và rollback."
+      },
+      {
+        number: "A5",
+        title: "Observability và Cost Control",
+        copy: "Thiết kế trace để debug được từng prompt, tool call, observation, token, latency và lỗi, kèm budget guard theo user hoặc workflow.",
+        diagram: [["Trace", "Ghi run_id, step_id, model, prompt hash."], ["Metrics", "Latency, token, cost, tool error rate."], ["Alert", "Cảnh báo loop dài, fail nhiều, chi phí vượt ngưỡng."], ["Budget", "Giới hạn theo tenant, user hoặc job."]],
+        practice: "Liệt kê log fields tối thiểu cho một agent production và định nghĩa 5 alert cần bật trước khi release."
+      },
+      {
+        number: "A6",
+        title: "Agent Productization",
+        copy: "Đóng gói agent thành tính năng sản phẩm với UX rõ ràng, permission model, fallback, eval gate, rollout plan và changelog prompt.",
+        diagram: [["UX", "Hiển thị trạng thái agent đang làm gì."], ["Permission", "Áp quyền theo vai trò và dữ liệu."], ["Rollout", "Beta, canary, full release."], ["Improve", "Dùng eval và feedback để cải tiến."]],
+        practice: "Lập launch checklist cho agent trong SaaS: scope, risks, roles, metrics, rollback và learning loop sau release."
+      }
+    ]
   },
   en: {
     ui: {
@@ -284,6 +351,7 @@ Final JSON:
       navLesson: "Lesson 1",
       navNext: "Lessons 2-8",
       navLab: "Lab",
+      navAdvanced: "Advanced",
       courseSelectEyebrow: "Choose a course",
       courseSelectTitle: "What do you want to learn today?",
       courseSelectLead: "Pick a path that matches your current goal. Each course is structured into short lessons with practice tasks and a clear learning flow.",
@@ -312,6 +380,8 @@ Final JSON:
       fullTemplate: "Complete template",
       copyLab: "Copy lab",
       resetLab: "Reset lab",
+      advancedTitle: "Advanced course: production-grade Agentic AI",
+      advancedNote: "This advanced track is for learners who already understand the basic agent loop and want durable agents for real workflows: evaluation, observability, permissions, cost control, and continuous improvement.",
       footer: "Agentic AI Course Map. One path: Prompting -> Tool Calling -> Agent Loop -> Memory -> Planning -> Guardrails -> Multi-Agent -> Production.",
       courseFooter: "Course Learning. Choose a course and start with the path that fits your goal."
     },
@@ -364,6 +434,26 @@ Final JSON:
         status: "Active",
         action: "Open course",
         href: "./agentic-ai.html#map",
+        primary: false
+      },
+      {
+        code: "A+",
+        title: "Advanced Agentic AI",
+        copy: "Go deeper into orchestration, long-term memory, eval harnesses, human-in-the-loop workflows, observability, cost control, and production deployment.",
+        meta: ["6 advanced modules", "Production eval", "Ops playbook"],
+        status: "Advanced",
+        action: "Open course",
+        href: "./agentic-ai.html#advanced",
+        primary: false
+      },
+      {
+        code: "IT",
+        title: "IT Agent Lab",
+        copy: "A hands-on lab for building Agentic AI for a 10-person IT team: ticket triage, runbook search, approval gates, observability, and evals.",
+        meta: ["10-person team", "5-day lab", "Ops template"],
+        status: "Practice",
+        action: "Open lab",
+        href: "./agentic-it-team.html#sprint-lab",
         primary: false
       }
     ],
@@ -539,6 +629,50 @@ Final JSON:
   "approval_required": true,
   "evaluation_notes": []
 }`
-    }
+    },
+    advanced: [
+      {
+        number: "A1",
+        title: "Agent Orchestration",
+        copy: "Design workflows with state machines, queues, retry policies, and checkpoints so an agent can continue after failures.",
+        diagram: [["State", "Define pending, running, waiting_review, failed, done."], ["Queue", "Move long tasks out of request/response."], ["Checkpoint", "Store step, input, output, and decisions."], ["Resume", "Continue from the stop point instead of restarting."]],
+        practice: "Draw a state machine for a Research Agent with 5 steps: intake, search, synthesize, review, publish. Each state needs triggers and failure paths."
+      },
+      {
+        number: "A2",
+        title: "Long-term Memory Design",
+        copy: "Build memory with taxonomy, retention rules, privacy boundaries, and controlled writes instead of storing everything.",
+        diagram: [["Capture", "Select facts worth remembering."], ["Classify", "Label preference, fact, decision, artifact."], ["Store", "Save source, time, and access scope."], ["Recall", "Retrieve by task and confidence."]],
+        practice: "Design a memory schema for a Personal Learning Agent with user preferences, skill gaps, completed lessons, and rejected recommendations."
+      },
+      {
+        number: "A3",
+        title: "Evaluation Harness",
+        copy: "Build a fixed eval suite to measure task success, tool accuracy, groundedness, latency, cost, and approval compliance across agent versions.",
+        diagram: [["Dataset", "Representative test cases."], ["Runner", "Run the agent with the same inputs."], ["Judge", "Score with rules, schema checks, and reviewers."], ["Report", "Compare regressions before deployment."]],
+        practice: "Create 10 eval cases for an Invoice Follow-up Agent. Each case needs expected status, required tool calls, and fail criteria."
+      },
+      {
+        number: "A4",
+        title: "Human-in-the-loop Operations",
+        copy: "Place user review at the right decision points: approve risky actions, edit plans, override output, and audit decisions.",
+        diagram: [["Draft", "The agent creates a proposal."], ["Review", "The user approves, edits, or rejects."], ["Commit", "Execute only after approval."], ["Audit", "Store who approved what and why."]],
+        practice: "Write an approval contract for an agent that sends customer emails: visible payload, allowed action, timeout, and rollback."
+      },
+      {
+        number: "A5",
+        title: "Observability and Cost Control",
+        copy: "Design traces that expose every prompt, tool call, observation, token count, latency, and error, with budget guards by user or workflow.",
+        diagram: [["Trace", "Store run_id, step_id, model, prompt hash."], ["Metrics", "Latency, tokens, cost, tool error rate."], ["Alert", "Detect long loops, repeated failures, budget spikes."], ["Budget", "Limit by tenant, user, or job."]],
+        practice: "List the minimum log fields for a production agent and define 5 alerts that must be enabled before release."
+      },
+      {
+        number: "A6",
+        title: "Agent Productization",
+        copy: "Package the agent as a product feature with clear UX, permissions, fallback, eval gates, rollout planning, and prompt changelogs.",
+        diagram: [["UX", "Show what the agent is doing."], ["Permission", "Apply role and data access rules."], ["Rollout", "Beta, canary, full release."], ["Improve", "Use evals and feedback to improve."]],
+        practice: "Write a launch checklist for a SaaS agent: scope, risks, roles, metrics, rollback, and post-release learning loop."
+      }
+    ]
   }
 };

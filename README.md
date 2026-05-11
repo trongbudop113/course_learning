@@ -43,6 +43,12 @@ Agentic AI course page:
 file:///Users/luuhoangtrong/Project/course_learning/agentic-ai.html
 ```
 
+Agentic IT team practice lab:
+
+```text
+file:///Users/luuhoangtrong/Project/course_learning/agentic-it-team.html
+```
+
 English course page:
 
 ```text
