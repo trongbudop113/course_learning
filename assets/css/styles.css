@@ -1424,6 +1424,19 @@ textarea {
 .practice-lab:nth-child(2n) { background: #fff1b8; }
 .practice-lab:nth-child(3n) { background: #d9f2ee; }
 
+.advanced-lab {
+  min-height: 330px;
+}
+
+.advanced-lab .module-num {
+  background: var(--line);
+  color: #fff;
+}
+
+.advanced-lab:nth-child(4n) {
+  background: #ffe1df;
+}
+
 .practice-lab p {
   margin: 0 0 14px;
   color: #344054;

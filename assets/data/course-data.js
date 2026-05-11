@@ -76,8 +76,8 @@ window.COURSE_DATA = {
       {
         code: "VD",
         title: "Vibe design",
-        copy: "Học quy trình biến prompt thô thành design spec, Pencil render, QA, handoff, contract và codegen theo single-input-screen-pipeline.",
-        meta: ["Prompt -> Spec", "Pencil QA", "Handoff"],
+        copy: "Học quy trình biến prompt thô thành design spec, Pencil render, QA, handoff, contract và codegen, kèm nhiều bài thực hành nâng cao theo single-input-screen-pipeline.",
+        meta: ["Prompt -> Spec", "12 bài nâng cao", "Handoff"],
         status: "Đang học",
         action: "Vào bài học",
         href: "./vibe-design.html#map",
@@ -419,8 +419,8 @@ Final JSON:
       {
         code: "VD",
         title: "Vibe design",
-        copy: "Learn the path from raw prompt to design spec, Pencil render, QA, handoff, contract, and codegen with single-input-screen-pipeline.",
-        meta: ["Prompt -> Spec", "Pencil QA", "Handoff"],
+        copy: "Learn the path from raw prompt to design spec, Pencil render, QA, handoff, contract, and codegen, with advanced practice labs for single-input-screen-pipeline.",
+        meta: ["Prompt -> Spec", "12 advanced labs", "Handoff"],
         status: "Active",
         action: "Open lesson",
         href: "./vibe-design.html#map",

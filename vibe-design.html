@@ -19,6 +19,7 @@
         <a href="#map">Bản đồ</a>
         <a href="#learning-path">Lộ trình</a>
         <a href="#practice">Thực hành</a>
+        <a href="#advanced-practice">Nâng cao</a>
         <a href="#workspace">Workspace</a>
         <a href="#artifacts">Artifacts</a>
         <a href="#qa">QA</a>
@@ -252,6 +253,137 @@
       </div>
     </section>
 
+    <section class="section" id="advanced-practice">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Thực hành nâng cao</h2>
+          <p class="section-note">Các bài này mô phỏng dự án thật: nhiều state, nhiều role, strict handoff, QA gate và contract rõ để codegen không phải đoán.</p>
+        </div>
+
+        <div class="practice-lab-grid advanced-lab-grid">
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A1</span><h3>Checkout stress test</h3></div>
+            <p><strong>Prompt:</strong> “Thiết kế checkout khóa học có coupon lỗi, payment timeout, invoice info, order summary, retry và approval gate trước thanh toán.”</p>
+            <ul>
+              <li>Mode: <code>strict</code>.</li>
+              <li>Focus: happy path, validation error, timeout, retry, disabled state, trust cues.</li>
+              <li>Nộp: full artifacts, handoff, contract, fidelity review, state matrix.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A2</span><h3>AI tutor cockpit</h3></div>
+            <p><strong>Prompt:</strong> “Tạo cockpit cho AI tutor theo dõi học viên: skill gap, next lesson, confidence, sources và intervention queue.”</p>
+            <ul>
+              <li>Mode: <code>strict</code>.</li>
+              <li>Focus: dense dashboard, scan nhanh, confidence display, source citation, human review.</li>
+              <li>Nộp: visual system có density rule và spec cho data table/filter state.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A3</span><h3>Permission matrix</h3></div>
+            <p><strong>Prompt:</strong> “Thiết kế màn admin phân quyền role cho team 10 người, có bulk edit, audit log, pending approval và conflict warning.”</p>
+            <ul>
+              <li>Mode: <code>strict</code>.</li>
+              <li>Focus: table ergonomics, dangerous action, confirmation, auditability.</li>
+              <li>Nộp: contract cho role, permission, approval_request và error state.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A4</span><h3>Incident command center</h3></div>
+            <p><strong>Prompt:</strong> “Tạo màn incident command cho IT Ops: severity, affected service, timeline, owner, runbook, action approval và comms draft.”</p>
+            <ul>
+              <li>Mode: <code>strict</code>.</li>
+              <li>Focus: realtime status, escalation, owner assignment, no unsafe production action.</li>
+              <li>Nộp: design spec có command states và review gate rõ ràng.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A5</span><h3>Branching onboarding</h3></div>
+            <p><strong>Prompt:</strong> “Thiết kế onboarding có nhánh cho learner mới: mục tiêu, trình độ, thời lượng, khóa gợi ý và kế hoạch 7 ngày.”</p>
+            <ul>
+              <li>Mode: <code>strict</code>.</li>
+              <li>Focus: progressive disclosure, selected/disabled states, mobile-first, review summary.</li>
+              <li>Nộp: user flow map, state map và mobile viewport spec.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A6</span><h3>Notebook lab workspace</h3></div>
+            <p><strong>Prompt:</strong> “Thiết kế workspace chạy data mining lab: dataset profile, notebook steps, chart preview, metric panel và review notes.”</p>
+            <ul>
+              <li>Mode: <code>standard</code> hoặc <code>strict</code> nếu codegen.</li>
+              <li>Focus: analytical workflow, empty/error states, chart/table switching, evidence notes.</li>
+              <li>Nộp: spec có fixed-format chart area và overflow rule cho table.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A7</span><h3>Offline order mobile</h3></div>
+            <p><strong>Prompt:</strong> “Tạo mobile flow cho nhân viên tạo đơn offline: chọn khách, thêm sản phẩm, sync status, conflict resolution và submit queue.”</p>
+            <ul>
+              <li>Mode: <code>strict</code>.</li>
+              <li>Focus: mobile constraints, offline badge, sync conflict, retry, accessibility.</li>
+              <li>Nộp: handoff có component contract cho queue item và conflict modal.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A8</span><h3>Prompt revision studio</h3></div>
+            <p><strong>Prompt:</strong> “Thiết kế studio review prompt UI/UX: original prompt, normalized brief, issue list, proposed rewrite và QA score.”</p>
+            <ul>
+              <li>Mode: <code>standard</code>.</li>
+              <li>Focus: side-by-side review, diff readability, scoring, revision log.</li>
+              <li>Nộp: design_qa.md chỉ rõ lỗi thuộc intent, UX, visual hay contract.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A9</span><h3>Design system migration</h3></div>
+            <p><strong>Prompt:</strong> “Thiết kế màn migrate design system: token diff, component mapping, risk warnings, preview before/after và apply plan.”</p>
+            <ul>
+              <li>Mode: <code>strict</code>.</li>
+              <li>Focus: visual comparison, destructive change warning, rollback, traceability.</li>
+              <li>Nộp: visual_system.json có token mapping và handoff có migration contract.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A10</span><h3>Executive analytics review</h3></div>
+            <p><strong>Prompt:</strong> “Tạo màn executive review cho tiến độ học: KPI, anomaly, cohort comparison, recommendation và export report.”</p>
+            <ul>
+              <li>Mode: <code>standard</code>.</li>
+              <li>Focus: executive density, confidence, trend reading, chart hierarchy.</li>
+              <li>Nộp: spec có chart anatomy, filter state và no-data explanation.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A11</span><h3>Accessibility recovery</h3></div>
+            <p><strong>Prompt:</strong> “Sửa một screen có contrast thấp, text overflow, button ambiguous và thiếu keyboard state thành bản đạt accessibility gate.”</p>
+            <ul>
+              <li>Mode: <code>standard</code>.</li>
+              <li>Focus: contrast, focus order, button clarity, text fit, error copy.</li>
+              <li>Nộp: before/after QA, revision_log.md và checklist accessibility pass.</li>
+            </ul>
+          </article>
+
+          <article class="practice-lab advanced-lab">
+            <div class="phase-head"><span class="module-num">A12</span><h3>Codegen contract drill</h3></div>
+            <p><strong>Prompt:</strong> “Tạo strict handoff cho màn pricing table có billing toggle, plan comparison, enterprise contact và legal notes.”</p>
+            <ul>
+              <li>Mode: <code>strict</code>.</li>
+              <li>Focus: reusable components, prop contract, responsive behavior, disabled/selected states.</li>
+              <li>Nộp: handoff.md, contract.md, fidelity_review.md đủ để developer implement.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="workspace">
       <div class="shell">
         <div class="section-head">
@@ -283,6 +415,7 @@
             <div class="workspace-actions">
               <button class="btn primary" type="submit">Tạo bài thực hành</button>
               <button class="btn" id="loadSamplePractice" type="button">Dùng mẫu strict</button>
+              <button class="btn" id="loadAdvancedPractice" type="button">Dùng mẫu nâng cao</button>
               <button class="btn" id="clearPracticeRuns" type="button">Xóa lịch sử</button>
             </div>
           </form>
