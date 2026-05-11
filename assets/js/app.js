@@ -113,28 +113,42 @@ function renderCourseCards(data) {
   grid.innerHTML = "";
 
   data.lessons.forEach((lesson) => {
-    const card = createEl("article", "course-card");
-    const title = createEl("div", "course-title");
-    title.append(createEl("div", "module-num", lesson.number));
-    title.append(createEl("h3", "", lesson.title));
+    grid.append(createLessonCard(lesson));
+  });
+}
 
-    const diagram = createEl("div", "mini-diagram");
-    lesson.diagram.forEach(([label, copy]) => {
-      const row = createEl("div", "diagram-row");
-      row.append(createEl("code", "", label));
-      row.append(createEl("span", "", copy));
-      diagram.append(row);
-    });
+function createLessonCard(lesson) {
+  const card = createEl("article", "course-card");
+  const title = createEl("div", "course-title");
+  title.append(createEl("div", "module-num", lesson.number));
+  title.append(createEl("h3", "", lesson.title));
 
-    const practice = createEl("div", "practice");
-    practice.append(createEl("strong", "", state.lang === "vi" ? "Thực hành" : "Practice"));
-    practice.append(createEl("p", "", lesson.practice));
+  const diagram = createEl("div", "mini-diagram");
+  lesson.diagram.forEach(([label, copy]) => {
+    const row = createEl("div", "diagram-row");
+    row.append(createEl("code", "", label));
+    row.append(createEl("span", "", copy));
+    diagram.append(row);
+  });
 
-    card.append(title);
-    card.append(createEl("p", "course-copy", lesson.copy));
-    card.append(diagram);
-    card.append(practice);
-    grid.append(card);
+  const practice = createEl("div", "practice");
+  practice.append(createEl("strong", "", state.lang === "vi" ? "Thực hành" : "Practice"));
+  practice.append(createEl("p", "", lesson.practice));
+
+  card.append(title);
+  card.append(createEl("p", "course-copy", lesson.copy));
+  card.append(diagram);
+  card.append(practice);
+  return card;
+}
+
+function renderAdvancedCourse(data) {
+  const grid = $("#advancedGrid");
+  if (!grid || !data.advanced) return;
+  grid.innerHTML = "";
+
+  data.advanced.forEach((lesson) => {
+    grid.append(createLessonCard(lesson));
   });
 }
 
@@ -436,6 +450,7 @@ function render() {
   renderModules(data);
   renderLessonOne(data);
   renderCourseCards(data);
+  renderAdvancedCourse(data);
   renderLab(data);
   initVibePracticeWorkspace();
   initDataMiningWorkspace();
