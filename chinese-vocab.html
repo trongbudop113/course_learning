@@ -1,0 +1,1657 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Từ vựng tiếng Trung HSK 1-6 | Course Learning</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+  <style>
+    :root {
+      --cn-red:  #d9534f;
+      --cn-gold: #c8922a;
+      --cn-dark: #1a0a00;
+    }
+
+    /* ── Toolbar ── */
+    .vocab-toolbar {
+      position: sticky;
+      top: 68px;
+      z-index: 10;
+      background: rgba(247,243,234,.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--line);
+      padding: 10px 0;
+    }
+    .vocab-toolbar-inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* SRS due banner */
+    .srs-banner {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 7px 0 2px;
+      font-size: .85rem;
+      color: var(--ink);
+      border-top: 1px dashed #e0d8c4;
+      margin-top: 6px;
+      width: 100%;
+    }
+    .srs-banner.visible { display: flex; }
+    .srs-banner strong { color: var(--cn-red); font-size: 1rem; }
+    .srs-review-btn {
+      padding: 4px 12px;
+      border: 2px solid var(--cn-red);
+      background: var(--cn-red);
+      color: #fff;
+      border-radius: 16px;
+      font-size: .78rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 #8b1a18;
+      transition: opacity .15s;
+    }
+    .srs-review-btn:hover { opacity: .88; }
+    .srs-next-info {
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    .hsk-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+    .hsk-tab {
+      padding: 6px 14px;
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: 20px;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+      box-shadow: 2px 2px 0 var(--line);
+    }
+    .hsk-tab:hover  { background: var(--ink); color: var(--paper); }
+    .hsk-tab.active { background: var(--cn-red); color: #fff; border-color: var(--cn-red); box-shadow: 2px 2px 0 #8b1a18; }
+
+    .vocab-search {
+      flex: 1; min-width: 180px; max-width: 260px;
+      padding: 7px 14px;
+      border: 2px solid var(--line);
+      border-radius: 20px;
+      font-size: .88rem;
+      background: #fff;
+      box-shadow: 2px 2px 0 var(--line);
+      outline: none;
+    }
+    .vocab-search:focus { border-color: var(--cyan); box-shadow: 2px 2px 0 var(--cyan); }
+
+    .mode-btns { display: flex; gap: 4px; }
+    .mode-btn {
+      padding: 6px 14px;
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: 20px;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--line);
+    }
+    .mode-btn.active { background: var(--ink); color: var(--paper); }
+
+    .vocab-stats {
+      margin-left: auto;
+      font-size: .8rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .vocab-stats strong { color: var(--ink); }
+
+    /* ── Browse grid ── */
+    #browseView { padding: 32px 0 64px; }
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .vocab-card {
+      border: 2px solid var(--line);
+      box-shadow: 4px 4px 0 var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 18px 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: transform .1s, box-shadow .1s;
+      position: relative;
+    }
+    .vocab-card:hover {
+      transform: translate(-2px,-2px);
+      box-shadow: 6px 6px 0 var(--line);
+    }
+
+    .vocab-card .hanzi {
+      font-family: "Noto Serif SC", "SimSun", "Microsoft YaHei", serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--cn-dark);
+      line-height: 1;
+    }
+    .vocab-card .pinyin {
+      font-size: .88rem;
+      color: var(--cn-red);
+      font-style: italic;
+      font-weight: 600;
+    }
+    .vocab-card .meaning {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* Example sentence on card */
+    .card-example {
+      display: none;
+      background: #faf8f3;
+      border: 1px dashed #d8d0c0;
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-top: 4px;
+      font-size: .78rem;
+      line-height: 1.6;
+    }
+    .card-example.open { display: block; }
+    .card-example .ex-zh {
+      font-family: "Noto Serif SC", serif;
+      color: var(--cn-dark);
+      font-size: .84rem;
+      margin-bottom: 2px;
+    }
+    .card-example .ex-vi { color: var(--muted); font-style: italic; }
+    .card-example .ex-speak {
+      background: none; border: none; cursor: pointer;
+      font-size: .9rem; padding: 0 3px;
+      vertical-align: middle;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px solid #f0ece4;
+    }
+    .card-actions { display: flex; align-items: center; gap: 4px; }
+
+    .hsk-badge {
+      font-size: .7rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      background: var(--ink);
+      color: var(--paper);
+    }
+    .hsk-badge.l1 { background: #4caf50; }
+    .hsk-badge.l2 { background: #2196f3; }
+    .hsk-badge.l3 { background: #ff9800; }
+    .hsk-badge.l4 { background: #9c27b0; }
+    .hsk-badge.l5 { background: var(--cn-red); }
+    .hsk-badge.l6 { background: #333; }
+
+    /* SRS status dot on card */
+    .srs-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .srs-dot.due      { background: #ffc107; }
+    .srs-dot.reviewed { background: #28a745; }
+    .srs-dot.unseen   { background: #dee2e6; }
+
+    .speak-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 1.1rem; padding: 2px 4px;
+      border-radius: 4px;
+      transition: background .1s;
+      line-height: 1;
+    }
+    .speak-btn:hover { background: #f0f9f9; }
+    .speak-btn.speaking { animation: pulse-speak .5s infinite alternate; }
+    @keyframes pulse-speak { to { transform: scale(1.3); } }
+
+    .ex-toggle-btn {
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: .7rem;
+      padding: 1px 5px;
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+      transition: background .1s;
+    }
+    .ex-toggle-btn:hover, .ex-toggle-btn.open { background: var(--cn-gold); color: #fff; border-color: var(--cn-gold); }
+
+    /* Learned overlay */
+    .vocab-card.learned::after {
+      content: "✓";
+      position: absolute;
+      top: 8px; right: 10px;
+      color: var(--green);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    /* ── Flashcard mode ── */
+    #flashcardView { display: none; padding: 32px 0 64px; }
+    .flashcard-wrap { max-width: 600px; margin: 0 auto; }
+
+    .flashcard-progress {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      font-size: .88rem;
+      color: var(--muted);
+    }
+    .flashcard-progress .progress-bar-wrap {
+      flex: 1; height: 6px;
+      background: #e8e4dc;
+      border-radius: 3px;
+      margin: 0 16px;
+      overflow: hidden;
+    }
+    .flashcard-progress .progress-bar-fill {
+      height: 100%;
+      background: var(--cn-red);
+      border-radius: 3px;
+      transition: width .3s;
+    }
+
+    /* Card flip */
+    .flip-scene {
+      perspective: 1000px;
+      width: 100%;
+      aspect-ratio: 4/3;
+      cursor: pointer;
+      margin-bottom: 24px;
+    }
+    .flip-card {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform .45s cubic-bezier(.4,0,.2,1);
+    }
+    .flip-card.flipped { transform: rotateY(180deg); }
+
+    .flip-front, .flip-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border: 3px solid var(--line);
+      box-shadow: 6px 6px 0 var(--line);
+      border-radius: 12px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 24px 28px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .flip-back { transform: rotateY(180deg); justify-content: flex-start; padding-top: 20px; }
+
+    .flip-front .f-hanzi {
+      font-family: "Noto Serif SC", "SimSun", serif;
+      font-size: 5rem;
+      font-weight: 700;
+      color: var(--cn-dark);
+      line-height: 1;
+    }
+    .flip-front .f-hint {
+      font-size: .82rem;
+      color: var(--muted);
+    }
+
+    .flip-back .b-hanzi {
+      font-family: "Noto Serif SC", "SimSun", serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--cn-dark);
+      line-height: 1;
+    }
+    .flip-back .b-pinyin {
+      font-size: 1.4rem;
+      color: var(--cn-red);
+      font-weight: 600;
+      font-style: italic;
+    }
+    .flip-back .b-meaning {
+      font-size: 1rem;
+      color: var(--ink);
+      line-height: 1.5;
+      max-width: 90%;
+    }
+    .flip-back .b-speak-row {
+      display: flex; gap: 10px; align-items: center;
+    }
+    .flip-back .b-speak {
+      font-size: 1.6rem;
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 8px;
+      border: none;
+      background: none;
+    }
+    .flip-back .b-speak:hover { background: #fff0f0; }
+
+    /* Example on flashcard */
+    .b-example {
+      width: 100%;
+      background: #faf8f3;
+      border: 1px dashed #d8d0c0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      text-align: left;
+      margin-top: 2px;
+    }
+    .b-example .b-ex-label {
+      font-size: .7rem;
+      font-weight: 700;
+      color: var(--cn-gold);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 4px;
+    }
+    .b-example .b-ex-zh {
+      font-family: "Noto Serif SC", serif;
+      font-size: .92rem;
+      color: var(--cn-dark);
+      line-height: 1.6;
+      margin-bottom: 2px;
+    }
+    .b-example .b-ex-vi {
+      font-size: .8rem;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.5;
+    }
+    .b-example .b-ex-row {
+      display: flex; align-items: flex-start; gap: 6px;
+    }
+    .b-ex-speak {
+      background: none; border: none; cursor: pointer;
+      font-size: 1rem; padding: 2px 4px;
+      flex-shrink: 0;
+      border-radius: 4px;
+      margin-top: 1px;
+    }
+    .b-ex-speak:hover { background: #f0f9f9; }
+
+    /* Rate buttons — 4 columns */
+    .rate-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .rate-btn {
+      padding: 9px 6px;
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 var(--line);
+      transition: transform .1s, box-shadow .1s;
+      background: #fff;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .rate-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--line); }
+    .rate-btn.again { color: var(--cn-red);  border-color: var(--cn-red); }
+    .rate-btn.hard  { color: var(--cn-gold); border-color: var(--cn-gold); }
+    .rate-btn.good  { color: #2196f3;        border-color: #2196f3; }
+    .rate-btn.easy  { color: #4caf50;        border-color: #4caf50; }
+    .rate-hint { font-size: .73rem; color: var(--muted); text-align: center; margin-bottom: 6px; }
+
+    /* Flashcard nav */
+    .fc-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .fc-nav-btn {
+      padding: 8px 20px;
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 var(--line);
+    }
+    .fc-nav-btn:hover { background: var(--ink); color: var(--paper); }
+    .fc-nav-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .fc-counter { font-size: .9rem; color: var(--muted); }
+
+    .fc-controls {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .fc-ctrl-btn {
+      padding: 6px 14px;
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: 20px;
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--line);
+    }
+    .fc-ctrl-btn:hover { background: var(--ink); color: var(--paper); }
+    .fc-ctrl-btn.due-active {
+      background: var(--cn-red);
+      color: #fff;
+      border-color: var(--cn-red);
+      box-shadow: 2px 2px 0 #8b1a18;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center; padding: 64px 0; color: var(--muted);
+    }
+    .empty-state .big { font-size: 3rem; margin-bottom: 12px; }
+
+    /* No voice warning */
+    .voice-warn {
+      background: #fff8e0;
+      border: 2px solid var(--yellow);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      font-size: .85rem;
+      color: var(--ink);
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    /* Category pills */
+    .cat-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .cat-pill {
+      padding: 3px 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font-size: .75rem;
+      cursor: pointer;
+      background: #fff;
+      transition: background .1s;
+    }
+    .cat-pill.active, .cat-pill:hover { background: var(--ink); color: var(--paper); }
+
+    /* Section intro */
+    .vocab-intro { padding: 40px 0 8px; }
+    .vocab-intro h1 { margin-bottom: 8px; }
+    .vocab-intro .lead { max-width: 640px; }
+
+    /* Keyboard hint bar */
+    .kb-hint {
+      text-align: center;
+      font-size: .72rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+      letter-spacing: .02em;
+    }
+    .kb-hint kbd {
+      display: inline-block;
+      padding: 1px 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      background: #f7f3ea;
+      font-size: .7rem;
+      margin: 0 1px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="shell topbar-inner">
+    <a class="brand" href="./chinese.html#roadmap" aria-label="Tiếng Trung home">
+      <span class="mark">词</span>
+      <span>Từ vựng tiếng Trung</span>
+    </a>
+    <nav class="nav">
+      <a href="./index.html#courses">Khóa học</a>
+      <a href="./chinese.html#roadmap">Lộ trình</a>
+      <a href="./chinese.html#tones">Thanh điệu</a>
+      <a href="./chinese.html#grammar">Ngữ pháp</a>
+      <a href="./chinese-reading.html">Đọc hiểu</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── INTRO ── -->
+<div class="shell vocab-intro">
+  <div class="eyebrow"><span class="pulse"></span><span>词汇学习 · Học từ vựng</span></div>
+  <h1>Từ vựng tiếng Trung HSK 1–6</h1>
+  <p class="lead">Thẻ từ đầy đủ Hán tự, Pinyin, nghĩa tiếng Việt, câu ví dụ và phát âm. Hệ thống ôn tập thông minh <strong>SRS</strong> giúp bạn nhớ từ lâu hơn.</p>
+  <div id="voiceWarn" class="voice-warn">⚠️ Trình duyệt chưa tải được giọng tiếng Trung. Thử lại sau 2 giây hoặc dùng Chrome/Edge trên máy tính.</div>
+</div>
+
+<!-- ── TOOLBAR ── -->
+<div class="vocab-toolbar">
+  <div class="shell">
+    <div class="vocab-toolbar-inner">
+      <div class="hsk-tabs">
+        <button class="hsk-tab active" data-level="0">Tất cả</button>
+        <button class="hsk-tab" data-level="1">HSK 1</button>
+        <button class="hsk-tab" data-level="2">HSK 2</button>
+        <button class="hsk-tab" data-level="3">HSK 3</button>
+        <button class="hsk-tab" data-level="4">HSK 4</button>
+        <button class="hsk-tab" data-level="5">HSK 5</button>
+        <button class="hsk-tab" data-level="6">HSK 6</button>
+      </div>
+      <input class="vocab-search" type="search" placeholder="🔍  Tìm chữ, pinyin, nghĩa…" id="searchInput" />
+      <div class="mode-btns">
+        <button class="mode-btn active" id="btnBrowse">Xem thẻ</button>
+        <button class="mode-btn" id="btnFlash">Flashcard</button>
+        <a class="mode-btn" href="./chinese-quiz.html" style="text-decoration:none;background:var(--cn-red,#d9534f);color:#fff;border-color:var(--cn-red,#d9534f)">试 Kiểm tra</a>
+      </div>
+      <span class="vocab-stats" id="statsLabel"></span>
+    </div>
+    <!-- SRS due-today banner -->
+    <div class="srs-banner" id="srsBanner">
+      📅 Hôm nay bạn có <strong id="srsDueCount">0</strong> từ cần ôn lại &nbsp;
+      <button class="srs-review-btn" id="srsDueBtn">Ôn ngay →</button>
+      <span class="srs-next-info" id="srsNextInfo"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ── BROWSE VIEW ── -->
+<div id="browseView">
+  <div class="shell">
+    <div class="cat-row" id="catRow"></div>
+    <div class="vocab-grid" id="vocabGrid"></div>
+    <div class="empty-state" id="emptyState" style="display:none">
+      <div class="big">🔍</div>
+      Không tìm thấy từ nào. Thử từ khóa khác.
+    </div>
+  </div>
+</div>
+
+<!-- ── FLASHCARD VIEW ── -->
+<div id="flashcardView">
+  <div class="shell">
+    <div class="flashcard-wrap">
+
+      <div class="fc-controls">
+        <button class="fc-ctrl-btn" id="fcShuffle">🔀 Xáo trộn</button>
+        <button class="fc-ctrl-btn" id="fcReset">↺ Bắt đầu lại</button>
+        <button class="fc-ctrl-btn" id="fcShowAll">Tất cả</button>
+        <button class="fc-ctrl-btn" id="fcShowNew">Chưa học</button>
+        <button class="fc-ctrl-btn" id="fcShowDue">📅 Ôn hôm nay</button>
+      </div>
+
+      <div class="flashcard-progress">
+        <span id="fcDone">0</span>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="fcFill" style="width:0%"></div>
+        </div>
+        <span id="fcTotal">0</span>
+      </div>
+
+      <div class="flip-scene" id="flipScene">
+        <div class="flip-card" id="flipCard">
+          <div class="flip-front" id="flipFront">
+            <div class="f-hanzi" id="fHanzi">—</div>
+            <div class="f-hint">Nhấn để xem Pinyin &amp; nghĩa</div>
+          </div>
+          <div class="flip-back" id="flipBack">
+            <div class="b-hanzi" id="bHanzi">—</div>
+            <div class="b-pinyin" id="bPinyin">—</div>
+            <div class="b-speak-row">
+              <button class="b-speak" id="bSpeak" title="Phát âm từ">🔊</button>
+            </div>
+            <div class="b-meaning" id="bMeaning">—</div>
+            <div class="b-example" id="bExample" style="display:none">
+              <div class="b-ex-label">Câu ví dụ</div>
+              <div class="b-ex-row">
+                <div>
+                  <div class="b-ex-zh" id="bExZh"></div>
+                  <div class="b-ex-vi" id="bExVi"></div>
+                </div>
+                <button class="b-ex-speak" id="bExSpeak" title="Phát âm câu ví dụ">🔊</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rate-btns" id="rateBtns" style="display:none">
+        <button class="rate-btn again" data-rate="again" data-days="1">✗ Lại<br><small>1 ngày</small></button>
+        <button class="rate-btn hard"  data-rate="hard"  data-days="3">△ Khó<br><small>3 ngày</small></button>
+        <button class="rate-btn good"  data-rate="good"  data-days="7">○ Nhớ<br><small>7 ngày</small></button>
+        <button class="rate-btn easy"  data-rate="easy"  data-days="21">✓ Dễ<br><small>21 ngày</small></button>
+      </div>
+      <div class="kb-hint">
+        <kbd>Space</kbd> lật thẻ &nbsp;|&nbsp;
+        <kbd>A</kbd> Lại &nbsp;<kbd>H</kbd> Khó &nbsp;<kbd>N</kbd> Nhớ &nbsp;<kbd>E</kbd> Dễ &nbsp;|&nbsp;
+        <kbd>←</kbd><kbd>→</kbd> điều hướng
+      </div>
+      <div class="rate-hint" id="rateHint">Nhấn thẻ để xem đáp án</div>
+
+      <div class="fc-nav">
+        <button class="fc-nav-btn" id="fcPrev">← Trước</button>
+        <span class="fc-counter" id="fcCounter">1 / 1</span>
+        <button class="fc-nav-btn" id="fcNext">Tiếp →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="shell footer">Từ vựng tiếng Trung HSK 1-6 · SRS ôn tập thông minh · Phát âm qua Web Speech API (zh-CN)</footer>
+
+<!-- Load shared data first -->
+<script src="./assets/data/chinese-data.js"></script>
+
+<script>
+/* ═══════════════════════════════════════════════
+   VOCABULARY DATA  —  HSK 1-6
+   Format: [hanzi, pinyin, meaning_vi, level, category, example_zh?, example_vi?]
+═══════════════════════════════════════════════ */
+const WORDS_BASE = [
+/* ─── HSK 1 ─────────────────────────────────── */
+["爱","ài","yêu thương",1,"cảm xúc"],
+["八","bā","tám (số 8)",1,"số đếm"],
+["爸爸","bàba","bố / cha",1,"gia đình"],
+["杯子","bēizi","cái cốc / ly",1,"đồ vật"],
+["北京","Běijīng","Bắc Kinh",1,"địa danh"],
+["本","běn","cuốn (lượng từ sách)",1,"lượng từ"],
+["不","bù","không (phủ định)",1,"ngữ pháp"],
+["不客气","bú kèqi","không có gì (đáp cảm ơn)",1,"giao tiếp"],
+["菜","cài","rau / món ăn",1,"ẩm thực"],
+["茶","chá","trà",1,"ẩm thực"],
+["吃","chī","ăn",1,"hành động"],
+["出租车","chūzūchē","xe taxi",1,"giao thông"],
+["打电话","dǎ diànhuà","gọi điện thoại",1,"hành động"],
+["大","dà","lớn / to",1,"tính từ"],
+["的","de","của (trợ từ sở hữu)",1,"ngữ pháp"],
+["点","diǎn","giờ / điểm",1,"thời gian"],
+["电脑","diànnǎo","máy tính",1,"công nghệ"],
+["电视","diànshì","ti vi / tivi",1,"đồ vật"],
+["电影","diànyǐng","phim điện ảnh",1,"giải trí"],
+["东西","dōngxi","đồ vật / thứ gì đó",1,"đồ vật"],
+["都","dōu","đều / tất cả",1,"ngữ pháp"],
+["读","dú","đọc",1,"hành động"],
+["对不起","duìbuqǐ","xin lỗi",1,"giao tiếp"],
+["多","duō","nhiều",1,"tính từ"],
+["多少","duōshao","bao nhiêu",1,"câu hỏi"],
+["儿子","érzi","con trai",1,"gia đình"],
+["二","èr","hai (số 2)",1,"số đếm"],
+["饭店","fàndiàn","nhà hàng / khách sạn",1,"địa điểm"],
+["飞机","fēijī","máy bay",1,"giao thông"],
+["分钟","fēnzhōng","phút",1,"thời gian"],
+["高兴","gāoxìng","vui mừng / vui vẻ",1,"cảm xúc"],
+["个","gè","cái / người (lượng từ chung)",1,"lượng từ"],
+["工作","gōngzuò","công việc / làm việc",1,"công việc"],
+["狗","gǒu","con chó",1,"động vật"],
+["汉语","Hànyǔ","tiếng Trung / tiếng Hán",1,"ngôn ngữ"],
+["好","hǎo","tốt / được",1,"tính từ"],
+["喝","hē","uống",1,"hành động"],
+["和","hé","và / cùng với",1,"ngữ pháp"],
+["很","hěn","rất",1,"ngữ pháp"],
+["后面","hòumiàn","phía sau / đằng sau",1,"phương hướng"],
+["回","huí","quay về / về",1,"hành động"],
+["会","huì","biết làm / sẽ",1,"ngữ pháp"],
+["几","jǐ","mấy / vài",1,"câu hỏi"],
+["家","jiā","nhà / gia đình",1,"gia đình"],
+["叫","jiào","được gọi là / gọi",1,"hành động"],
+["今天","jīntiān","hôm nay",1,"thời gian"],
+["九","jiǔ","chín (số 9)",1,"số đếm"],
+["开","kāi","mở / lái",1,"hành động"],
+["看","kàn","nhìn / xem",1,"hành động"],
+["看见","kànjiàn","nhìn thấy",1,"hành động"],
+["来","lái","đến / lại",1,"hành động"],
+["老师","lǎoshī","giáo viên / thầy cô",1,"nghề nghiệp"],
+["了","le","rồi (trợ từ hoàn thành)",1,"ngữ pháp"],
+["冷","lěng","lạnh",1,"thời tiết"],
+["里","lǐ","trong / bên trong",1,"phương hướng"],
+["零","líng","không (số 0)",1,"số đếm"],
+["六","liù","sáu (số 6)",1,"số đếm"],
+["妈妈","māma","mẹ / má",1,"gia đình"],
+["吗","ma","không? (trợ từ hỏi)",1,"ngữ pháp"],
+["没关系","méiguānxi","không sao / không có gì",1,"giao tiếp"],
+["没有","méiyǒu","không có",1,"ngữ pháp"],
+["哪","nǎ","nào / đâu",1,"câu hỏi"],
+["那","nà","đó / kia",1,"ngữ pháp"],
+["呢","ne","thì sao? (trợ từ)",1,"ngữ pháp"],
+["能","néng","có thể / được phép",1,"ngữ pháp"],
+["你","nǐ","bạn / anh / chị",1,"đại từ"],
+["年","nián","năm",1,"thời gian"],
+["女儿","nǚ'ér","con gái",1,"gia đình"],
+["朋友","péngyou","bạn bè",1,"xã hội"],
+["漂亮","piàoliang","đẹp / xinh",1,"tính từ"],
+["苹果","píngguǒ","quả táo",1,"ẩm thực"],
+["七","qī","bảy (số 7)",1,"số đếm"],
+["钱","qián","tiền",1,"tài chính"],
+["请","qǐng","mời / xin hãy",1,"giao tiếp"],
+["去","qù","đi (đến nơi nào đó)",1,"hành động"],
+["热","rè","nóng",1,"thời tiết"],
+["人","rén","người",1,"con người"],
+["认识","rènshi","quen biết / nhận ra",1,"hành động"],
+["三","sān","ba (số 3)",1,"số đếm"],
+["商店","shāngdiàn","cửa hàng",1,"địa điểm"],
+["上","shàng","trên / lên",1,"phương hướng"],
+["少","shǎo","ít",1,"tính từ"],
+["谁","shéi","ai",1,"câu hỏi"],
+["什么","shénme","cái gì / điều gì",1,"câu hỏi"],
+["生日","shēngrì","sinh nhật",1,"thời gian"],
+["时候","shíhou","lúc / khi",1,"thời gian"],
+["是","shì","là",1,"ngữ pháp"],
+["书","shū","sách",1,"đồ vật"],
+["水","shuǐ","nước",1,"ẩm thực"],
+["水果","shuǐguǒ","trái cây / hoa quả",1,"ẩm thực"],
+["睡觉","shuìjiào","ngủ",1,"hành động"],
+["说话","shuōhuà","nói chuyện",1,"hành động"],
+["四","sì","bốn (số 4)",1,"số đếm"],
+["岁","suì","tuổi",1,"con người"],
+["他","tā","anh ấy / nó (nam)",1,"đại từ"],
+["她","tā","cô ấy (nữ)",1,"đại từ"],
+["太","tài","quá / quá lắm",1,"ngữ pháp"],
+["天气","tiānqì","thời tiết",1,"thời tiết"],
+["听","tīng","nghe",1,"hành động"],
+["同学","tóngxué","bạn học / bạn cùng lớp",1,"xã hội"],
+["我","wǒ","tôi / mình",1,"đại từ"],
+["我们","wǒmen","chúng tôi / chúng ta",1,"đại từ"],
+["五","wǔ","năm (số 5)",1,"số đếm"],
+["下","xià","xuống / dưới",1,"phương hướng"],
+["下雨","xià yǔ","trời mưa",1,"thời tiết"],
+["先生","xiānsheng","ông / quý ông / chồng",1,"giao tiếp"],
+["现在","xiànzài","bây giờ / hiện tại",1,"thời gian"],
+["想","xiǎng","muốn / nghĩ",1,"hành động"],
+["小","xiǎo","nhỏ / bé",1,"tính từ"],
+["写","xiě","viết",1,"hành động"],
+["谢谢","xièxie","cảm ơn",1,"giao tiếp"],
+["星期","xīngqī","tuần / ngày trong tuần",1,"thời gian"],
+["学生","xuésheng","học sinh / sinh viên",1,"xã hội"],
+["学习","xuéxí","học tập",1,"hành động"],
+["学校","xuéxiào","trường học",1,"địa điểm"],
+["一","yī","một (số 1)",1,"số đếm"],
+["衣服","yīfu","quần áo",1,"đồ vật"],
+["医生","yīshēng","bác sĩ",1,"nghề nghiệp"],
+["医院","yīyuàn","bệnh viện",1,"địa điểm"],
+["椅子","yǐzi","cái ghế",1,"đồ vật"],
+["有","yǒu","có",1,"ngữ pháp"],
+["月","yuè","tháng / trăng",1,"thời gian"],
+["再见","zàijiàn","tạm biệt",1,"giao tiếp"],
+["在","zài","đang ở / đang làm",1,"ngữ pháp"],
+["怎么","zěnme","như thế nào / làm sao",1,"câu hỏi"],
+["怎么样","zěnmeyàng","thế nào / ra sao",1,"câu hỏi"],
+["这","zhè","đây / này",1,"ngữ pháp"],
+["中国","Zhōngguó","Trung Quốc",1,"địa danh"],
+["中午","zhōngwǔ","buổi trưa",1,"thời gian"],
+["住","zhù","ở / cư trú",1,"hành động"],
+["桌子","zhuōzi","cái bàn",1,"đồ vật"],
+["做","zuò","làm / nấu",1,"hành động"],
+/* ─── HSK 2 ─────────────────────────────────── */
+["白","bái","màu trắng",2,"màu sắc"],
+["百","bǎi","trăm (100)",2,"số đếm"],
+["帮助","bāngzhù","giúp đỡ",2,"hành động"],
+["报纸","bàozhǐ","báo giấy",2,"đồ vật"],
+["比","bǐ","hơn / so với",2,"ngữ pháp"],
+["别","bié","đừng / khác",2,"ngữ pháp"],
+["宾馆","bīnguǎn","khách sạn",2,"địa điểm"],
+["长","cháng","dài",2,"tính từ"],
+["唱歌","chànggē","hát (bài hát)",2,"hành động"],
+["出","chū","ra / xuất hiện",2,"hành động"],
+["穿","chuān","mặc / đi (giày)",2,"hành động"],
+["次","cì","lần",2,"lượng từ"],
+["从","cóng","từ (xuất phát)",2,"ngữ pháp"],
+["错","cuò","sai / lỗi",2,"tính từ"],
+["但是","dànshì","nhưng / tuy nhiên",2,"ngữ pháp"],
+["到","dào","đến / tới",2,"hành động"],
+["等","děng","chờ / đợi",2,"hành động"],
+["弟弟","dìdi","em trai",2,"gia đình"],
+["懂","dǒng","hiểu",2,"hành động"],
+["对","duì","đúng / phải",2,"tính từ"],
+["房间","fángjiān","phòng (ở)",2,"địa điểm"],
+["非常","fēicháng","rất / vô cùng",2,"ngữ pháp"],
+["服务员","fúwùyuán","nhân viên phục vụ",2,"nghề nghiệp"],
+["高","gāo","cao",2,"tính từ"],
+["告诉","gàosu","nói cho biết / thông báo",2,"hành động"],
+["哥哥","gēge","anh trai",2,"gia đình"],
+["给","gěi","cho / đưa / tặng",2,"hành động"],
+["公共汽车","gōnggòng qìchē","xe buýt",2,"giao thông"],
+["贵","guì","đắt / quý",2,"tính từ"],
+["过","guò","qua / đã trải qua",2,"ngữ pháp"],
+["还","hái","còn / vẫn / nữa",2,"ngữ pháp"],
+["黑","hēi","màu đen",2,"màu sắc"],
+["红","hóng","màu đỏ",2,"màu sắc"],
+["欢迎","huānyíng","chào mừng",2,"giao tiếp"],
+["黄","huáng","màu vàng",2,"màu sắc"],
+["机场","jīchǎng","sân bay",2,"giao thông"],
+["进","jìn","vào / đi vào",2,"hành động"],
+["近","jìn","gần",2,"tính từ"],
+["就","jiù","thì / liền / chỉ",2,"ngữ pháp"],
+["觉得","juéde","cảm thấy / cho rằng",2,"hành động"],
+["可以","kěyǐ","có thể / được phép",2,"ngữ pháp"],
+["快","kuài","nhanh",2,"tính từ"],
+["离","lí","cách (khoảng cách)",2,"ngữ pháp"],
+["路","lù","đường / con đường",2,"giao thông"],
+["卖","mài","bán",2,"hành động"],
+["慢","màn","chậm",2,"tính từ"],
+["忙","máng","bận rộn",2,"tính từ"],
+["帽子","màozi","cái mũ",2,"đồ vật"],
+["男","nán","nam / đàn ông",2,"con người"],
+["女","nǚ","nữ / phụ nữ",2,"con người"],
+["旁边","pángbiān","bên cạnh",2,"phương hướng"],
+["跑步","pǎobù","chạy bộ",2,"hành động"],
+["便宜","piányí","rẻ",2,"tính từ"],
+["票","piào","vé / phiếu",2,"đồ vật"],
+["起床","qǐchuáng","thức dậy / dậy",2,"hành động"],
+["球","qiú","quả bóng",2,"thể thao"],
+["去年","qùnián","năm ngoái",2,"thời gian"],
+["让","ràng","để / cho phép / bảo",2,"ngữ pháp"],
+["身体","shēntǐ","cơ thể / sức khỏe",2,"sức khỏe"],
+["生病","shēngbìng","bị ốm / bệnh",2,"sức khỏe"],
+["时间","shíjiān","thời gian",2,"thời gian"],
+["事","shì","việc / chuyện",2,"danh từ"],
+["手","shǒu","tay / bàn tay",2,"con người"],
+["手机","shǒujī","điện thoại di động",2,"công nghệ"],
+["说","shuō","nói",2,"hành động"],
+["送","sòng","gửi / tặng / đưa",2,"hành động"],
+["虽然","suīrán","mặc dù / tuy",2,"ngữ pháp"],
+["所以","suǒyǐ","vì vậy / nên",2,"ngữ pháp"],
+["踢足球","tī zúqiú","đá bóng",2,"thể thao"],
+["题","tí","bài / câu hỏi",2,"học tập"],
+["跳舞","tiàowǔ","nhảy múa",2,"hành động"],
+["外","wài","ngoài / bên ngoài",2,"phương hướng"],
+["玩","wán","chơi / vui chơi",2,"hành động"],
+["晚上","wǎnshàng","buổi tối",2,"thời gian"],
+["问","wèn","hỏi",2,"hành động"],
+["向","xiàng","về phía / hướng",2,"phương hướng"],
+["小时","xiǎoshí","giờ (đơn vị thời gian)",2,"thời gian"],
+["笑","xiào","cười",2,"hành động"],
+["新","xīn","mới",2,"tính từ"],
+["姓","xìng","họ (tên họ)",2,"con người"],
+["休息","xiūxi","nghỉ ngơi",2,"hành động"],
+["雪","xuě","tuyết",2,"thời tiết"],
+["颜色","yánsè","màu sắc",2,"tính từ"],
+["眼睛","yǎnjing","mắt / đôi mắt",2,"con người"],
+["已经","yǐjīng","đã (rồi)",2,"ngữ pháp"],
+["一起","yīqǐ","cùng nhau",2,"ngữ pháp"],
+["因为","yīnwèi","vì / bởi vì",2,"ngữ pháp"],
+["用","yòng","dùng / sử dụng",2,"hành động"],
+["游泳","yóuyǒng","bơi lội",2,"thể thao"],
+["右边","yòubiān","bên phải",2,"phương hướng"],
+["鱼","yú","cá",2,"ẩm thực"],
+["远","yuǎn","xa",2,"tính từ"],
+["运动","yùndòng","vận động / thể thao",2,"thể thao"],
+["知道","zhīdào","biết",2,"hành động"],
+["准备","zhǔnbèi","chuẩn bị",2,"hành động"],
+["左边","zuǒbiān","bên trái",2,"phương hướng"],
+["坐","zuò","ngồi / ngồi (phương tiện)",2,"hành động"],
+["昨天","zuótiān","hôm qua",2,"thời gian"],
+/* ─── HSK 3 ─────────────────────────────────── */
+["把","bǎ","cầm / cấu trúc bǎ",3,"ngữ pháp"],
+["班","bān","lớp học / ca (làm việc)",3,"học tập"],
+["被","bèi","bị (câu bị động)",3,"ngữ pháp"],
+["变化","biànhuà","thay đổi / sự thay đổi",3,"trạng thái"],
+["餐厅","cāntīng","nhà hàng / căng tin",3,"địa điểm"],
+["城市","chéngshì","thành phố",3,"địa điểm"],
+["除了","chúle","ngoài ra / trừ",3,"ngữ pháp"],
+["地方","dìfang","địa phương / nơi chốn",3,"địa điểm"],
+["地铁","dìtiě","tàu điện ngầm / metro",3,"giao thông"],
+["电梯","diàntī","thang máy",3,"đồ vật"],
+["动物","dòngwù","động vật",3,"thiên nhiên"],
+["发现","fāxiàn","phát hiện / tìm ra",3,"hành động"],
+["方便","fāngbiàn","tiện lợi / thuận tiện",3,"tính từ"],
+["附近","fùjìn","gần đây / vùng lân cận",3,"địa điểm"],
+["干净","gānjìng","sạch sẽ",3,"tính từ"],
+["感冒","gǎnmào","cảm cúm / bị cảm",3,"sức khỏe"],
+["公司","gōngsī","công ty",3,"công việc"],
+["关系","guānxi","quan hệ / liên quan",3,"xã hội"],
+["故事","gùshi","câu chuyện",3,"văn hóa"],
+["害怕","hàipà","sợ hãi / sợ",3,"cảm xúc"],
+["还是","háishi","hay là / vẫn còn",3,"ngữ pháp"],
+["环境","huánjìng","môi trường / hoàn cảnh",3,"xã hội"],
+["活动","huódòng","hoạt động / phong trào",3,"xã hội"],
+["节日","jiérì","ngày lễ / lễ hội",3,"văn hóa"],
+["经过","jīngguò","đi qua / trải qua",3,"hành động"],
+["渴","kě","khát (nước)",3,"cảm giác"],
+["空调","kōngtiáo","máy điều hòa",3,"đồ vật"],
+["历史","lìshǐ","lịch sử",3,"văn hóa"],
+["楼","lóu","tầng lầu / tòa nhà",3,"địa điểm"],
+["旅游","lǚyóu","du lịch",3,"giải trí"],
+["满意","mǎnyì","hài lòng / thỏa mãn",3,"cảm xúc"],
+["明白","míngbai","hiểu rõ / rõ ràng",3,"hành động"],
+["难","nán","khó / gian nan",3,"tính từ"],
+["奶奶","nǎinai","bà nội",3,"gia đình"],
+["年轻","niánqīng","trẻ (tuổi)",3,"tính từ"],
+["爬山","pá shān","leo núi",3,"hành động"],
+["盘子","pánzi","đĩa / khay",3,"đồ vật"],
+["胖","pàng","béo / mập",3,"tính từ"],
+["皮肤","pífū","da (cơ thể)",3,"con người"],
+["普通话","pǔtōnghuà","tiếng Phổ thông / tiếng Quan thoại",3,"ngôn ngữ"],
+["骑","qí","cưỡi / đạp (xe)",3,"hành động"],
+["却","què","nhưng lại / lại",3,"ngữ pháp"],
+["如果","rúguǒ","nếu",3,"ngữ pháp"],
+["声音","shēngyīn","âm thanh / giọng nói",3,"giác quan"],
+["瘦","shòu","gầy / ốm",3,"tính từ"],
+["叔叔","shūshu","chú / bác (nam)",3,"gia đình"],
+["树","shù","cây (có thân gỗ)",3,"thiên nhiên"],
+["特别","tèbié","đặc biệt",3,"tính từ"],
+["同事","tóngshì","đồng nghiệp",3,"công việc"],
+["图书馆","túshūguǎn","thư viện",3,"địa điểm"],
+["突然","tūrán","đột nhiên / bất ngờ",3,"trạng thái"],
+["外国","wàiguó","nước ngoài",3,"địa danh"],
+["网站","wǎngzhàn","trang web / website",3,"công nghệ"],
+["相信","xiāngxìn","tin tưởng / tin",3,"hành động"],
+["新鲜","xīnxiān","tươi mới / tươi (thức ăn)",3,"tính từ"],
+["行李箱","xínglǐ xiāng","vali / rương hành lý",3,"đồ vật"],
+["选择","xuǎnzé","lựa chọn",3,"hành động"],
+["严重","yánzhòng","nghiêm trọng / trầm trọng",3,"tính từ"],
+["一般","yībān","thông thường / bình thường",3,"tính từ"],
+["以后","yǐhòu","sau này / sau đó",3,"thời gian"],
+["以前","yǐqián","trước đây / trước đó",3,"thời gian"],
+["意思","yìsi","ý nghĩa / ý muốn",3,"ngôn ngữ"],
+["因此","yīncǐ","vì vậy / do đó",3,"ngữ pháp"],
+["有名","yǒumíng","nổi tiếng",3,"tính từ"],
+["愿意","yuànyì","sẵn lòng / muốn",3,"cảm xúc"],
+["月亮","yuèliàng","mặt trăng",3,"thiên nhiên"],
+["只","zhǐ","chỉ / chỉ là",3,"ngữ pháp"],
+["终于","zhōngyú","cuối cùng / rốt cuộc",3,"ngữ pháp"],
+["重要","zhòngyào","quan trọng",3,"tính từ"],
+["主意","zhǔyì","ý kiến / ý tưởng",3,"danh từ"],
+["自己","zìjǐ","bản thân / tự mình",3,"đại từ"],
+["总是","zǒngshì","luôn luôn",3,"ngữ pháp"],
+["最","zuì","nhất (cực độ)",3,"ngữ pháp"],
+["作业","zuòyè","bài tập về nhà",3,"học tập"],
+/* ─── HSK 4 ─────────────────────────────────── */
+["爱好","àihào","sở thích",4,"xã hội"],
+["按照","ànzhào","theo / căn cứ vào",4,"ngữ pháp"],
+["保护","bǎohù","bảo vệ",4,"hành động"],
+["保证","bǎozhèng","đảm bảo / bảo đảm",4,"hành động"],
+["表达","biǎodá","biểu đạt / diễn đạt",4,"hành động"],
+["竟然","jìngrán","thật ra / không ngờ",4,"ngữ pháp"],
+["不得不","bùdébù","không thể không / buộc phải",4,"ngữ pháp"],
+["长城","Chángchéng","Vạn Lý Trường Thành",4,"địa danh"],
+["成功","chénggōng","thành công",4,"công việc"],
+["聪明","cōngming","thông minh",4,"tính từ"],
+["打算","dǎsuan","dự tính / định",4,"hành động"],
+["担心","dānxīn","lo lắng / lo ngại",4,"cảm xúc"],
+["到底","dàodǐ","rốt cuộc / đến đáy",4,"ngữ pháp"],
+["独立","dúlì","độc lập",4,"tính từ"],
+["发展","fāzhǎn","phát triển",4,"trạng thái"],
+["方向","fāngxiàng","hướng / phương hướng",4,"phương hướng"],
+["复杂","fùzá","phức tạp",4,"tính từ"],
+["感激","gǎnjī","biết ơn / cảm ơn",4,"cảm xúc"],
+["感情","gǎnqíng","tình cảm / cảm tình",4,"cảm xúc"],
+["告别","gàobié","từ biệt / chia tay",4,"hành động"],
+["观点","guāndiǎn","quan điểm",4,"ngôn ngữ"],
+["规律","guīlǜ","quy luật / nề nếp",4,"danh từ"],
+["过程","guòchéng","quá trình",4,"danh từ"],
+["好处","hǎochù","lợi ích / điểm tốt",4,"danh từ"],
+["互联网","hùliánwǎng","internet / mạng internet",4,"công nghệ"],
+["积极","jījí","tích cực / chủ động",4,"tính từ"],
+["记者","jìzhě","phóng viên / ký giả",4,"nghề nghiệp"],
+["建议","jiànyì","đề nghị / kiến nghị",4,"hành động"],
+["经济","jīngjì","kinh tế",4,"kinh tế"],
+["经验","jīngyàn","kinh nghiệm",4,"danh từ"],
+["紧张","jǐnzhāng","căng thẳng / hồi hộp",4,"cảm xúc"],
+["举行","jǔxíng","tổ chức (sự kiện)",4,"hành động"],
+["科学","kēxué","khoa học",4,"học thuật"],
+["来不及","láibují","không kịp / không có thời gian",4,"ngữ pháp"],
+["理由","lǐyóu","lý do",4,"danh từ"],
+["联系","liánxì","liên hệ / liên lạc",4,"hành động"],
+["了解","liǎojiě","hiểu rõ / tìm hiểu",4,"hành động"],
+["礼貌","lǐmào","lịch sự / phép lịch sự",4,"tính từ"],
+["麻烦","máfan","phiền phức / làm phiền",4,"tính từ"],
+["目标","mùbiāo","mục tiêu",4,"danh từ"],
+["难道","nándào","lẽ nào / chẳng lẽ",4,"ngữ pháp"],
+["年龄","niánlíng","tuổi tác / độ tuổi",4,"con người"],
+["努力","nǔlì","cố gắng / nỗ lực",4,"tính từ"],
+["培养","péiyǎng","bồi dưỡng / đào tạo",4,"hành động"],
+["批评","pīpíng","phê bình / chỉ trích",4,"hành động"],
+["普遍","pǔbiàn","phổ biến",4,"tính từ"],
+["其实","qíshí","thật ra / thực ra",4,"ngữ pháp"],
+["轻松","qīngsōng","nhẹ nhàng / thoải mái",4,"tính từ"],
+["日记","rìjì","nhật ký",4,"đồ vật"],
+["如何","rúhé","như thế nào / làm thế nào",4,"câu hỏi"],
+["设计","shèjì","thiết kế",4,"hành động"],
+["社会","shèhuì","xã hội",4,"xã hội"],
+["深","shēn","sâu",4,"tính từ"],
+["实际","shíjì","thực tế",4,"tính từ"],
+["适合","shìhé","phù hợp / thích hợp",4,"tính từ"],
+["随便","suíbiàn","tùy tiện / tùy ý",4,"tính từ"],
+["态度","tàidu","thái độ",4,"danh từ"],
+["温度","wēndù","nhiệt độ",4,"danh từ"],
+["文化","wénhuà","văn hóa",4,"văn hóa"],
+["兴趣","xìngqù","sự hứng thú / sở thích",4,"danh từ"],
+["幸福","xìngfú","hạnh phúc",4,"cảm xúc"],
+["需要","xūyào","cần / cần thiết",4,"hành động"],
+["研究","yánjiū","nghiên cứu",4,"học thuật"],
+["严格","yángé","nghiêm khắc",4,"tính từ"],
+["要求","yāoqiú","yêu cầu",4,"hành động"],
+["影响","yǐngxiǎng","ảnh hưởng",4,"hành động"],
+["优秀","yōuxiù","xuất sắc / ưu tú",4,"tính từ"],
+["原来","yuánlái","hóa ra / ban đầu",4,"ngữ pháp"],
+["增加","zēngjiā","tăng thêm / tăng lên",4,"hành động"],
+["责任","zérèn","trách nhiệm",4,"danh từ"],
+/* ─── HSK 5 ─────────────────────────────────── */
+["把握","bǎwò","nắm bắt / cơ hội",5,"hành động"],
+["背景","bèijǐng","bối cảnh / nền",5,"danh từ"],
+["比较","bǐjiào","so sánh / khá là",5,"hành động"],
+["辩论","biànlùn","tranh luận / biện luận",5,"học thuật"],
+["彻底","chèdǐ","triệt để / hoàn toàn",5,"tính từ"],
+["成就","chéngjiù","thành tựu / thành quả",5,"danh từ"],
+["冲突","chōngtú","xung đột / mâu thuẫn",5,"xã hội"],
+["创造","chuàngzào","sáng tạo / tạo ra",5,"hành động"],
+["此外","cǐwài","ngoài ra / bên cạnh đó",5,"ngữ pháp"],
+["代表","dàibiǎo","đại diện / đại biểu",5,"danh từ"],
+["当然","dāngrán","dĩ nhiên / tất nhiên",5,"ngữ pháp"],
+["导致","dǎozhì","dẫn đến / gây ra",5,"hành động"],
+["电子商务","diànzǐ shāngwù","thương mại điện tử",5,"kinh tế"],
+["反映","fǎnyìng","phản ánh",5,"hành động"],
+["丰富","fēngfù","phong phú",5,"tính từ"],
+["个性","gèxìng","cá tính / tính cách",5,"con người"],
+["观察","guānchá","quan sát",5,"hành động"],
+["合理","hélǐ","hợp lý",5,"tính từ"],
+["获得","huòdé","đạt được / thu được",5,"hành động"],
+["即使","jíshǐ","dù / mặc dù",5,"ngữ pháp"],
+["价值","jiàzhí","giá trị",5,"danh từ"],
+["建立","jiànlì","thiết lập / xây dựng",5,"hành động"],
+["交流","jiāoliú","giao lưu / trao đổi",5,"hành động"],
+["接受","jiēshòu","tiếp nhận / chấp nhận",5,"hành động"],
+["结论","jiélùn","kết luận",5,"học thuật"],
+["解决","jiějué","giải quyết",5,"hành động"],
+["竞争","jìngzhēng","cạnh tranh",5,"kinh tế"],
+["可能","kěnéng","có thể / khả năng",5,"ngữ pháp"],
+["客观","kèguān","khách quan",5,"tính từ"],
+["空间","kōngjiān","không gian",5,"danh từ"],
+["理解","lǐjiě","lý giải / thông cảm",5,"hành động"],
+["利用","lìyòng","lợi dụng / tận dụng",5,"hành động"],
+["面临","miànlín","đối mặt với / đứng trước",5,"hành động"],
+["目的","mùdì","mục đích",5,"danh từ"],
+["内容","nèiróng","nội dung",5,"danh từ"],
+["判断","pànduan","phán đoán / nhận xét",5,"hành động"],
+["培训","péixùn","đào tạo / huấn luyện",5,"công việc"],
+["气候","qìhòu","khí hậu",5,"thiên nhiên"],
+["强调","qiángdiào","nhấn mạnh",5,"hành động"],
+["人工智能","réngōng zhìnéng","trí tuệ nhân tạo",5,"công nghệ"],
+["认为","rènwéi","cho rằng / nghĩ rằng",5,"hành động"],
+["实现","shíxiàn","thực hiện / đạt được",5,"hành động"],
+["适应","shìyìng","thích nghi / thích ứng",5,"hành động"],
+/* ─── HSK 6 ─────────────────────────────────── */
+["辩证","biànzhèng","biện chứng / chứng minh",6,"học thuật"],
+["抽象","chōuxiàng","trừu tượng",6,"học thuật"],
+["传统","chuántǒng","truyền thống",6,"văn hóa"],
+["道德","dàodé","đạo đức",6,"văn hóa"],
+["典型","diǎnxíng","điển hình / đặc trưng",6,"học thuật"],
+["反思","fǎnsī","phản tư / suy nghĩ lại",6,"học thuật"],
+["构建","gòujiàn","xây dựng / kiến tạo",6,"hành động"],
+["归纳","guīnà","quy nạp / tổng kết",6,"học thuật"],
+["和谐","héxié","hòa hợp / hài hòa",6,"xã hội"],
+["可持续","kě chíxù","bền vững",6,"thiên nhiên"],
+["历程","lìchéng","hành trình / quá trình",6,"danh từ"],
+["论述","lùnshù","luận thuật / trình bày luận điểm",6,"học thuật"],
+["面貌","miànmào","diện mạo / bộ mặt",6,"danh từ"],
+["民主","mínzhǔ","dân chủ",6,"xã hội"],
+["批判","pīpàn","phê phán / phê bình",6,"học thuật"],
+["启示","qǐshì","khải thị / gợi mở",6,"danh từ"],
+["权利","quánlì","quyền lợi",6,"xã hội"],
+["认同","rèntóng","đồng nhất / tán thành",6,"xã hội"],
+["深刻","shēnkè","sâu sắc",6,"tính từ"],
+["生态","shēngtài","sinh thái",6,"thiên nhiên"],
+["思想","sīxiǎng","tư tưởng / ý tưởng",6,"học thuật"],
+["素质","sùzhì","tố chất / phẩm chất",6,"con người"],
+["文明","wénmíng","văn minh",6,"văn hóa"],
+["现象","xiànxiàng","hiện tượng",6,"danh từ"],
+["心理","xīnlǐ","tâm lý",6,"con người"],
+["行为","xíngwéi","hành vi",6,"danh từ"],
+["意识","yìshí","ý thức",6,"học thuật"],
+["因素","yīnsù","nhân tố / yếu tố",6,"danh từ"],
+["展现","zhǎnxiàn","thể hiện / trình bày",6,"hành động"],
+["哲学","zhéxué","triết học",6,"học thuật"],
+["智慧","zhìhuì","trí tuệ / sự khôn ngoan",6,"danh từ"],
+["主题","zhǔtí","chủ đề",6,"danh từ"],
+["自律","zìlǜ","tự kỷ luật / tự giác",6,"con người"],
+];
+
+/* ── Merge example sentences from CHINESE_DATA ── */
+const WORDS = (() => {
+  if (window.CHINESE_DATA && window.CHINESE_DATA.length) {
+    const exMap = {};
+    window.CHINESE_DATA.forEach(w => {
+      if (w[5]) exMap[w[0]] = [w[5], w[6] || ""];
+    });
+    return WORDS_BASE.map(w => {
+      const ex = exMap[w[0]];
+      return ex ? [...w, ex[0], ex[1]] : [...w, "", ""];
+    });
+  }
+  return WORDS_BASE.map(w => [...w, "", ""]);
+})();
+
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+let currentLevel = 0;
+let currentCat   = "";
+let searchQ      = "";
+let viewMode     = "browse";
+let filtered     = [];
+let fcIndex      = 0;
+let fcFlipped    = false;
+let isDueMode    = false;
+
+/* ── Legacy learned set ── */
+let learned = {};
+try { learned = JSON.parse(localStorage.getItem("cn_vocab_learned") || "{}"); } catch(e){}
+
+/* ═══════════════════════════════════════════════
+   SRS SYSTEM  (Simplified SM-2)
+   Storage key: cn_srs
+   Format: { hanzi: { interval, nextReview, reps } }
+═══════════════════════════════════════════════ */
+const RATE_DAYS = { again: 1, hard: 3, good: 7, easy: 21 };
+
+let srs = {};
+function loadSRS()  { try { srs = JSON.parse(localStorage.getItem("cn_srs") || "{}"); } catch(e){} }
+function saveSRS()  { try { localStorage.setItem("cn_srs", JSON.stringify(srs)); } catch(e){} }
+
+function updateSRS(hanzi, rate) {
+  const days = RATE_DAYS[rate] || 7;
+  if (!srs[hanzi]) srs[hanzi] = { interval: 1, reps: 0 };
+  srs[hanzi].interval   = days;
+  srs[hanzi].nextReview = Date.now() + days * 86400000;
+  srs[hanzi].reps       = (srs[hanzi].reps || 0) + 1;
+  // Also mark learned if good/easy
+  if (rate === "good" || rate === "easy") {
+    learned[hanzi] = true;
+    try { localStorage.setItem("cn_vocab_learned", JSON.stringify(learned)); } catch(e){}
+  }
+  saveSRS();
+}
+
+function isDueWord(hanzi) {
+  if (!srs[hanzi]) return false; // never reviewed — not "due" in SRS sense
+  return srs[hanzi].nextReview <= Date.now();
+}
+
+function getDueWords() {
+  return WORDS.filter(w => isDueWord(w[0]));
+}
+
+function getDueCount() {
+  return Object.keys(srs).filter(h => srs[h].nextReview <= Date.now()).length;
+}
+
+function formatNextReview(hanzi) {
+  if (!srs[hanzi] || !srs[hanzi].nextReview) return "";
+  const diff = srs[hanzi].nextReview - Date.now();
+  if (diff <= 0) return "ôn ngay";
+  const days = Math.round(diff / 86400000);
+  if (days === 0) return "hôm nay";
+  if (days === 1) return "ngày mai";
+  return `${days} ngày nữa`;
+}
+
+function refreshSRSBanner() {
+  const count = getDueCount();
+  const banner = document.getElementById("srsBanner");
+  document.getElementById("srsDueCount").textContent = count;
+  if (count > 0) {
+    banner.classList.add("visible");
+  } else {
+    banner.classList.remove("visible");
+    // Show upcoming info
+    const upcoming = Object.entries(srs)
+      .filter(([,v]) => v.nextReview > Date.now())
+      .sort(([,a],[,b]) => a.nextReview - b.nextReview)[0];
+    if (upcoming) {
+      const d = Math.ceil((upcoming[1].nextReview - Date.now()) / 86400000);
+      document.getElementById("srsNextInfo").textContent = `Ôn tiếp theo: ${d} ngày nữa`;
+    }
+  }
+}
+
+loadSRS();
+
+/* ═══════════════════════════════════════════════
+   SPEECH
+═══════════════════════════════════════════════ */
+let zhVoice  = null;
+let voiceReady = false;
+
+function initVoice() {
+  if (!window.speechSynthesis) return;
+  function findVoice() {
+    const voices = speechSynthesis.getVoices();
+    zhVoice = voices.find(v => /zh[-_](CN|TW|HK)/i.test(v.lang))
+           || voices.find(v => /zh/i.test(v.lang));
+    voiceReady = !!zhVoice;
+    if (!voiceReady && voices.length > 0) {
+      document.getElementById("voiceWarn").style.display = "block";
+    }
+  }
+  findVoice();
+  if (!voiceReady) {
+    speechSynthesis.addEventListener("voiceschanged", () => {
+      findVoice();
+      if (voiceReady) document.getElementById("voiceWarn").style.display = "none";
+    });
+  }
+}
+
+function speak(text, btn) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang  = "zh-CN";
+  u.rate  = 0.85;
+  u.pitch = 1;
+  if (zhVoice) u.voice = zhVoice;
+  if (btn) {
+    btn.classList.add("speaking");
+    u.onend = u.onerror = () => btn.classList.remove("speaking");
+  }
+  speechSynthesis.speak(u);
+}
+
+/* ═══════════════════════════════════════════════
+   FILTER
+═══════════════════════════════════════════════ */
+function getFiltered() {
+  let arr = WORDS;
+  if (currentLevel > 0) arr = arr.filter(w => w[3] === currentLevel);
+  if (currentCat)       arr = arr.filter(w => w[4] === currentCat);
+  if (searchQ) {
+    const q = searchQ.toLowerCase();
+    arr = arr.filter(w =>
+      w[0].includes(q) ||
+      w[1].toLowerCase().includes(q) ||
+      w[2].toLowerCase().includes(q)
+    );
+  }
+  return arr;
+}
+
+function getCategories() {
+  let arr = WORDS;
+  if (currentLevel > 0) arr = arr.filter(w => w[3] === currentLevel);
+  return [...new Set(arr.map(w => w[4]))].sort();
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER — BROWSE
+═══════════════════════════════════════════════ */
+function renderCatRow() {
+  const cats = getCategories();
+  const row  = document.getElementById("catRow");
+  row.innerHTML =
+    `<button class="cat-pill${!currentCat?" active":""}" data-cat="">Tất cả chủ đề</button>`
+    + cats.map(c => `<button class="cat-pill${currentCat===c?" active":""}" data-cat="${c}">${c}</button>`).join("");
+  row.querySelectorAll(".cat-pill").forEach(b =>
+    b.addEventListener("click", () => { currentCat = b.dataset.cat; render(); })
+  );
+}
+
+function srsStatus(hanzi) {
+  if (!srs[hanzi]) return "unseen";
+  if (srs[hanzi].nextReview <= Date.now()) return "due";
+  return "reviewed";
+}
+
+function renderBrowse() {
+  filtered = getFiltered();
+  const grid  = document.getElementById("vocabGrid");
+  const empty = document.getElementById("emptyState");
+  const learnedCount = filtered.filter(w => !!learned[w[0]]).length;
+  document.getElementById("statsLabel").innerHTML =
+    `<strong>${filtered.length}</strong> từ · <span style="color:var(--green)">${learnedCount} đã học</span>`;
+
+  if (!filtered.length) {
+    grid.innerHTML = ""; empty.style.display = "block"; return;
+  }
+  empty.style.display = "none";
+
+  grid.innerHTML = filtered.map((w, i) => {
+    const isLearned = !!learned[w[0]];
+    const status    = srsStatus(w[0]);
+    const hasEx     = !!w[5];
+    return `<div class="vocab-card${isLearned?" learned":""}" data-idx="${i}">
+      <div class="hanzi">${w[0]}</div>
+      <div class="pinyin">${w[1]}</div>
+      <div class="meaning">${w[2]}</div>
+      ${hasEx ? `
+      <div class="card-example" id="ex${i}">
+        <div class="ex-zh">${w[5]} <button class="ex-speak" data-zh="${w[5].replace(/"/g,"&quot;")}">🔊</button></div>
+        <div class="ex-vi">${w[6]}</div>
+      </div>` : ""}
+      <div class="card-footer">
+        <span class="hsk-badge l${w[3]}">HSK ${w[3]}</span>
+        <div class="card-actions">
+          <span class="srs-dot ${status}" title="${status==="due"?"Cần ôn":status==="reviewed"?"Đã ôn":"Chưa học"}"></span>
+          ${hasEx ? `<button class="ex-toggle-btn" data-exid="${i}" title="Câu ví dụ">例</button>` : ""}
+          <button class="speak-btn" data-zh="${w[0].replace(/"/g,"&quot;")}" title="Phát âm">🔊</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+
+  // Example toggles
+  grid.querySelectorAll(".ex-toggle-btn").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      const id  = btn.dataset.exid;
+      const box = document.getElementById("ex" + id);
+      if (box) {
+        const open = box.classList.toggle("open");
+        btn.classList.toggle("open", open);
+        btn.textContent = open ? "收" : "例";
+      }
+    });
+  });
+
+  // Example speak buttons
+  grid.querySelectorAll(".ex-speak").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      speak(btn.dataset.zh, btn);
+    });
+  });
+
+  // Word speak buttons
+  grid.querySelectorAll(".speak-btn").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      speak(btn.dataset.zh, btn);
+    });
+  });
+
+  // Click card → mark learned
+  grid.querySelectorAll(".vocab-card").forEach(card => {
+    card.addEventListener("click", e => {
+      if (e.target.closest(".speak-btn, .ex-toggle-btn, .ex-speak")) return;
+      const w = filtered[+card.dataset.idx];
+      learned[w[0]] = !learned[w[0]];
+      if (!learned[w[0]]) delete learned[w[0]];
+      try { localStorage.setItem("cn_vocab_learned", JSON.stringify(learned)); } catch(e){}
+      card.classList.toggle("learned", !!learned[w[0]]);
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER — FLASHCARD
+═══════════════════════════════════════════════ */
+function renderFlashcard() {
+  if (isDueMode) {
+    filtered = getDueWords();
+    if (filtered.length === 0) {
+      filtered = getFiltered();
+      isDueMode = false;
+      document.getElementById("fcShowDue").classList.remove("due-active");
+    }
+  } else {
+    filtered = getFiltered();
+  }
+  document.getElementById("statsLabel").innerHTML = `<strong>${filtered.length}</strong> từ`;
+  fcIndex   = 0;
+  fcFlipped = false;
+  updateFlashcard();
+}
+
+function updateFlashcard() {
+  if (!filtered.length) {
+    document.getElementById("fHanzi").textContent    = "—";
+    document.getElementById("bHanzi").textContent    = "—";
+    document.getElementById("bPinyin").textContent   = "—";
+    document.getElementById("bMeaning").textContent  = "Không có từ nào.";
+    document.getElementById("bExample").style.display = "none";
+    document.getElementById("fcCounter").textContent = "0 / 0";
+    document.getElementById("fcFill").style.width    = "0%";
+    document.getElementById("fcDone").textContent    = "0";
+    document.getElementById("fcTotal").textContent   = "0";
+    return;
+  }
+  const w = filtered[fcIndex];
+  document.getElementById("fHanzi").textContent    = w[0];
+  document.getElementById("bHanzi").textContent    = w[0];
+  document.getElementById("bPinyin").textContent   = w[1];
+  document.getElementById("bMeaning").textContent  = w[2];
+  document.getElementById("fcCounter").textContent = `${fcIndex + 1} / ${filtered.length}`;
+
+  // Example sentence
+  const exBox = document.getElementById("bExample");
+  if (w[5]) {
+    document.getElementById("bExZh").textContent = w[5];
+    document.getElementById("bExVi").textContent = w[6] || "";
+    exBox.style.display = "";
+  } else {
+    exBox.style.display = "none";
+  }
+
+  const pct = Math.round((fcIndex / filtered.length) * 100);
+  document.getElementById("fcFill").style.width   = pct + "%";
+  document.getElementById("fcDone").textContent   = fcIndex;
+  document.getElementById("fcTotal").textContent  = filtered.length;
+
+  fcFlipped = false;
+  document.getElementById("flipCard").classList.remove("flipped");
+  document.getElementById("rateBtns").style.display = "none";
+  document.getElementById("rateHint").style.display  = "";
+
+  document.getElementById("fcPrev").disabled = fcIndex === 0;
+  document.getElementById("fcNext").disabled = fcIndex === filtered.length - 1;
+}
+
+/* ═══════════════════════════════════════════════
+   MAIN RENDER
+═══════════════════════════════════════════════ */
+function render() {
+  renderCatRow();
+  refreshSRSBanner();
+  if (viewMode === "browse") {
+    renderBrowse();
+  } else {
+    renderFlashcard();
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   EVENT LISTENERS
+═══════════════════════════════════════════════ */
+// HSK level tabs
+document.querySelectorAll(".hsk-tab").forEach(tab =>
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".hsk-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentLevel = +tab.dataset.level;
+    currentCat   = "";
+    isDueMode    = false;
+    document.getElementById("fcShowDue").classList.remove("due-active");
+    render();
+  })
+);
+
+// Search
+document.getElementById("searchInput").addEventListener("input", e => {
+  searchQ = e.target.value.trim(); render();
+});
+
+// Mode buttons
+document.getElementById("btnBrowse").addEventListener("click", () => {
+  viewMode = "browse";
+  document.getElementById("btnBrowse").classList.add("active");
+  document.getElementById("btnFlash").classList.remove("active");
+  document.getElementById("browseView").style.display = "";
+  document.getElementById("flashcardView").style.display = "none";
+  render();
+});
+document.getElementById("btnFlash").addEventListener("click", () => {
+  viewMode = "flash";
+  document.getElementById("btnFlash").classList.add("active");
+  document.getElementById("btnBrowse").classList.remove("active");
+  document.getElementById("browseView").style.display = "none";
+  document.getElementById("flashcardView").style.display = "";
+  render();
+});
+
+// SRS banner due button → switch to flashcard in due mode
+document.getElementById("srsDueBtn").addEventListener("click", () => {
+  isDueMode = true;
+  viewMode  = "flash";
+  document.getElementById("btnFlash").classList.add("active");
+  document.getElementById("btnBrowse").classList.remove("active");
+  document.getElementById("browseView").style.display = "none";
+  document.getElementById("flashcardView").style.display = "";
+  document.getElementById("fcShowDue").classList.add("due-active");
+  render();
+});
+
+// Flip card
+document.getElementById("flipScene").addEventListener("click", () => {
+  if (!filtered.length) return;
+  fcFlipped = !fcFlipped;
+  document.getElementById("flipCard").classList.toggle("flipped", fcFlipped);
+  document.getElementById("rateBtns").style.display = fcFlipped ? "" : "none";
+  document.getElementById("rateHint").style.display  = fcFlipped ? "none" : "";
+  if (fcFlipped) setTimeout(() => speak(filtered[fcIndex][0]), 500);
+});
+
+// Speak word on back
+document.getElementById("bSpeak").addEventListener("click", e => {
+  e.stopPropagation();
+  if (filtered.length) speak(filtered[fcIndex][0], document.getElementById("bSpeak"));
+});
+
+// Speak example sentence
+document.getElementById("bExSpeak").addEventListener("click", e => {
+  e.stopPropagation();
+  if (filtered.length && filtered[fcIndex][5]) speak(filtered[fcIndex][5], document.getElementById("bExSpeak"));
+});
+
+// Rate buttons (4)
+document.querySelectorAll(".rate-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const rate = btn.dataset.rate;
+    if (filtered.length) {
+      updateSRS(filtered[fcIndex][0], rate);
+    }
+    refreshSRSBanner();
+    // Advance to next card
+    if (fcIndex < filtered.length - 1) {
+      fcIndex++;
+      updateFlashcard();
+    } else {
+      document.getElementById("fHanzi").textContent = "🎉";
+      document.getElementById("flipCard").classList.remove("flipped");
+      document.getElementById("rateBtns").style.display = "none";
+      document.getElementById("rateHint").textContent = "Hết bộ thẻ! Nhấn ↺ để bắt đầu lại.";
+      document.getElementById("fcFill").style.width = "100%";
+      document.getElementById("fcDone").textContent = filtered.length;
+    }
+  });
+});
+
+// Nav prev/next
+document.getElementById("fcPrev").addEventListener("click", () => {
+  if (fcIndex > 0) { fcIndex--; updateFlashcard(); }
+});
+document.getElementById("fcNext").addEventListener("click", () => {
+  if (fcIndex < filtered.length - 1) { fcIndex++; updateFlashcard(); }
+});
+
+// Shuffle
+document.getElementById("fcShuffle").addEventListener("click", () => {
+  filtered = [...(isDueMode ? getDueWords() : getFiltered())];
+  for (let i = filtered.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+  }
+  fcIndex = 0; updateFlashcard();
+});
+
+// Reset
+document.getElementById("fcReset").addEventListener("click", () => {
+  isDueMode = false;
+  document.getElementById("fcShowDue").classList.remove("due-active");
+  render();
+});
+
+// Show all
+document.getElementById("fcShowAll").addEventListener("click", () => {
+  isDueMode = false;
+  document.getElementById("fcShowDue").classList.remove("due-active");
+  filtered  = getFiltered();
+  fcIndex   = 0;
+  document.getElementById("statsLabel").innerHTML = `<strong>${filtered.length}</strong> từ`;
+  updateFlashcard();
+});
+
+// Show new (unreviewed)
+document.getElementById("fcShowNew").addEventListener("click", () => {
+  isDueMode = false;
+  document.getElementById("fcShowDue").classList.remove("due-active");
+  filtered  = getFiltered().filter(w => !learned[w[0]] && !srs[w[0]]);
+  fcIndex   = 0;
+  document.getElementById("statsLabel").innerHTML = `<strong>${filtered.length}</strong> từ chưa học`;
+  updateFlashcard();
+});
+
+// Show due
+document.getElementById("fcShowDue").addEventListener("click", () => {
+  isDueMode = true;
+  document.getElementById("fcShowDue").classList.add("due-active");
+  filtered  = getDueWords();
+  fcIndex   = 0;
+  const cnt = filtered.length;
+  document.getElementById("statsLabel").innerHTML =
+    `<strong>${cnt}</strong> từ cần ôn${cnt===0?" (không có)":""}`;
+  updateFlashcard();
+});
+
+// Keyboard shortcuts
+document.addEventListener("keydown", e => {
+  if (viewMode !== "flash") return;
+  if (e.target.tagName === "INPUT") return;
+  if (e.code === "Space" || e.code === "Enter") {
+    e.preventDefault();
+    document.getElementById("flipScene").click();
+  }
+  if (e.code === "ArrowRight") document.getElementById("fcNext").click();
+  if (e.code === "ArrowLeft")  document.getElementById("fcPrev").click();
+  if (fcFlipped) {
+    if (e.code === "KeyA") document.querySelector(".rate-btn.again")?.click();
+    if (e.code === "KeyH") document.querySelector(".rate-btn.hard")?.click();
+    if (e.code === "KeyN") document.querySelector(".rate-btn.good")?.click();
+    if (e.code === "KeyE") document.querySelector(".rate-btn.easy")?.click();
+  }
+});
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+initVoice();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,1623 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kiểm tra từ vựng tiếng Trung | Course Learning</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+  <style>
+    :root {
+      --cn-red:  #d9534f;
+      --cn-gold: #c8922a;
+      --cn-dark: #1a0a00;
+      --correct: #4caf50;
+      --wrong:   #e53935;
+    }
+
+    /* ═══════════════ LAYOUT SCREENS ═══════════════ */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ═══════════════ SETUP SCREEN ═══════════════ */
+    .setup-hero {
+      padding: 48px 0 32px;
+      text-align: center;
+    }
+    .setup-hero h1 { margin-bottom: 8px; }
+    .setup-hero p  { color: var(--muted); max-width: 500px; margin: 0 auto 32px; }
+
+    .setup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto 32px;
+    }
+    .setup-card {
+      border: 2px solid var(--line);
+      box-shadow: 4px 4px 0 var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 22px 24px;
+    }
+    .setup-card h3 {
+      margin: 0 0 14px;
+      font-size: .95rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .setup-card h3 .ico { font-size: 1.2rem; }
+
+    /* level tabs */
+    .level-tabs {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .level-tab {
+      padding: 5px 14px;
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: 20px;
+      font-size: .82rem; font-weight: 600;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--line);
+      transition: background .12s;
+    }
+    .level-tab.active { background: var(--cn-red); color: #fff; border-color: var(--cn-red); }
+    .level-tab:hover:not(.active) { background: var(--ink); color: var(--paper); }
+
+    /* count pills */
+    .count-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .count-pill {
+      padding: 6px 18px;
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: 20px;
+      font-size: .88rem; font-weight: 600;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--line);
+    }
+    .count-pill.active { background: var(--ink); color: var(--paper); }
+
+    /* question type checkboxes */
+    .qtype-list { display: flex; flex-direction: column; gap: 10px; }
+    .qtype-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      cursor: pointer;
+      background: #fff;
+      transition: background .12s;
+      user-select: none;
+    }
+    .qtype-item:hover { background: #f7f3ea; }
+    .qtype-item input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--cn-red); cursor: pointer; }
+    .qtype-item label { cursor: pointer; flex: 1; font-size: .88rem; line-height: 1.4; }
+    .qtype-item label strong { display: block; font-size: .9rem; }
+    .qtype-item label span { color: var(--muted); font-size: .82rem; }
+
+    /* timer toggle */
+    .timer-row { display: flex; align-items: center; gap: 12px; }
+    .toggle-switch {
+      position: relative; width: 46px; height: 24px;
+      display: inline-block;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-knob {
+      position: absolute; inset: 0;
+      background: #ccc; border-radius: 24px; cursor: pointer;
+      transition: background .2s;
+    }
+    .toggle-knob::before {
+      content: "";
+      position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: #fff; border-radius: 50%;
+      transition: transform .2s;
+    }
+    .toggle-switch input:checked + .toggle-knob { background: var(--cn-red); }
+    .toggle-switch input:checked + .toggle-knob::before { transform: translateX(22px); }
+    .timer-label { font-size: .88rem; }
+
+    /* difficulty summary */
+    .setup-summary {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: .88rem;
+      color: var(--muted);
+    }
+    .setup-summary strong { color: var(--ink); }
+
+    /* start button */
+    .start-btn {
+      display: block;
+      margin: 0 auto;
+      padding: 14px 48px;
+      background: var(--cn-red);
+      color: #fff;
+      border: 3px solid var(--cn-dark);
+      border-radius: var(--radius);
+      font-size: 1.1rem; font-weight: 700;
+      cursor: pointer;
+      box-shadow: 5px 5px 0 var(--cn-dark);
+      transition: transform .1s, box-shadow .1s;
+      font-family: inherit;
+    }
+    .start-btn:hover:not(:disabled) {
+      transform: translate(-2px,-2px);
+      box-shadow: 7px 7px 0 var(--cn-dark);
+    }
+    .start-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .start-btn:active { transform: translate(2px,2px); box-shadow: 3px 3px 0 var(--cn-dark); }
+
+    /* ═══════════════ QUIZ SCREEN ═══════════════ */
+    .quiz-header {
+      position: sticky;
+      top: 68px; z-index: 10;
+      background: rgba(247,243,234,.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--line);
+      padding: 10px 0;
+    }
+    .quiz-header-inner {
+      display: flex; align-items: center; gap: 16px;
+    }
+    .quiz-header .q-counter { font-size: .88rem; color: var(--muted); white-space: nowrap; }
+    .quiz-header .q-counter strong { color: var(--ink); }
+    .progress-bar {
+      flex: 1; height: 8px; background: #e0dcd4;
+      border-radius: 4px; overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cn-red), var(--cn-gold));
+      border-radius: 4px;
+      transition: width .35s ease;
+    }
+    .quiz-timer {
+      font-size: 1.05rem; font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--ink);
+      min-width: 48px; text-align: right;
+    }
+    .quiz-timer.danger { color: var(--cn-red); animation: blink .6s infinite; }
+    @keyframes blink { 50% { opacity: .4; } }
+
+    /* question area */
+    .quiz-body { max-width: 680px; margin: 0 auto; padding: 32px 16px 64px; }
+
+    .q-type-badge {
+      display: inline-block;
+      font-size: .75rem; font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 12px;
+      background: var(--ink); color: var(--paper);
+      margin-bottom: 14px;
+      text-transform: uppercase; letter-spacing: .05em;
+    }
+
+    .q-stimulus {
+      border: 3px solid var(--line);
+      box-shadow: 5px 5px 0 var(--line);
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px 24px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .q-stimulus .hanzi {
+      font-family: "Noto Serif SC","SimSun",serif;
+      font-size: 5rem; font-weight: 700;
+      color: var(--cn-dark); line-height: 1;
+    }
+    .q-stimulus .pinyin-big {
+      font-size: 2rem; font-weight: 700;
+      color: var(--cn-red); font-style: italic;
+    }
+    .q-stimulus .meaning-big {
+      font-size: 1.4rem; color: var(--ink); line-height: 1.5;
+    }
+    .q-stimulus .listen-hint {
+      font-size: .85rem; color: var(--muted); margin-top: 10px;
+    }
+    .listen-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 16px;
+      padding: 10px 24px;
+      border: 2px solid var(--line);
+      background: #fff; border-radius: var(--radius);
+      font-size: 1rem; font-weight: 600; cursor: pointer;
+      box-shadow: 3px 3px 0 var(--line);
+    }
+    .listen-btn:hover { background: var(--ink); color: var(--paper); }
+    .listen-btn.playing { background: var(--cn-red); color: #fff; border-color: var(--cn-red); }
+
+    /* options grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 480px) {
+      .options-grid { grid-template-columns: 1fr; }
+    }
+
+    .option-btn {
+      padding: 14px 16px;
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      font-size: .95rem;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: left;
+      box-shadow: 3px 3px 0 var(--line);
+      transition: transform .1s, box-shadow .1s, background .15s;
+      display: flex; align-items: flex-start; gap: 10px;
+      line-height: 1.4;
+    }
+    .option-btn .opt-key {
+      min-width: 24px; height: 24px;
+      border: 2px solid var(--line);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; font-weight: 700;
+      background: #f7f3ea;
+      flex-shrink: 0;
+    }
+    .option-btn .opt-zh  { font-family: "Noto Serif SC","SimSun",serif; font-size: 1.4rem; line-height: 1.2; }
+    .option-btn .opt-py  { font-style: italic; color: var(--cn-red); font-size: .88rem; }
+    .option-btn .opt-vi  { color: var(--muted); font-size: .88rem; }
+
+    .option-btn:hover:not(:disabled):not(.locked) {
+      transform: translate(-2px,-2px);
+      box-shadow: 5px 5px 0 var(--line);
+      background: #f7f3ea;
+    }
+    .option-btn.correct {
+      background: #e8f5e9; border-color: var(--correct);
+      box-shadow: 3px 3px 0 var(--correct); color: #1b5e20;
+    }
+    .option-btn.correct .opt-key { background: var(--correct); color: #fff; border-color: var(--correct); }
+    .option-btn.wrong {
+      background: #ffebee; border-color: var(--wrong);
+      box-shadow: 3px 3px 0 var(--wrong); color: #b71c1c;
+    }
+    .option-btn.wrong .opt-key { background: var(--wrong); color: #fff; border-color: var(--wrong); }
+    .option-btn:disabled, .option-btn.locked { cursor: default; }
+
+    /* feedback bar */
+    .feedback-bar {
+      display: none;
+      margin-top: 20px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      border: 2px solid;
+      font-size: .92rem; line-height: 1.5;
+    }
+    .feedback-bar.correct-fb {
+      border-color: var(--correct);
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+    .feedback-bar.wrong-fb {
+      border-color: var(--wrong);
+      background: #ffebee;
+      color: #b71c1c;
+    }
+    .feedback-bar .fb-title { font-weight: 700; margin-bottom: 4px; font-size: 1rem; }
+
+    /* next button */
+    .next-btn {
+      display: none;
+      width: 100%;
+      margin-top: 16px;
+      padding: 13px;
+      background: var(--ink);
+      color: var(--paper);
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      font-size: .95rem; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      box-shadow: 4px 4px 0 var(--line);
+    }
+    .next-btn:hover { background: var(--cn-red); border-color: var(--cn-red); }
+
+    /* score streak */
+    .streak-bar {
+      display: flex; gap: 4px; flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .streak-dot {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
+      background: #e0dcd4;
+      transition: background .3s;
+    }
+    .streak-dot.c { background: var(--correct); border-color: var(--correct); }
+    .streak-dot.w { background: var(--wrong);   border-color: var(--wrong); }
+
+    /* ═══════════════ RESULTS SCREEN ═══════════════ */
+    .results-body { max-width: 720px; margin: 0 auto; padding: 40px 16px 64px; }
+
+    .score-card {
+      border: 3px solid var(--line);
+      box-shadow: 6px 6px 0 var(--line);
+      background: #fff;
+      border-radius: 16px;
+      padding: 36px 32px;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .score-pct {
+      font-size: 4.5rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .score-pct.grade-s { color: #4caf50; }
+    .score-pct.grade-a { color: var(--cyan); }
+    .score-pct.grade-b { color: var(--cn-gold); }
+    .score-pct.grade-c { color: var(--cn-red); }
+    .score-pct.grade-f { color: #888; }
+
+    .grade-label {
+      display: inline-block;
+      font-size: 1rem; font-weight: 700;
+      padding: 4px 18px;
+      border-radius: 20px;
+      border: 2px solid;
+      margin-bottom: 16px;
+    }
+    .grade-s { border-color: #4caf50; color: #4caf50; }
+    .grade-a { border-color: var(--cyan); color: var(--cyan); }
+    .grade-b { border-color: var(--cn-gold); color: var(--cn-gold); }
+    .grade-c { border-color: var(--cn-red); color: var(--cn-red); }
+    .grade-f { border-color: #888; color: #888; }
+
+    .score-sub { font-size: .95rem; color: var(--muted); }
+    .score-sub strong { color: var(--ink); }
+
+    .stats-row {
+      display: flex; justify-content: center; gap: 32px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-item .num { font-size: 1.8rem; font-weight: 700; }
+    .stat-item .lbl { font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    .stat-item.correct .num { color: var(--correct); }
+    .stat-item.wrong .num   { color: var(--wrong); }
+
+    /* result actions */
+    .result-actions {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+    .res-btn {
+      padding: 10px 24px;
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      font-size: .9rem; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      box-shadow: 3px 3px 0 var(--line);
+      background: #fff;
+    }
+    .res-btn:hover { background: var(--ink); color: var(--paper); }
+    .res-btn.primary { background: var(--cn-red); color: #fff; border-color: var(--cn-red); }
+    .res-btn.primary:hover { background: #b73330; }
+
+    /* wrong answers list */
+    .wrong-section h2 {
+      font-size: 1.1rem; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .wrong-list { display: flex; flex-direction: column; gap: 10px; }
+    .wrong-item {
+      border: 2px solid var(--line);
+      box-shadow: 3px 3px 0 var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center; gap: 14px;
+    }
+    .wrong-item .wi-zh {
+      font-family: "Noto Serif SC","SimSun",serif;
+      font-size: 2rem; font-weight: 700;
+      color: var(--cn-dark);
+    }
+    .wrong-item .wi-info { font-size: .88rem; line-height: 1.6; }
+    .wrong-item .wi-info .wi-py  { color: var(--cn-red); font-style: italic; font-weight: 600; }
+    .wrong-item .wi-info .wi-vi  { color: var(--muted); }
+    .wrong-item .wi-info .wi-your{ color: var(--wrong); font-size: .82rem; }
+    .wrong-item .wi-speak {
+      background: none; border: none; font-size: 1.4rem; cursor: pointer;
+      padding: 4px 6px; border-radius: 6px;
+    }
+    .wrong-item .wi-speak:hover { background: #f7f3ea; }
+
+    /* type breakdown */
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .breakdown-card {
+      border: 2px solid var(--line);
+      box-shadow: 3px 3px 0 var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .breakdown-card h4 { margin: 0 0 6px; font-size: .85rem; color: var(--muted); }
+    .bd-row { display: flex; align-items: center; gap: 8px; }
+    .bd-bar { flex: 1; height: 6px; background: #e0dcd4; border-radius: 3px; overflow: hidden; }
+    .bd-fill { height: 100%; border-radius: 3px; background: var(--correct); }
+    .bd-pct { font-size: .82rem; font-weight: 700; }
+
+    /* all correct celebration */
+    .celebration {
+      font-size: 3rem;
+      text-align: center;
+      margin: 8px 0;
+      animation: pop .5s ease;
+    }
+    @keyframes pop {
+      0% { transform: scale(.5); opacity:0; }
+      70% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity:1; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="shell topbar-inner">
+    <a class="brand" href="./chinese-vocab.html" aria-label="Từ vựng tiếng Trung">
+      <span class="mark">试</span>
+      <span>Kiểm tra tiếng Trung</span>
+    </a>
+    <nav class="nav">
+      <a href="./index.html#courses">Khóa học</a>
+      <a href="./chinese.html#roadmap">Lộ trình</a>
+      <a href="./chinese-vocab.html">Từ vựng</a>
+      <a href="./chinese-reading.html">Đọc hiểu</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 1: SETUP
+══════════════════════════════════════════ -->
+<div id="screenSetup" class="screen active">
+  <div class="shell">
+    <div class="setup-hero">
+      <div class="eyebrow"><span class="pulse"></span><span>测验 · Bài kiểm tra</span></div>
+      <h1>Kiểm tra từ vựng tiếng Trung</h1>
+      <p>Chọn cấp HSK, số câu và loại câu hỏi. Quiz sẽ tự ra đề ngẫu nhiên và chấm điểm ngay sau khi hoàn thành.</p>
+    </div>
+
+    <div class="setup-grid">
+
+      <!-- Card 1: Level -->
+      <div class="setup-card">
+        <h3><span class="ico">📚</span> Cấp HSK</h3>
+        <div class="level-tabs" id="levelTabs">
+          <button class="level-tab active" data-level="0">Tất cả</button>
+          <button class="level-tab" data-level="1">HSK 1</button>
+          <button class="level-tab" data-level="2">HSK 2</button>
+          <button class="level-tab" data-level="3">HSK 3</button>
+          <button class="level-tab" data-level="4">HSK 4</button>
+          <button class="level-tab" data-level="5">HSK 5</button>
+          <button class="level-tab" data-level="6">HSK 6</button>
+        </div>
+      </div>
+
+      <!-- Card 2: Count -->
+      <div class="setup-card">
+        <h3><span class="ico">🔢</span> Số câu hỏi</h3>
+        <div class="count-pills" id="countPills">
+          <button class="count-pill" data-count="10">10 câu</button>
+          <button class="count-pill active" data-count="20">20 câu</button>
+          <button class="count-pill" data-count="30">30 câu</button>
+          <button class="count-pill" data-count="40">40 câu</button>
+        </div>
+      </div>
+
+      <!-- Card 3: Question types -->
+      <div class="setup-card">
+        <h3><span class="ico">❓</span> Loại câu hỏi</h3>
+        <div class="qtype-list" id="qtypeList">
+          <label class="qtype-item">
+            <input type="checkbox" value="zh2vi" checked />
+            <label>
+              <strong>Chữ → Nghĩa</strong>
+              <span>Xem chữ Hán, chọn nghĩa tiếng Việt đúng</span>
+            </label>
+          </label>
+          <label class="qtype-item">
+            <input type="checkbox" value="vi2zh" checked />
+            <label>
+              <strong>Nghĩa → Chữ</strong>
+              <span>Xem nghĩa tiếng Việt, chọn chữ Hán đúng</span>
+            </label>
+          </label>
+          <label class="qtype-item">
+            <input type="checkbox" value="zh2py" checked />
+            <label>
+              <strong>Chữ → Pinyin</strong>
+              <span>Xem chữ Hán, chọn Pinyin đúng (cả dấu thanh)</span>
+            </label>
+          </label>
+          <label class="qtype-item">
+            <input type="checkbox" value="py2zh" />
+            <label>
+              <strong>Pinyin → Chữ</strong>
+              <span>Xem Pinyin, chọn chữ Hán tương ứng</span>
+            </label>
+          </label>
+          <label class="qtype-item">
+            <input type="checkbox" value="listen" />
+            <label>
+              <strong>🔊 Nghe → Chữ</strong>
+              <span>Nghe phát âm, chọn chữ Hán tương ứng</span>
+            </label>
+          </label>
+          <label class="qtype-item">
+            <input type="checkbox" value="sentence" />
+            <label>
+              <strong>📝 Điền vào câu</strong>
+              <span>Xem câu ví dụ có chỗ trống ___, chọn từ đúng để điền</span>
+            </label>
+          </label>
+        </div>
+      </div>
+
+      <!-- Card 4: Options -->
+      <div class="setup-card">
+        <h3><span class="ico">⚙️</span> Tùy chọn</h3>
+
+        <div style="margin-bottom:18px">
+          <div class="timer-row">
+            <label class="toggle-switch">
+              <input type="checkbox" id="timerToggle" />
+              <span class="toggle-knob"></span>
+            </label>
+            <span class="timer-label">Đếm giờ (30 giây / câu)</span>
+          </div>
+        </div>
+
+        <div>
+          <p style="margin:0 0 10px;font-size:.88rem;color:var(--muted)">Thứ tự câu hỏi</p>
+          <div class="count-pills">
+            <button class="count-pill active" data-order="random">Ngẫu nhiên</button>
+            <button class="count-pill" data-order="level">Theo cấp</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="setup-summary" id="setupSummary"></p>
+    <button class="start-btn" id="startBtn">Bắt đầu kiểm tra →</button>
+    <div style="height:48px"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 2: QUIZ
+══════════════════════════════════════════ -->
+<div id="screenQuiz" class="screen">
+
+  <div class="quiz-header">
+    <div class="shell quiz-header-inner">
+      <span class="q-counter"><strong id="qCurrent">1</strong> / <span id="qTotal">20</span></span>
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="qProgress" style="width:0%"></div>
+      </div>
+      <div class="quiz-timer" id="quizTimer" style="display:none">0:30</div>
+      <button class="fc-ctrl-btn" id="quitBtn" style="font-size:.8rem;padding:4px 12px">✕ Thoát</button>
+    </div>
+  </div>
+
+  <div class="quiz-body">
+    <div class="streak-bar" id="streakBar"></div>
+
+    <div class="q-type-badge" id="qTypeBadge">Chữ → Nghĩa</div>
+
+    <div class="q-stimulus" id="qStimulus">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="options-grid" id="optionsGrid">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="feedback-bar" id="feedbackBar"></div>
+    <button class="next-btn" id="nextBtn">Câu tiếp theo →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 3: RESULTS
+══════════════════════════════════════════ -->
+<div id="screenResults" class="screen">
+  <div class="results-body">
+
+    <div class="score-card">
+      <div class="celebration" id="celebration"></div>
+      <div class="score-pct" id="scorePct">—</div>
+      <div><span class="grade-label" id="gradeLabel">—</span></div>
+      <p class="score-sub" id="scoreSub"></p>
+      <div class="stats-row">
+        <div class="stat-item correct">
+          <div class="num" id="statCorrect">0</div>
+          <div class="lbl">Đúng</div>
+        </div>
+        <div class="stat-item wrong">
+          <div class="num" id="statWrong">0</div>
+          <div class="lbl">Sai</div>
+        </div>
+        <div class="stat-item">
+          <div class="num" id="statTime">—</div>
+          <div class="lbl">Thời gian</div>
+        </div>
+        <div class="stat-item">
+          <div class="num" id="statStreak">0</div>
+          <div class="lbl">Streak dài nhất</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Breakdown by type -->
+    <div class="breakdown-grid" id="breakdownGrid"></div>
+
+    <!-- Actions -->
+    <div class="result-actions">
+      <button class="res-btn primary" id="retryBtn">↺ Làm lại bộ này</button>
+      <button class="res-btn" id="retryWrongBtn">⚠ Ôn từ sai</button>
+      <button class="res-btn" id="newQuizBtn">+ Bài mới</button>
+      <a class="res-btn" href="./chinese-vocab.html">← Từ vựng</a>
+    </div>
+
+    <!-- Wrong answers -->
+    <div class="wrong-section" id="wrongSection" style="display:none">
+      <h2>📋 Từ làm sai (<span id="wrongCount">0</span>)</h2>
+      <div class="wrong-list" id="wrongList"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="shell footer">Kiểm tra từ vựng tiếng Trung HSK 1-6. Phát âm qua Web Speech API. Dùng Chrome hoặc Edge để có chất lượng tốt nhất.</footer>
+
+<!-- Load shared data for example sentences -->
+<script src="./assets/data/chinese-data.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════
+   VOCABULARY DATA  (same as chinese-vocab.html)
+   [hanzi, pinyin, meaning_vi, hsk_level, category]
+═══════════════════════════════════════════════════ */
+const WORDS = [
+["爱","ài","yêu thương",1,"cảm xúc"],
+["八","bā","tám (số 8)",1,"số đếm"],
+["爸爸","bàba","bố / cha",1,"gia đình"],
+["杯子","bēizi","cái cốc / ly",1,"đồ vật"],
+["北京","Běijīng","Bắc Kinh",1,"địa danh"],
+["本","běn","cuốn (lượng từ sách)",1,"lượng từ"],
+["不","bù","không (phủ định)",1,"ngữ pháp"],
+["不客气","bú kèqi","không có gì (đáp cảm ơn)",1,"giao tiếp"],
+["菜","cài","rau / món ăn",1,"ẩm thực"],
+["茶","chá","trà",1,"ẩm thực"],
+["吃","chī","ăn",1,"hành động"],
+["出租车","chūzūchē","xe taxi",1,"giao thông"],
+["打电话","dǎ diànhuà","gọi điện thoại",1,"hành động"],
+["大","dà","lớn / to",1,"tính từ"],
+["的","de","của (trợ từ sở hữu)",1,"ngữ pháp"],
+["电脑","diànnǎo","máy tính",1,"công nghệ"],
+["电视","diànshì","ti vi / tivi",1,"đồ vật"],
+["电影","diànyǐng","phim điện ảnh",1,"giải trí"],
+["东西","dōngxi","đồ vật / thứ gì đó",1,"đồ vật"],
+["都","dōu","đều / tất cả",1,"ngữ pháp"],
+["读","dú","đọc",1,"hành động"],
+["对不起","duìbuqǐ","xin lỗi",1,"giao tiếp"],
+["多","duō","nhiều",1,"tính từ"],
+["多少","duōshao","bao nhiêu",1,"câu hỏi"],
+["儿子","érzi","con trai",1,"gia đình"],
+["飞机","fēijī","máy bay",1,"giao thông"],
+["高兴","gāoxìng","vui mừng / vui vẻ",1,"cảm xúc"],
+["个","gè","cái / người (lượng từ chung)",1,"lượng từ"],
+["工作","gōngzuò","công việc / làm việc",1,"công việc"],
+["狗","gǒu","con chó",1,"động vật"],
+["汉语","Hànyǔ","tiếng Trung / tiếng Hán",1,"ngôn ngữ"],
+["好","hǎo","tốt / được",1,"tính từ"],
+["喝","hē","uống",1,"hành động"],
+["和","hé","và / cùng với",1,"ngữ pháp"],
+["很","hěn","rất",1,"ngữ pháp"],
+["回","huí","quay về / về",1,"hành động"],
+["会","huì","biết làm / sẽ",1,"ngữ pháp"],
+["几","jǐ","mấy / vài",1,"câu hỏi"],
+["家","jiā","nhà / gia đình",1,"gia đình"],
+["叫","jiào","được gọi là / gọi",1,"hành động"],
+["今天","jīntiān","hôm nay",1,"thời gian"],
+["来","lái","đến / lại",1,"hành động"],
+["老师","lǎoshī","giáo viên / thầy cô",1,"nghề nghiệp"],
+["冷","lěng","lạnh",1,"thời tiết"],
+["妈妈","māma","mẹ / má",1,"gia đình"],
+["没关系","méiguānxi","không sao / không có gì",1,"giao tiếp"],
+["没有","méiyǒu","không có",1,"ngữ pháp"],
+["哪","nǎ","nào / đâu",1,"câu hỏi"],
+["那","nà","đó / kia",1,"ngữ pháp"],
+["能","néng","có thể / được phép",1,"ngữ pháp"],
+["你","nǐ","bạn / anh / chị",1,"đại từ"],
+["年","nián","năm",1,"thời gian"],
+["女儿","nǚ'ér","con gái",1,"gia đình"],
+["朋友","péngyou","bạn bè",1,"xã hội"],
+["漂亮","piàoliang","đẹp / xinh",1,"tính từ"],
+["苹果","píngguǒ","quả táo",1,"ẩm thực"],
+["去","qù","đi (đến nơi nào đó)",1,"hành động"],
+["热","rè","nóng",1,"thời tiết"],
+["人","rén","người",1,"con người"],
+["认识","rènshi","quen biết / nhận ra",1,"hành động"],
+["三","sān","ba (số 3)",1,"số đếm"],
+["商店","shāngdiàn","cửa hàng",1,"địa điểm"],
+["谁","shéi","ai",1,"câu hỏi"],
+["什么","shénme","cái gì / điều gì",1,"câu hỏi"],
+["是","shì","là",1,"ngữ pháp"],
+["书","shū","sách",1,"đồ vật"],
+["水","shuǐ","nước",1,"ẩm thực"],
+["睡觉","shuìjiào","ngủ",1,"hành động"],
+["说话","shuōhuà","nói chuyện",1,"hành động"],
+["他","tā","anh ấy / nó (nam)",1,"đại từ"],
+["她","tā","cô ấy (nữ)",1,"đại từ"],
+["太","tài","quá / quá lắm",1,"ngữ pháp"],
+["天气","tiānqì","thời tiết",1,"thời tiết"],
+["听","tīng","nghe",1,"hành động"],
+["同学","tóngxué","bạn học / bạn cùng lớp",1,"xã hội"],
+["我","wǒ","tôi / mình",1,"đại từ"],
+["我们","wǒmen","chúng tôi / chúng ta",1,"đại từ"],
+["下雨","xià yǔ","trời mưa",1,"thời tiết"],
+["现在","xiànzài","bây giờ / hiện tại",1,"thời gian"],
+["想","xiǎng","muốn / nghĩ",1,"hành động"],
+["小","xiǎo","nhỏ / bé",1,"tính từ"],
+["写","xiě","viết",1,"hành động"],
+["谢谢","xièxie","cảm ơn",1,"giao tiếp"],
+["学生","xuésheng","học sinh / sinh viên",1,"xã hội"],
+["学习","xuéxí","học tập",1,"hành động"],
+["学校","xuéxiào","trường học",1,"địa điểm"],
+["衣服","yīfu","quần áo",1,"đồ vật"],
+["医生","yīshēng","bác sĩ",1,"nghề nghiệp"],
+["医院","yīyuàn","bệnh viện",1,"địa điểm"],
+["有","yǒu","có",1,"ngữ pháp"],
+["再见","zàijiàn","tạm biệt",1,"giao tiếp"],
+["在","zài","đang ở / đang làm",1,"ngữ pháp"],
+["怎么","zěnme","như thế nào / làm sao",1,"câu hỏi"],
+["这","zhè","đây / này",1,"ngữ pháp"],
+["中国","Zhōngguó","Trung Quốc",1,"địa danh"],
+["中午","zhōngwǔ","buổi trưa",1,"thời gian"],
+["住","zhù","ở / cư trú",1,"hành động"],
+["桌子","zhuōzi","cái bàn",1,"đồ vật"],
+["做","zuò","làm / nấu",1,"hành động"],
+["白","bái","màu trắng",2,"màu sắc"],
+["帮助","bāngzhù","giúp đỡ",2,"hành động"],
+["报纸","bàozhǐ","báo giấy",2,"đồ vật"],
+["比","bǐ","hơn / so với",2,"ngữ pháp"],
+["别","bié","đừng / khác",2,"ngữ pháp"],
+["宾馆","bīnguǎn","khách sạn",2,"địa điểm"],
+["长","cháng","dài",2,"tính từ"],
+["唱歌","chànggē","hát (bài hát)",2,"hành động"],
+["穿","chuān","mặc / đi (giày)",2,"hành động"],
+["次","cì","lần",2,"lượng từ"],
+["从","cóng","từ (xuất phát)",2,"ngữ pháp"],
+["错","cuò","sai / lỗi",2,"tính từ"],
+["但是","dànshì","nhưng / tuy nhiên",2,"ngữ pháp"],
+["到","dào","đến / tới",2,"hành động"],
+["等","děng","chờ / đợi",2,"hành động"],
+["弟弟","dìdi","em trai",2,"gia đình"],
+["懂","dǒng","hiểu",2,"hành động"],
+["对","duì","đúng / phải",2,"tính từ"],
+["房间","fángjiān","phòng (ở)",2,"địa điểm"],
+["非常","fēicháng","rất / vô cùng",2,"ngữ pháp"],
+["服务员","fúwùyuán","nhân viên phục vụ",2,"nghề nghiệp"],
+["高","gāo","cao",2,"tính từ"],
+["告诉","gàosu","nói cho biết / thông báo",2,"hành động"],
+["哥哥","gēge","anh trai",2,"gia đình"],
+["给","gěi","cho / đưa / tặng",2,"hành động"],
+["贵","guì","đắt / quý",2,"tính từ"],
+["过","guò","qua / đã trải qua",2,"ngữ pháp"],
+["还","hái","còn / vẫn / nữa",2,"ngữ pháp"],
+["黑","hēi","màu đen",2,"màu sắc"],
+["红","hóng","màu đỏ",2,"màu sắc"],
+["欢迎","huānyíng","chào mừng",2,"giao tiếp"],
+["黄","huáng","màu vàng",2,"màu sắc"],
+["机场","jīchǎng","sân bay",2,"giao thông"],
+["进","jìn","vào / đi vào",2,"hành động"],
+["近","jìn","gần",2,"tính từ"],
+["就","jiù","thì / liền / chỉ",2,"ngữ pháp"],
+["觉得","juéde","cảm thấy / cho rằng",2,"hành động"],
+["可以","kěyǐ","có thể / được phép",2,"ngữ pháp"],
+["快","kuài","nhanh",2,"tính từ"],
+["离","lí","cách (khoảng cách)",2,"ngữ pháp"],
+["卖","mài","bán",2,"hành động"],
+["慢","màn","chậm",2,"tính từ"],
+["忙","máng","bận rộn",2,"tính từ"],
+["帽子","màozi","cái mũ",2,"đồ vật"],
+["男","nán","nam / đàn ông",2,"con người"],
+["女","nǚ","nữ / phụ nữ",2,"con người"],
+["旁边","pángbiān","bên cạnh",2,"phương hướng"],
+["便宜","piányí","rẻ",2,"tính từ"],
+["票","piào","vé / phiếu",2,"đồ vật"],
+["起床","qǐchuáng","thức dậy / dậy",2,"hành động"],
+["让","ràng","để / cho phép / bảo",2,"ngữ pháp"],
+["身体","shēntǐ","cơ thể / sức khỏe",2,"sức khỏe"],
+["生病","shēngbìng","bị ốm / bệnh",2,"sức khỏe"],
+["时间","shíjiān","thời gian",2,"thời gian"],
+["手机","shǒujī","điện thoại di động",2,"công nghệ"],
+["说","shuō","nói",2,"hành động"],
+["送","sòng","gửi / tặng / đưa",2,"hành động"],
+["虽然","suīrán","mặc dù / tuy",2,"ngữ pháp"],
+["所以","suǒyǐ","vì vậy / nên",2,"ngữ pháp"],
+["跳舞","tiàowǔ","nhảy múa",2,"hành động"],
+["玩","wán","chơi / vui chơi",2,"hành động"],
+["晚上","wǎnshàng","buổi tối",2,"thời gian"],
+["问","wèn","hỏi",2,"hành động"],
+["小时","xiǎoshí","giờ (đơn vị thời gian)",2,"thời gian"],
+["新","xīn","mới",2,"tính từ"],
+["休息","xiūxi","nghỉ ngơi",2,"hành động"],
+["雪","xuě","tuyết",2,"thời tiết"],
+["颜色","yánsè","màu sắc",2,"tính từ"],
+["已经","yǐjīng","đã (rồi)",2,"ngữ pháp"],
+["一起","yīqǐ","cùng nhau",2,"ngữ pháp"],
+["因为","yīnwèi","vì / bởi vì",2,"ngữ pháp"],
+["游泳","yóuyǒng","bơi lội",2,"thể thao"],
+["鱼","yú","cá",2,"ẩm thực"],
+["远","yuǎn","xa",2,"tính từ"],
+["运动","yùndòng","vận động / thể thao",2,"thể thao"],
+["知道","zhīdào","biết",2,"hành động"],
+["准备","zhǔnbèi","chuẩn bị",2,"hành động"],
+["坐","zuò","ngồi / ngồi (phương tiện)",2,"hành động"],
+["昨天","zuótiān","hôm qua",2,"thời gian"],
+["把","bǎ","cầm / cấu trúc bǎ",3,"ngữ pháp"],
+["被","bèi","bị (câu bị động)",3,"ngữ pháp"],
+["变化","biànhuà","thay đổi / sự thay đổi",3,"trạng thái"],
+["餐厅","cāntīng","nhà hàng / căng tin",3,"địa điểm"],
+["城市","chéngshì","thành phố",3,"địa điểm"],
+["除了","chúle","ngoài ra / trừ",3,"ngữ pháp"],
+["地方","dìfang","địa phương / nơi chốn",3,"địa điểm"],
+["地铁","dìtiě","tàu điện ngầm / metro",3,"giao thông"],
+["动物","dòngwù","động vật",3,"thiên nhiên"],
+["发现","fāxiàn","phát hiện / tìm ra",3,"hành động"],
+["方便","fāngbiàn","tiện lợi / thuận tiện",3,"tính từ"],
+["附近","fùjìn","gần đây / vùng lân cận",3,"địa điểm"],
+["干净","gānjìng","sạch sẽ",3,"tính từ"],
+["感冒","gǎnmào","cảm cúm / bị cảm",3,"sức khỏe"],
+["公司","gōngsī","công ty",3,"công việc"],
+["关系","guānxi","quan hệ / liên quan",3,"xã hội"],
+["故事","gùshi","câu chuyện",3,"văn hóa"],
+["害怕","hàipà","sợ hãi / sợ",3,"cảm xúc"],
+["还是","háishi","hay là / vẫn còn",3,"ngữ pháp"],
+["环境","huánjìng","môi trường / hoàn cảnh",3,"xã hội"],
+["活动","huódòng","hoạt động / phong trào",3,"xã hội"],
+["节日","jiérì","ngày lễ / lễ hội",3,"văn hóa"],
+["渴","kě","khát (nước)",3,"cảm giác"],
+["空调","kōngtiáo","máy điều hòa",3,"đồ vật"],
+["历史","lìshǐ","lịch sử",3,"văn hóa"],
+["楼","lóu","tầng lầu / tòa nhà",3,"địa điểm"],
+["旅游","lǚyóu","du lịch",3,"giải trí"],
+["满意","mǎnyì","hài lòng / thỏa mãn",3,"cảm xúc"],
+["明白","míngbai","hiểu rõ / rõ ràng",3,"hành động"],
+["难","nán","khó / gian nan",3,"tính từ"],
+["奶奶","nǎinai","bà nội",3,"gia đình"],
+["年轻","niánqīng","trẻ (tuổi)",3,"tính từ"],
+["普通话","pǔtōnghuà","tiếng Phổ thông / tiếng Quan thoại",3,"ngôn ngữ"],
+["如果","rúguǒ","nếu",3,"ngữ pháp"],
+["声音","shēngyīn","âm thanh / giọng nói",3,"giác quan"],
+["特别","tèbié","đặc biệt",3,"tính từ"],
+["同事","tóngshì","đồng nghiệp",3,"công việc"],
+["图书馆","túshūguǎn","thư viện",3,"địa điểm"],
+["突然","tūrán","đột nhiên / bất ngờ",3,"trạng thái"],
+["外国","wàiguó","nước ngoài",3,"địa danh"],
+["网站","wǎngzhàn","trang web / website",3,"công nghệ"],
+["相信","xiāngxìn","tin tưởng / tin",3,"hành động"],
+["新鲜","xīnxiān","tươi mới / tươi (thức ăn)",3,"tính từ"],
+["选择","xuǎnzé","lựa chọn",3,"hành động"],
+["严重","yánzhòng","nghiêm trọng / trầm trọng",3,"tính từ"],
+["一般","yībān","thông thường / bình thường",3,"tính từ"],
+["以后","yǐhòu","sau này / sau đó",3,"thời gian"],
+["以前","yǐqián","trước đây / trước đó",3,"thời gian"],
+["意思","yìsi","ý nghĩa / ý muốn",3,"ngôn ngữ"],
+["有名","yǒumíng","nổi tiếng",3,"tính từ"],
+["愿意","yuànyì","sẵn lòng / muốn",3,"cảm xúc"],
+["只","zhǐ","chỉ / chỉ là",3,"ngữ pháp"],
+["终于","zhōngyú","cuối cùng / rốt cuộc",3,"ngữ pháp"],
+["重要","zhòngyào","quan trọng",3,"tính từ"],
+["自己","zìjǐ","bản thân / tự mình",3,"đại từ"],
+["总是","zǒngshì","luôn luôn",3,"ngữ pháp"],
+["最","zuì","nhất (cực độ)",3,"ngữ pháp"],
+["作业","zuòyè","bài tập về nhà",3,"học tập"],
+["爱好","àihào","sở thích",4,"xã hội"],
+["保护","bǎohù","bảo vệ",4,"hành động"],
+["保证","bǎozhèng","đảm bảo / bảo đảm",4,"hành động"],
+["表达","biǎodá","biểu đạt / diễn đạt",4,"hành động"],
+["竟然","jìngrán","thật ra / không ngờ",4,"ngữ pháp"],
+["成功","chénggōng","thành công",4,"công việc"],
+["聪明","cōngming","thông minh",4,"tính từ"],
+["打算","dǎsuan","dự tính / định",4,"hành động"],
+["担心","dānxīn","lo lắng / lo ngại",4,"cảm xúc"],
+["到底","dàodǐ","rốt cuộc / đến đáy",4,"ngữ pháp"],
+["独立","dúlì","độc lập",4,"tính từ"],
+["发展","fāzhǎn","phát triển",4,"trạng thái"],
+["复杂","fùzá","phức tạp",4,"tính từ"],
+["感情","gǎnqíng","tình cảm / cảm tình",4,"cảm xúc"],
+["观点","guāndiǎn","quan điểm",4,"ngôn ngữ"],
+["互联网","hùliánwǎng","internet / mạng internet",4,"công nghệ"],
+["积极","jījí","tích cực / chủ động",4,"tính từ"],
+["建议","jiànyì","đề nghị / kiến nghị",4,"hành động"],
+["经济","jīngjì","kinh tế",4,"kinh tế"],
+["经验","jīngyàn","kinh nghiệm",4,"danh từ"],
+["紧张","jǐnzhāng","căng thẳng / hồi hộp",4,"cảm xúc"],
+["举行","jǔxíng","tổ chức (sự kiện)",4,"hành động"],
+["科学","kēxué","khoa học",4,"học thuật"],
+["了解","liǎojiě","hiểu rõ / tìm hiểu",4,"hành động"],
+["礼貌","lǐmào","lịch sự / phép lịch sự",4,"tính từ"],
+["麻烦","máfan","phiền phức / làm phiền",4,"tính từ"],
+["目标","mùbiāo","mục tiêu",4,"danh từ"],
+["努力","nǔlì","cố gắng / nỗ lực",4,"tính từ"],
+["其实","qíshí","thật ra / thực ra",4,"ngữ pháp"],
+["轻松","qīngsōng","nhẹ nhàng / thoải mái",4,"tính từ"],
+["如何","rúhé","như thế nào / làm thế nào",4,"câu hỏi"],
+["社会","shèhuì","xã hội",4,"xã hội"],
+["适合","shìhé","phù hợp / thích hợp",4,"tính từ"],
+["态度","tàidu","thái độ",4,"danh từ"],
+["文化","wénhuà","văn hóa",4,"văn hóa"],
+["兴趣","xìngqù","sự hứng thú / sở thích",4,"danh từ"],
+["幸福","xìngfú","hạnh phúc",4,"cảm xúc"],
+["需要","xūyào","cần / cần thiết",4,"hành động"],
+["研究","yánjiū","nghiên cứu",4,"học thuật"],
+["要求","yāoqiú","yêu cầu",4,"hành động"],
+["影响","yǐngxiǎng","ảnh hưởng",4,"hành động"],
+["优秀","yōuxiù","xuất sắc / ưu tú",4,"tính từ"],
+["原来","yuánlái","hóa ra / ban đầu",4,"ngữ pháp"],
+["增加","zēngjiā","tăng thêm / tăng lên",4,"hành động"],
+["责任","zérèn","trách nhiệm",4,"danh từ"],
+["背景","bèijǐng","bối cảnh / nền",5,"danh từ"],
+["比较","bǐjiào","so sánh / khá là",5,"hành động"],
+["彻底","chèdǐ","triệt để / hoàn toàn",5,"tính từ"],
+["成就","chéngjiù","thành tựu / thành quả",5,"danh từ"],
+["创造","chuàngzào","sáng tạo / tạo ra",5,"hành động"],
+["代表","dàibiǎo","đại diện / đại biểu",5,"danh từ"],
+["当然","dāngrán","dĩ nhiên / tất nhiên",5,"ngữ pháp"],
+["导致","dǎozhì","dẫn đến / gây ra",5,"hành động"],
+["丰富","fēngfù","phong phú",5,"tính từ"],
+["个性","gèxìng","cá tính / tính cách",5,"con người"],
+["观察","guānchá","quan sát",5,"hành động"],
+["获得","huòdé","đạt được / thu được",5,"hành động"],
+["即使","jíshǐ","dù / mặc dù",5,"ngữ pháp"],
+["价值","jiàzhí","giá trị",5,"danh từ"],
+["建立","jiànlì","thiết lập / xây dựng",5,"hành động"],
+["交流","jiāoliú","giao lưu / trao đổi",5,"hành động"],
+["接受","jiēshòu","tiếp nhận / chấp nhận",5,"hành động"],
+["结论","jiélùn","kết luận",5,"học thuật"],
+["解决","jiějué","giải quyết",5,"hành động"],
+["竞争","jìngzhēng","cạnh tranh",5,"kinh tế"],
+["客观","kèguān","khách quan",5,"tính từ"],
+["理解","lǐjiě","lý giải / thông cảm",5,"hành động"],
+["利用","lìyòng","lợi dụng / tận dụng",5,"hành động"],
+["面临","miànlín","đối mặt với / đứng trước",5,"hành động"],
+["目的","mùdì","mục đích",5,"danh từ"],
+["内容","nèiróng","nội dung",5,"danh từ"],
+["判断","pànduan","phán đoán / nhận xét",5,"hành động"],
+["强调","qiángdiào","nhấn mạnh",5,"hành động"],
+["人工智能","réngōng zhìnéng","trí tuệ nhân tạo",5,"công nghệ"],
+["认为","rènwéi","cho rằng / nghĩ rằng",5,"hành động"],
+["实现","shíxiàn","thực hiện / đạt được",5,"hành động"],
+["适应","shìyìng","thích nghi / thích ứng",5,"hành động"],
+["传统","chuántǒng","truyền thống",6,"văn hóa"],
+["道德","dàodé","đạo đức",6,"văn hóa"],
+["典型","diǎnxíng","điển hình / đặc trưng",6,"học thuật"],
+["反思","fǎnsī","phản tư / suy nghĩ lại",6,"học thuật"],
+["构建","gòujiàn","xây dựng / kiến tạo",6,"hành động"],
+["和谐","héxié","hòa hợp / hài hòa",6,"xã hội"],
+["可持续","kě chíxù","bền vững",6,"thiên nhiên"],
+["论述","lùnshù","luận thuật / trình bày luận điểm",6,"học thuật"],
+["民主","mínzhǔ","dân chủ",6,"xã hội"],
+["批判","pīpàn","phê phán / phê bình",6,"học thuật"],
+["权利","quánlì","quyền lợi",6,"xã hội"],
+["认同","rèntóng","đồng nhất / tán thành",6,"xã hội"],
+["深刻","shēnkè","sâu sắc",6,"tính từ"],
+["生态","shēngtài","sinh thái",6,"thiên nhiên"],
+["思想","sīxiǎng","tư tưởng / ý tưởng",6,"học thuật"],
+["素质","sùzhì","tố chất / phẩm chất",6,"con người"],
+["文明","wénmíng","văn minh",6,"văn hóa"],
+["现象","xiànxiàng","hiện tượng",6,"danh từ"],
+["心理","xīnlǐ","tâm lý",6,"con người"],
+["行为","xíngwéi","hành vi",6,"danh từ"],
+["意识","yìshí","ý thức",6,"học thuật"],
+["因素","yīnsù","nhân tố / yếu tố",6,"danh từ"],
+["展现","zhǎnxiàn","thể hiện / trình bày",6,"hành động"],
+["哲学","zhéxué","triết học",6,"học thuật"],
+["智慧","zhìhuì","trí tuệ / sự khôn ngoan",6,"danh từ"],
+["主题","zhǔtí","chủ đề",6,"danh từ"],
+["自律","zìlǜ","tự kỷ luật / tự giác",6,"con người"],
+];
+
+/* ── Merge example sentences from CHINESE_DATA ── */
+(function() {
+  if (!window.CHINESE_DATA || !window.CHINESE_DATA.length) {
+    WORDS.forEach((w, i) => { WORDS[i] = [...w, "", ""]; });
+    return;
+  }
+  const exMap = {};
+  window.CHINESE_DATA.forEach(w => { if (w[5]) exMap[w[0]] = [w[5], w[6] || ""]; });
+  WORDS.forEach((w, i) => {
+    const ex = exMap[w[0]];
+    WORDS[i] = ex ? [...w, ex[0], ex[1]] : [...w, "", ""];
+  });
+})();
+
+/* Words that have example sentences (for "sentence" question type) */
+function getWordsWithExamples(pool) {
+  return pool.filter(w => w[5] && w[5].length > 0);
+}
+
+/* ═══════════════════════════════════════════════════
+   QUESTION TYPES CONFIG
+═══════════════════════════════════════════════════ */
+const TYPE_LABELS = {
+  zh2vi:    "Chữ → Nghĩa",
+  vi2zh:    "Nghĩa → Chữ",
+  zh2py:    "Chữ → Pinyin",
+  py2zh:    "Pinyin → Chữ",
+  listen:   "🔊 Nghe → Chữ",
+  sentence: "📝 Điền vào câu",
+};
+
+/* ═══════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════ */
+let cfg = {
+  level: 0,
+  count: 20,
+  types: ["zh2vi","vi2zh","zh2py"],
+  timer: false,
+  order: "random",
+};
+
+let quiz = {
+  questions: [],  // generated question objects
+  index: 0,
+  answers: [],    // { q, correct, chosen, type }
+  startTime: 0,
+  timerInterval: null,
+  timeLeft: 30,
+  streak: 0,
+  maxStreak: 0,
+};
+
+/* ═══════════════════════════════════════════════════
+   SPEECH
+═══════════════════════════════════════════════════ */
+let zhVoice = null;
+(function initVoice() {
+  if (!window.speechSynthesis) return;
+  function find() {
+    const vs = speechSynthesis.getVoices();
+    zhVoice = vs.find(v => /zh[-_](CN|TW|HK)/i.test(v.lang)) || vs.find(v => /zh/i.test(v.lang));
+  }
+  find();
+  speechSynthesis.addEventListener("voiceschanged", find);
+})();
+
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang  = "zh-CN";
+  u.rate  = 0.85;
+  if (zhVoice) u.voice = zhVoice;
+  speechSynthesis.speak(u);
+}
+
+/* ═══════════════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════════════ */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function sample(arr, n) { return shuffle(arr).slice(0, n); }
+function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function getPool() {
+  if (cfg.level === 0) return WORDS;
+  return WORDS.filter(w => w[3] === cfg.level);
+}
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function fmt(sec) {
+  const m = Math.floor(sec / 60), s = sec % 60;
+  return m + ":" + String(s).padStart(2, "0");
+}
+
+/* ═══════════════════════════════════════════════════
+   SETUP SCREEN
+═══════════════════════════════════════════════════ */
+document.querySelectorAll("#levelTabs .level-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll("#levelTabs .level-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    cfg.level = +tab.dataset.level;
+    updateSummary();
+  });
+});
+
+document.querySelectorAll("#countPills .count-pill").forEach(pill => {
+  pill.addEventListener("click", () => {
+    document.querySelectorAll("#countPills .count-pill").forEach(p => p.classList.remove("active"));
+    pill.classList.add("active");
+    cfg.count = +pill.dataset.count;
+    updateSummary();
+  });
+});
+
+document.querySelectorAll("#qtypeList input[type=checkbox]").forEach(cb => {
+  cb.addEventListener("change", () => {
+    cfg.types = [...document.querySelectorAll("#qtypeList input:checked")].map(c => c.value);
+    updateSummary();
+  });
+});
+
+document.querySelectorAll("[data-order]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("[data-order]").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    cfg.order = btn.dataset.order;
+  });
+});
+
+document.getElementById("timerToggle").addEventListener("change", e => {
+  cfg.timer = e.target.checked;
+});
+
+function updateSummary() {
+  const pool = getPool();
+  const n    = Math.min(cfg.count, pool.length);
+  const types = cfg.types.length;
+  const startBtn = document.getElementById("startBtn");
+  const sum = document.getElementById("setupSummary");
+
+  if (!types || pool.length < 4) {
+    sum.innerHTML = pool.length < 4
+      ? `<span style="color:var(--cn-red)">Cần ít nhất 4 từ để tạo câu hỏi. Chọn cấp có nhiều từ hơn.</span>`
+      : `<span style="color:var(--cn-red)">Chọn ít nhất 1 loại câu hỏi.</span>`;
+    startBtn.disabled = true;
+    return;
+  }
+  startBtn.disabled = false;
+  sum.innerHTML = `Sẽ kiểm tra <strong>${n}</strong> câu từ <strong>${pool.length}</strong> từ trong kho — HSK ${cfg.level || "1-6"} — ${types} loại câu hỏi`;
+}
+
+document.getElementById("startBtn").addEventListener("click", startQuiz);
+updateSummary();
+
+/* ═══════════════════════════════════════════════════
+   QUESTION GENERATION
+═══════════════════════════════════════════════════ */
+function generateQuestion(word, pool) {
+  // For "sentence" type, only use it when the word actually has an example
+  let availableTypes = cfg.types;
+  if (availableTypes.includes("sentence") && !word[5]) {
+    availableTypes = availableTypes.filter(t => t !== "sentence");
+    if (!availableTypes.length) availableTypes = ["zh2vi"];
+  }
+  const type = rand(availableTypes);
+  const others = pool.filter(w => w !== word);
+  const distractors = sample(others, 3);
+
+  let stimulus, correctKey, options;
+
+  switch (type) {
+    case "zh2vi": {
+      stimulus = { type: "hanzi", text: word[0] };
+      correctKey = "vi";
+      const opts = shuffle([word, ...distractors]);
+      options = opts.map(w => ({ label: w[2], data: w }));
+      break;
+    }
+    case "vi2zh": {
+      stimulus = { type: "meaning", text: word[2] };
+      correctKey = "zh";
+      const opts = shuffle([word, ...distractors]);
+      options = opts.map(w => ({ label: w[0], data: w, isZh: true }));
+      break;
+    }
+    case "zh2py": {
+      stimulus = { type: "hanzi", text: word[0] };
+      correctKey = "py";
+      const opts = shuffle([word, ...distractors]);
+      options = opts.map(w => ({ label: w[1], data: w }));
+      break;
+    }
+    case "py2zh": {
+      stimulus = { type: "pinyin", text: word[1] };
+      correctKey = "zh";
+      const opts = shuffle([word, ...distractors]);
+      options = opts.map(w => ({ label: w[0], data: w, isZh: true }));
+      break;
+    }
+    case "listen": {
+      stimulus = { type: "listen", text: word[0] };
+      correctKey = "zh";
+      const opts = shuffle([word, ...distractors]);
+      options = opts.map(w => ({ label: w[0], data: w, isZh: true }));
+      break;
+    }
+    case "sentence": {
+      // Fill-in-the-blank: replace the word in the example sentence with ___
+      const sentence = word[5] || "";
+      const cloze = sentence.replace(new RegExp(word[0].replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'g'), '___');
+      stimulus = {
+        type:    "cloze",
+        text:    cloze,
+        vi_hint: word[6] || "",
+        full:    sentence,
+      };
+      correctKey = "zh";
+      const opts = shuffle([word, ...distractors]);
+      options = opts.map(w => ({ label: w[0], data: w, isZh: true }));
+      break;
+    }
+  }
+
+  return { word, type, stimulus, correctKey, options };
+}
+
+function generateQuiz() {
+  const pool = getPool();
+  let words = sample(pool, Math.min(cfg.count, pool.length));
+  if (cfg.order === "level") words = words.sort((a,b) => a[3] - b[3]);
+  return words.map(w => generateQuestion(w, pool));
+}
+
+/* ═══════════════════════════════════════════════════
+   START QUIZ
+═══════════════════════════════════════════════════ */
+function startQuiz() {
+  quiz.questions  = generateQuiz();
+  quiz.index      = 0;
+  quiz.answers    = [];
+  quiz.startTime  = Date.now();
+  quiz.streak     = 0;
+  quiz.maxStreak  = 0;
+
+  document.getElementById("qTotal").textContent = quiz.questions.length;
+
+  showScreen("screenQuiz");
+  renderQuestion();
+}
+
+/* ═══════════════════════════════════════════════════
+   RENDER QUESTION
+═══════════════════════════════════════════════════ */
+const KEYS = ["A","B","C","D"];
+
+function renderQuestion() {
+  const q = quiz.questions[quiz.index];
+  const pct = Math.round((quiz.index / quiz.questions.length) * 100);
+
+  document.getElementById("qCurrent").textContent  = quiz.index + 1;
+  document.getElementById("qProgress").style.width = pct + "%";
+  document.getElementById("qTypeBadge").textContent = TYPE_LABELS[q.type];
+
+  // Streak bar
+  const bar = document.getElementById("streakBar");
+  bar.innerHTML = quiz.questions.map((_,i) => {
+    if (i >= quiz.answers.length) return `<div class="streak-dot"></div>`;
+    return `<div class="streak-dot ${quiz.answers[i].correct ? "c" : "w"}"></div>`;
+  }).join("");
+
+  // Stimulus
+  const stim = document.getElementById("qStimulus");
+  if (q.stimulus.type === "hanzi") {
+    stim.innerHTML = `<div class="hanzi">${q.stimulus.text}</div>`;
+  } else if (q.stimulus.type === "meaning") {
+    stim.innerHTML = `<div class="meaning-big">${q.stimulus.text}</div>`;
+  } else if (q.stimulus.type === "pinyin") {
+    stim.innerHTML = `<div class="pinyin-big">${q.stimulus.text}</div>`;
+  } else if (q.stimulus.type === "listen") {
+    stim.innerHTML = `
+      <div class="hanzi" style="opacity:0;user-select:none">?</div>
+      <button class="listen-btn" id="listenBtn">🔊 Phát âm</button>
+      <div class="listen-hint">Nhấn để nghe, rồi chọn chữ đúng</div>`;
+    setTimeout(() => {
+      const lb = document.getElementById("listenBtn");
+      if (lb) lb.addEventListener("click", () => {
+        speak(q.stimulus.text);
+        lb.classList.add("playing");
+        setTimeout(() => lb.classList.remove("playing"), 1500);
+      });
+      // auto-play on load
+      speak(q.stimulus.text);
+    }, 200);
+  } else if (q.stimulus.type === "cloze") {
+    stim.innerHTML = `
+      <div style="font-size:.78rem;font-weight:700;color:var(--cn-gold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">📝 Điền từ vào chỗ trống</div>
+      <div style="font-family:'Noto Serif SC',serif;font-size:1.5rem;color:var(--cn-dark);line-height:1.8;margin-bottom:10px">${q.stimulus.text}</div>
+      ${q.stimulus.vi_hint ? `<div style="font-size:.88rem;color:var(--muted);font-style:italic">${q.stimulus.vi_hint}</div>` : ""}
+      <div style="font-size:.78rem;color:var(--muted);margin-top:8px">Chọn chữ Hán đúng để điền vào ___</div>`;
+  }
+
+  // Options
+  const grid = document.getElementById("optionsGrid");
+  grid.innerHTML = q.options.map((opt, i) => {
+    const inner = opt.isZh
+      ? `<span class="opt-zh">${opt.label}</span>`
+      : opt.label;
+    return `<button class="option-btn" data-idx="${i}">
+      <span class="opt-key">${KEYS[i]}</span>
+      <span>${inner}</span>
+    </button>`;
+  }).join("");
+
+  grid.querySelectorAll(".option-btn").forEach(btn => {
+    btn.addEventListener("click", () => handleAnswer(+btn.dataset.idx, q));
+  });
+
+  // Feedback + next
+  const fb = document.getElementById("feedbackBar");
+  fb.style.display = "none";
+  fb.className = "feedback-bar";
+  document.getElementById("nextBtn").style.display = "none";
+
+  // Timer
+  clearInterval(quiz.timerInterval);
+  const timerEl = document.getElementById("quizTimer");
+  if (cfg.timer) {
+    timerEl.style.display = "";
+    quiz.timeLeft = 30;
+    timerEl.textContent = fmt(quiz.timeLeft);
+    timerEl.className = "quiz-timer";
+    quiz.timerInterval = setInterval(() => {
+      quiz.timeLeft--;
+      timerEl.textContent = fmt(quiz.timeLeft);
+      if (quiz.timeLeft <= 10) timerEl.className = "quiz-timer danger";
+      if (quiz.timeLeft <= 0) {
+        clearInterval(quiz.timerInterval);
+        handleAnswer(-1, q); // timeout = wrong
+      }
+    }, 1000);
+  } else {
+    timerEl.style.display = "none";
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   HANDLE ANSWER
+═══════════════════════════════════════════════════ */
+function handleAnswer(chosenIdx, q) {
+  clearInterval(quiz.timerInterval);
+
+  // Find correct index
+  let correctIdx = -1;
+  q.options.forEach((opt, i) => {
+    if (opt.data === q.word) correctIdx = i;
+  });
+
+  const isCorrect = (chosenIdx === correctIdx);
+
+  // Lock all buttons
+  const btns = document.querySelectorAll(".option-btn");
+  btns.forEach((btn, i) => {
+    btn.classList.add("locked");
+    btn.disabled = true;
+    if (i === correctIdx)  btn.classList.add("correct");
+    if (i === chosenIdx && !isCorrect) btn.classList.add("wrong");
+  });
+
+  // Streak
+  if (isCorrect) {
+    quiz.streak++;
+    quiz.maxStreak = Math.max(quiz.maxStreak, quiz.streak);
+  } else {
+    quiz.streak = 0;
+  }
+
+  // Feedback bar
+  const fb = document.getElementById("feedbackBar");
+  const exLine = q.word[5]
+    ? `<br><span style="font-family:'Noto Serif SC',serif;font-size:.9rem;color:inherit;opacity:.85">${q.word[5]}</span><br><small style="opacity:.8">${q.word[6]||""}</small>`
+    : "";
+  if (isCorrect) {
+    fb.className = "feedback-bar correct-fb";
+    fb.innerHTML = `<div class="fb-title">✓ Chính xác! ${quiz.streak > 1 ? "🔥 Streak × " + quiz.streak : ""}</div>
+      <span style="font-family:'Noto Serif SC',serif;font-size:1.1rem">${q.word[0]}</span>
+      &nbsp;·&nbsp; <em>${q.word[1]}</em> &nbsp;·&nbsp; ${q.word[2]}${exLine}`;
+  } else {
+    const chosenWord = chosenIdx >= 0 ? q.options[chosenIdx].data : null;
+    fb.className = "feedback-bar wrong-fb";
+    fb.innerHTML = `<div class="fb-title">✗ ${chosenIdx < 0 ? "Hết giờ!" : "Chưa đúng."}</div>
+      Đáp án đúng: <span style="font-family:'Noto Serif SC',serif;font-size:1.1rem">${q.word[0]}</span>
+      &nbsp;·&nbsp; <em>${q.word[1]}</em> &nbsp;·&nbsp; ${q.word[2]}
+      ${chosenWord ? `<br><small>Bạn chọn: ${chosenWord[0]} — ${chosenWord[2]}</small>` : ""}${exLine}`;
+  }
+  fb.style.display = "block";
+
+  // Record answer
+  quiz.answers.push({
+    word: q.word,
+    type: q.type,
+    correct: isCorrect,
+    chosen: chosenIdx >= 0 ? q.options[chosenIdx].data : null,
+  });
+
+  // Show next button
+  const nextBtn = document.getElementById("nextBtn");
+  nextBtn.style.display = "block";
+  nextBtn.textContent = quiz.index < quiz.questions.length - 1
+    ? "Câu tiếp theo →"
+    : "Xem kết quả 🏁";
+
+  // Auto-speak correct if it was listen type
+  if (q.type === "listen" && !isCorrect) speak(q.word[0]);
+}
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  quiz.index++;
+  if (quiz.index >= quiz.questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+});
+
+// Keyboard: A B C D + Enter/Space for next
+document.addEventListener("keydown", e => {
+  if (document.getElementById("screenQuiz").style.display === "none" ||
+      !document.getElementById("screenQuiz").classList.contains("active")) return;
+  if (e.target.tagName === "INPUT") return;
+
+  const nextBtn = document.getElementById("nextBtn");
+  if ((e.code === "Enter" || e.code === "Space") && nextBtn.style.display !== "none") {
+    e.preventDefault(); nextBtn.click(); return;
+  }
+  const map = { KeyA: 0, KeyB: 1, KeyC: 2, KeyD: 3 };
+  if (map[e.code] !== undefined) {
+    const btns = document.querySelectorAll(".option-btn:not([disabled])");
+    if (btns[map[e.code]]) btns[map[e.code]].click();
+  }
+});
+
+document.getElementById("quitBtn").addEventListener("click", () => {
+  clearInterval(quiz.timerInterval);
+  showScreen("screenSetup");
+});
+
+/* ═══════════════════════════════════════════════════
+   RESULTS
+═══════════════════════════════════════════════════ */
+function showResults() {
+  clearInterval(quiz.timerInterval);
+
+  const total   = quiz.answers.length;
+  const correct = quiz.answers.filter(a => a.correct).length;
+  const pct     = Math.round((correct / total) * 100);
+  const elapsed = Math.round((Date.now() - quiz.startTime) / 1000);
+  const wrongs  = quiz.answers.filter(a => !a.correct);
+
+  // Grade
+  let grade, gradeClass, celebration;
+  if (pct === 100)     { grade = "Hoàn hảo! ✨";   gradeClass = "grade-s"; celebration = "🏆"; }
+  else if (pct >= 85)  { grade = "Xuất sắc";        gradeClass = "grade-s"; celebration = "🎉"; }
+  else if (pct >= 70)  { grade = "Tốt";             gradeClass = "grade-a"; celebration = "👍"; }
+  else if (pct >= 55)  { grade = "Trung bình";      gradeClass = "grade-b"; celebration = "😊"; }
+  else if (pct >= 40)  { grade = "Cần cố gắng";     gradeClass = "grade-c"; celebration = "💪"; }
+  else                 { grade = "Cần ôn thêm";     gradeClass = "grade-f"; celebration = "📚"; }
+
+  document.getElementById("celebration").textContent   = celebration;
+  document.getElementById("scorePct").textContent      = pct + "%";
+  document.getElementById("scorePct").className        = "score-pct " + gradeClass;
+  document.getElementById("gradeLabel").textContent    = grade;
+  document.getElementById("gradeLabel").className      = "grade-label " + gradeClass;
+  document.getElementById("scoreSub").innerHTML        =
+    `<strong>${correct}</strong> / ${total} câu đúng`;
+  document.getElementById("statCorrect").textContent   = correct;
+  document.getElementById("statWrong").textContent     = total - correct;
+  document.getElementById("statTime").textContent      = fmt(elapsed);
+  document.getElementById("statStreak").textContent    = quiz.maxStreak;
+
+  // Breakdown by type
+  const typeStats = {};
+  cfg.types.forEach(t => { typeStats[t] = { c: 0, t: 0 }; });
+  quiz.answers.forEach(a => {
+    if (!typeStats[a.type]) typeStats[a.type] = { c: 0, t: 0 };
+    typeStats[a.type].t++;
+    if (a.correct) typeStats[a.type].c++;
+  });
+  const bg = document.getElementById("breakdownGrid");
+  bg.innerHTML = Object.entries(typeStats).map(([type, s]) => {
+    const p = s.t ? Math.round(s.c / s.t * 100) : 0;
+    return `<div class="breakdown-card">
+      <h4>${TYPE_LABELS[type]}</h4>
+      <div class="bd-row">
+        <div class="bd-bar"><div class="bd-fill" style="width:${p}%"></div></div>
+        <span class="bd-pct">${p}%</span>
+      </div>
+      <small style="color:var(--muted)">${s.c}/${s.t} câu đúng</small>
+    </div>`;
+  }).join("");
+
+  // Wrong answers list
+  const ws = document.getElementById("wrongSection");
+  const wl = document.getElementById("wrongList");
+  document.getElementById("wrongCount").textContent = wrongs.length;
+  if (wrongs.length) {
+    ws.style.display = "block";
+    wl.innerHTML = wrongs.map(a => {
+      const chosenInfo = a.chosen
+        ? `Bạn chọn: <span style="font-family:'Noto Serif SC',serif">${a.chosen[0]}</span> (${a.chosen[2]})`
+        : "Hết giờ";
+      return `<div class="wrong-item">
+        <div class="wi-zh">${a.word[0]}</div>
+        <div class="wi-info">
+          <div class="wi-py">${a.word[1]}</div>
+          <div class="wi-vi">${a.word[2]}</div>
+          <div class="wi-your">${chosenInfo}</div>
+        </div>
+        <button class="wi-speak" data-zh="${a.word[0]}" title="Phát âm">🔊</button>
+      </div>`;
+    }).join("");
+    wl.querySelectorAll(".wi-speak").forEach(btn => {
+      btn.addEventListener("click", () => speak(btn.dataset.zh));
+    });
+  } else {
+    ws.style.display = "none";
+  }
+
+  // Retry wrong btn
+  document.getElementById("retryWrongBtn").style.display =
+    wrongs.length ? "" : "none";
+
+  showScreen("screenResults");
+}
+
+/* ═══════════════════════════════════════════════════
+   RESULT ACTIONS
+═══════════════════════════════════════════════════ */
+document.getElementById("retryBtn").addEventListener("click", startQuiz);
+
+document.getElementById("retryWrongBtn").addEventListener("click", () => {
+  const wrongWords = quiz.answers.filter(a => !a.correct).map(a => a.word);
+  const pool = getPool();
+  quiz.questions  = wrongWords.map(w => generateQuestion(w, pool.length >= 4 ? pool : WORDS));
+  quiz.index      = 0;
+  quiz.answers    = [];
+  quiz.startTime  = Date.now();
+  quiz.streak     = 0;
+  quiz.maxStreak  = 0;
+  if (cfg.order === "random") quiz.questions = shuffle(quiz.questions);
+  document.getElementById("qTotal").textContent = quiz.questions.length;
+  showScreen("screenQuiz");
+  renderQuestion();
+});
+
+document.getElementById("newQuizBtn").addEventListener("click", () => {
+  showScreen("screenSetup");
+  updateSummary();
+});
+</script>
+</body>
+</html>

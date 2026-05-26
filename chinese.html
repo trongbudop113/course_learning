@@ -1,0 +1,1121 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Học tiếng Trung HSK 1-6 | Course Learning</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+  <style>
+    /* ── Chinese course custom styles ── */
+    .chinese-hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: center;
+      padding: 64px 0 56px;
+    }
+    @media (max-width: 720px) {
+      .chinese-hero { grid-template-columns: 1fr; }
+    }
+
+    .chinese-board {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .hanzi-row {
+      display: flex;
+      gap: 8px;
+    }
+    .hanzi-tile {
+      width: 72px; height: 72px;
+      border: 3px solid var(--line);
+      box-shadow: var(--shadow);
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem;
+      font-family: "Noto Serif SC", "SimSun", serif;
+      font-weight: 700;
+    }
+    .level-stack {
+      display: flex; flex-direction: column; gap: 4px;
+      font-size: .85rem; color: var(--muted);
+    }
+    .level-stack span { text-align: center; }
+
+    /* Tones */
+    .tone-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+    .tone-card {
+      border: 2px solid var(--line);
+      box-shadow: 4px 4px 0 var(--line);
+      background: #fff;
+      padding: 20px 22px;
+      border-radius: var(--radius);
+    }
+    .tone-card .tone-mark {
+      display: inline-block;
+      font-size: 2rem;
+      font-family: "Noto Serif SC", serif;
+      margin-bottom: 8px;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .tone-card h3 { margin: 0 0 6px; font-size: 1rem; }
+    .tone-card p  { margin: 0; font-size: .875rem; color: var(--muted); line-height: 1.5; }
+    .tone-card .examples { margin-top: 10px; font-size: .85rem; }
+    .tone-card .examples span {
+      display: inline-block;
+      background: #f0f9f9;
+      border: 1px solid var(--cyan);
+      border-radius: 4px;
+      padding: 2px 8px;
+      margin: 2px 2px 0 0;
+      font-family: "Noto Serif SC", serif;
+    }
+
+    /* Roadmap phases */
+    .chinese-roadmap {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .roadmap-phase {
+      border: 2px solid var(--line);
+      box-shadow: 4px 4px 0 var(--line);
+      background: #fff;
+      padding: 24px 26px;
+      border-radius: var(--radius);
+    }
+    .phase-head {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 14px;
+    }
+    .phase-head h3 { margin: 0; font-size: 1.05rem; }
+    .roadmap-phase ul {
+      margin: 0; padding-left: 18px;
+      font-size: .9rem; line-height: 1.7;
+      color: var(--ink);
+    }
+    .roadmap-phase ul li { margin-bottom: 4px; }
+
+    /* Grammar table */
+    .grammar-section { margin-top: 24px; }
+    .grammar-block {
+      border: 2px solid var(--line);
+      box-shadow: 4px 4px 0 var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .grammar-block h3 {
+      margin: 0;
+      padding: 14px 20px;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: 1rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .grammar-block h3 .badge-sm {
+      background: var(--cyan);
+      color: #fff;
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-size: .75rem;
+      font-weight: 600;
+    }
+    .grammar-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .875rem;
+    }
+    .grammar-table th {
+      background: #f7f3ea;
+      padding: 10px 16px;
+      text-align: left;
+      border-bottom: 1px solid #e0d8c8;
+      font-weight: 600;
+      color: var(--muted);
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .grammar-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid #f0ece4;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .grammar-table tr:last-child td { border-bottom: none; }
+    .grammar-table .zh {
+      font-family: "Noto Serif SC", "SimSun", serif;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+    .grammar-table .py { color: var(--cyan); font-style: italic; font-size: .85rem; }
+    .grammar-table .vi { color: var(--muted); font-size: .85rem; }
+
+    /* Hanzi plan */
+    .hanzi-flow { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+    .hanzi-step {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 14px 18px;
+      border: 2px solid var(--line);
+      box-shadow: 3px 3px 0 var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+    }
+    .hanzi-step .step-num {
+      min-width: 36px; height: 36px;
+      background: var(--cyan);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .9rem;
+      box-shadow: 2px 2px 0 var(--line);
+    }
+    .hanzi-step div strong { display: block; margin-bottom: 3px; }
+    .hanzi-step div span { font-size: .875rem; color: var(--muted); line-height: 1.5; }
+
+    /* Vocab topics */
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .topic-chip {
+      border: 2px solid var(--line);
+      background: #fff;
+      box-shadow: 3px 3px 0 var(--line);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: .875rem;
+    }
+    .topic-chip strong {
+      display: block;
+      font-family: "Noto Serif SC", serif;
+      font-size: 1.3rem;
+      color: var(--cyan);
+      margin-bottom: 4px;
+    }
+
+    /* Daily schedule */
+    .daily-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    /* Output goals */
+    .output-list {
+      list-style: none;
+      padding: 0; margin: 16px 0 0;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .output-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 16px;
+      border: 2px solid var(--line);
+      background: #fff;
+      box-shadow: 3px 3px 0 var(--line);
+      border-radius: var(--radius);
+      font-size: .9rem; line-height: 1.5;
+    }
+    .output-list li .icon { font-size: 1.2rem; margin-top: 1px; }
+
+    /* Progress bar visual */
+    .hsk-bar {
+      display: flex;
+      gap: 4px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .hsk-seg {
+      flex: 1;
+      min-width: 80px;
+      padding: 10px 14px;
+      border: 2px solid var(--line);
+      box-shadow: 3px 3px 0 var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      font-size: .82rem;
+      text-align: center;
+    }
+    .hsk-seg strong { display: block; font-size: 1.05rem; margin-bottom: 3px; }
+    .hsk-seg.active { background: var(--cyan); color: #fff; }
+    .hsk-seg.active strong { color: #fff; }
+
+    /* Advanced modules */
+    .adv-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .adv-card {
+      border: 2px solid var(--line);
+      box-shadow: 4px 4px 0 var(--line);
+      background: #fff;
+      padding: 22px 24px;
+      border-radius: var(--radius);
+    }
+    .adv-card h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    .adv-card p  { margin: 0 0 12px; font-size: .88rem; color: var(--muted); line-height: 1.6; }
+    .adv-card ul { margin: 0; padding-left: 18px; font-size: .875rem; line-height: 1.7; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="./index.html#courses" aria-label="Course Learning home">
+        <span class="mark">中</span>
+        <span>Course Learning</span>
+      </a>
+      <nav class="nav" aria-label="Chinese course navigation">
+        <a href="./index.html#courses">Khóa học</a>
+        <a href="#roadmap">Lộ trình</a>
+        <a href="#tones">Thanh điệu</a>
+        <a href="#grammar">Ngữ pháp</a>
+        <a href="#hanzi">Chữ Hán</a>
+        <a href="#sources">Nguồn học</a>
+        <a href="./chinese-vocab.html" style="color:var(--cn-red,#d9534f);font-weight:700">词 Từ vựng</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ── HERO ── -->
+    <section class="chinese-hero shell">
+      <div class="english-hero-copy">
+        <div class="eyebrow"><span class="pulse"></span><span>汉语学习 · Học tiếng Trung</span></div>
+        <h1>Tiếng Trung từ HSK 1 tới HSK 6</h1>
+        <p class="lead">Lộ trình toàn diện từ căn bản đến nâng cao: nắm 4 thanh điệu, đọc viết chữ Hán, ngữ pháp theo cấp HSK, luyện nghe nói thực tế và chinh phục kỳ thi HSK chính thức.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#roadmap">Xem lộ trình</a>
+          <a class="btn" href="#tones">Thanh điệu & Pinyin</a>
+          <a class="btn" href="./chinese-vocab.html" style="background:var(--cn-red,#d9534f);color:#fff;border-color:var(--cn-red,#d9534f)">词 Luyện từ vựng</a>
+          <a class="btn" href="./chinese-quiz.html" style="background:var(--ink);color:var(--paper)">试 Làm bài kiểm tra</a>
+          <a class="btn" href="./chinese-reading.html">阅 Đọc hiểu</a>
+        </div>
+      </div>
+
+      <div class="chinese-board" aria-label="Chinese learning levels">
+        <div class="hanzi-row">
+          <div class="hanzi-tile">汉</div>
+          <div class="hanzi-tile">语</div>
+          <div class="hanzi-tile">学</div>
+        </div>
+        <div class="hanzi-row">
+          <div class="hanzi-tile">习</div>
+          <div class="hanzi-tile">中</div>
+          <div class="hanzi-tile">文</div>
+        </div>
+        <div class="level-stack">
+          <span>HSK 1-2 · Căn bản (A1-A2)</span>
+          <span>HSK 3-4 · Trung cấp (B1-B2)</span>
+          <span>HSK 5-6 · Nâng cao (C1-C2)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PRINCIPLES ── -->
+    <section class="section">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Định hướng học</h2>
+          <p class="section-note">HSK đo đọc, nghe và từ vựng theo cấp; Can-do bổ sung mục tiêu giao tiếp thực tế; Pinyin là bàn đạp phát âm; Hanzi là nền tảng đọc viết lâu dài.</p>
+        </div>
+        <div class="principles">
+          <article class="principle-card">
+            <span class="module-num">HSK</span>
+            <h3>Thi theo cấp</h3>
+            <p>HSK 1-2 là nền tảng; HSK 3-4 là trung cấp đời sống và công việc; HSK 5-6 đạt mức đọc hiểu báo chí và học thuật.</p>
+          </article>
+          <article class="principle-card">
+            <span class="module-num">声</span>
+            <h3>Thanh điệu trước tiên</h3>
+            <p>4 thanh + thanh nhẹ quyết định nghĩa từ. Luyện tai và miệng cùng lúc từ ngày đầu, không học từ vựng trước khi nắm thanh.</p>
+          </article>
+          <article class="principle-card">
+            <span class="module-num">字</span>
+            <h3>Chữ Hán theo bộ thủ</h3>
+            <p>Học chữ qua hình - nghĩa - âm - từ ghép - câu. Nhóm chữ theo bộ thủ để nhận diện nhanh và mở rộng từ vựng có hệ thống.</p>
+          </article>
+          <article class="principle-card">
+            <span class="module-num">说</span>
+            <h3>Nói từ bài 1</h3>
+            <p>Output ngay từ đầu: nhái mẫu câu, role-play tình huống đơn giản, ghi âm để tự nghe lại. Nói sớm giúp không sợ sai.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HSK OVERVIEW BAR ── -->
+    <section class="section">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Tổng quan các cấp HSK</h2>
+          <p class="section-note">HSK (汉语水平考试) là kỳ thi tiếng Trung chuẩn quốc tế. 6 cấp tương ứng CEFR A1-C2.</p>
+        </div>
+        <div class="hsk-bar">
+          <div class="hsk-seg">
+            <strong>HSK 1</strong>
+            150 từ · A1<br>Sinh hoạt cơ bản
+          </div>
+          <div class="hsk-seg">
+            <strong>HSK 2</strong>
+            300 từ · A2<br>Tình huống quen
+          </div>
+          <div class="hsk-seg active">
+            <strong>HSK 3</strong>
+            600 từ · B1<br>Giao tiếp thông thường
+          </div>
+          <div class="hsk-seg active">
+            <strong>HSK 4</strong>
+            1200 từ · B2<br>Nhiều chủ đề rộng
+          </div>
+          <div class="hsk-seg">
+            <strong>HSK 5</strong>
+            2500 từ · C1<br>Đọc báo, phim không phụ đề
+          </div>
+          <div class="hsk-seg">
+            <strong>HSK 6</strong>
+            5000+ từ · C2<br>Học thuật, diễn thuyết
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ROADMAP ── -->
+    <section class="section" id="roadmap">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Lộ trình HSK 1 → HSK 6</h2>
+          <p class="section-note">Gợi ý nhịp học 24-36 tháng. Nếu học mỗi ngày 60-90 phút, có thể rút ngắn 20-30%. Giữ nguyên thứ tự, không bỏ qua giai đoạn nào.</p>
+        </div>
+
+        <div class="chinese-roadmap">
+
+          <!-- HSK 1 -->
+          <article class="roadmap-phase">
+            <div class="phase-head">
+              <span class="module-num">H1</span>
+              <h3>Tháng 1-2: HSK 1 — Căn bản tuyệt đối</h3>
+            </div>
+            <ul>
+              <li><strong>Pinyin & 4 thanh điệu:</strong> học toàn bộ âm đầu, vần, ghép âm tiết, phân biệt 4 thanh + thanh nhẹ qua tối thiểu 30 cặp tối nghĩa.</li>
+              <li><strong>Từ vựng (150 từ):</strong> chào hỏi, số đếm 0-100, thời gian, màu sắc, gia đình, đồ vật quanh nhà, động từ hành động cơ bản.</li>
+              <li><strong>Ngữ pháp:</strong> cấu trúc S-V-O, câu hỏi với 吗/吧, 是…的, phủ định 不/没, lượng từ cơ bản (个, 本, 张).</li>
+              <li><strong>Chữ Hán (150 chữ):</strong> học song song với từ vựng, nhận diện và viết tay tối thiểu 80 chữ thường gặp nhất.</li>
+              <li><strong>Output:</strong> tự giới thiệu 60 giây, hỏi và trả lời về tên, tuổi, quốc tịch, sở thích đơn giản.</li>
+            </ul>
+          </article>
+
+          <!-- HSK 2 -->
+          <article class="roadmap-phase">
+            <div class="phase-head">
+              <span class="module-num">H2</span>
+              <h3>Tháng 3-5: HSK 2 — Tình huống hằng ngày</h3>
+            </div>
+            <ul>
+              <li><strong>Từ vựng (300 từ):</strong> mua sắm, nhà hàng, đi lại, thời tiết, sức khỏe cơ bản, trường học, công việc đơn giản.</li>
+              <li><strong>Ngữ pháp:</strong> kết quả bổ ngữ (V+好/完/到), hướng bổ ngữ (V+上/下/进), so sánh 比, biểu thị kinh nghiệm 过, thể tiến hành 正在…呢.</li>
+              <li><strong>Nghe:</strong> hội thoại 2-4 lượt về chủ đề quen, nhận diện từ khóa và mối quan hệ người nói.</li>
+              <li><strong>Đọc:</strong> tin nhắn ngắn, biển hiệu, thực đơn, lịch trình đơn giản (có Pinyin hỗ trợ).</li>
+              <li><strong>Output:</strong> đặt đồ ăn, mua vé, hỏi đường, nói về thói quen hằng ngày trong 2-3 phút.</li>
+            </ul>
+          </article>
+
+          <!-- HSK 3 -->
+          <article class="roadmap-phase">
+            <div class="phase-head">
+              <span class="module-num">H3</span>
+              <h3>Tháng 6-10: HSK 3 — Giao tiếp thông thường</h3>
+            </div>
+            <ul>
+              <li><strong>Từ vựng (600 từ):</strong> chủ đề mở rộng: du lịch, sức khỏe, học tập, cảm xúc, xã giao, thiên nhiên, tin tức đơn giản.</li>
+              <li><strong>Ngữ pháp:</strong> cấu trúc 把 (ba-construction), bị động 被, câu giả thiết 如果…就, liên từ 因为…所以/虽然…但是, bổ ngữ khả năng V得了/V不了.</li>
+              <li><strong>Nghe:</strong> hội thoại 4-6 lượt gần tốc độ tự nhiên, nhận diện quan điểm, cảm xúc và thái độ.</li>
+              <li><strong>Đọc:</strong> đoạn văn 100-200 chữ không có Pinyin, email, bài viết ngắn trên mạng xã hội.</li>
+              <li><strong>Viết:</strong> viết câu trả lời ngắn, điền vào chỗ trống, viết đoạn mô tả 80-100 chữ.</li>
+              <li><strong>Output:</strong> kể chuyện có cốt truyện đơn giản, nêu ý kiến về chủ đề quen, nói 4-5 phút liên tục.</li>
+            </ul>
+          </article>
+
+          <!-- HSK 4 -->
+          <article class="roadmap-phase">
+            <div class="phase-head">
+              <span class="module-num">H4</span>
+              <h3>Tháng 11-16: HSK 4 — Trung cấp vững</h3>
+            </div>
+            <ul>
+              <li><strong>Từ vựng (1200 từ):</strong> kinh tế, chính trị, khoa học, văn hóa, thể thao, mối quan hệ xã hội, thành ngữ 4 chữ cơ bản (成语 chéngyǔ).</li>
+              <li><strong>Ngữ pháp:</strong> câu nhấn mạnh 是…的, liên kết tình huống 尽管…还是, trình độ bổ ngữ (V得+adj), câu song song, cấu trúc trang trọng 于/对/据.</li>
+              <li><strong>Nghe:</strong> phỏng vấn ngắn, chương trình radio đơn giản, hội thoại nhóm, nhận diện hàm ý và giọng điệu.</li>
+              <li><strong>Đọc:</strong> bài viết 200-400 chữ nhiều chủ đề, xác định luận điểm chính và chi tiết hỗ trợ.</li>
+              <li><strong>Viết:</strong> đoạn văn 100-150 chữ miêu tả hoặc lập luận; viết email thông thường.</li>
+              <li><strong>Output:</strong> thảo luận 2 chiều về chủ đề xã hội quen thuộc, trình bày quan điểm có lý lẽ.</li>
+            </ul>
+          </article>
+
+          <!-- HSK 5 -->
+          <article class="roadmap-phase">
+            <div class="phase-head">
+              <span class="module-num">H5</span>
+              <h3>Tháng 17-24: HSK 5 — Nâng cao thực tế</h3>
+            </div>
+            <ul>
+              <li><strong>Từ vựng (2500 từ):</strong> từ chuyên ngành nhẹ, thành ngữ phổ biến, từ khẩu ngữ, từ sách báo, lướt mạng tiếng Trung.</li>
+              <li><strong>Ngữ pháp:</strong> cấu trúc phức tạp: 与其…不如、即使…也、宁可…也不、非…不可; ngôn ngữ văn viết 况且/然而/诚然.</li>
+              <li><strong>Nghe:</strong> tin tức ngắn CCTV/Bilibili không phụ đề, hội nghị, bài giảng đơn giản.</li>
+              <li><strong>Đọc:</strong> bài báo 400-600 chữ, phân tích lập luận, truyện ngắn văn học đại chúng, tiểu thuyết graded reader.</li>
+              <li><strong>Viết:</strong> bài luận 200-250 chữ trình bày vấn đề - dẫn chứng - kết luận.</li>
+              <li><strong>Output:</strong> thuyết trình 5-7 phút không chuẩn bị nhiều, xem phim Hoa ngữ không phụ đề tiếng Anh (có phụ đề Trung OK).</li>
+            </ul>
+          </article>
+
+          <!-- HSK 6 -->
+          <article class="roadmap-phase">
+            <div class="phase-head">
+              <span class="module-num">H6</span>
+              <h3>Tháng 25-36: HSK 6 — Thành thạo cao cấp</h3>
+            </div>
+            <ul>
+              <li><strong>Từ vựng (5000+ từ):</strong> thuật ngữ học thuật, văn phong cổ điển cơ bản, thành ngữ nâng cao, từ vùng miền phổ biến.</li>
+              <li><strong>Ngữ pháp:</strong> cấu trúc học thuật 其…也、所谓…、诚如…所言; viết văn thuyết phục; phong cách bình luận xã hội.</li>
+              <li><strong>Nghe:</strong> diễn thuyết TED tiếng Trung, podcast không phụ đề, hội thảo chuyên môn, phim tài liệu.</li>
+              <li><strong>Đọc:</strong> bài nghiên cứu ngắn, tác phẩm văn học đương đại, bình luận thời sự, đọc lướt nhanh 1000+ chữ/phút.</li>
+              <li><strong>Viết:</strong> bài luận 350-400 chữ phân tích hoặc phê bình; tóm tắt văn bản dài; viết theo phong cách báo chí.</li>
+              <li><strong>Output:</strong> tranh luận học thuật, diễn thuyết tự phát 10 phút, dẫn chương trình giả định.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TONES ── -->
+    <section class="section" id="tones">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Thanh điệu & Pinyin</h2>
+          <p class="section-note">Tiếng Trung phổ thông (普通话) có 4 thanh chính + 1 thanh nhẹ. Không nắm thanh điệu sẽ không thể giao tiếp dù biết nhiều từ. Luyện tai trước, luyện miệng ngay sau.</p>
+        </div>
+        <div class="tone-grid">
+          <div class="tone-card">
+            <div class="tone-mark">ā (māmā)</div>
+            <h3>Thanh 1 — Bằng cao (阴平)</h3>
+            <p>Giọng cao đều, kéo dài phẳng. Tương tự nốt mi cao giữ lâu trong nhạc. Không lên không xuống.</p>
+            <div class="examples">
+              <span>妈 mā (mẹ)</span>
+              <span>书 shū (sách)</span>
+              <span>天 tiān (trời)</span>
+              <span>飞 fēi (bay)</span>
+            </div>
+          </div>
+          <div class="tone-card">
+            <div class="tone-mark">á (máma)</div>
+            <h3>Thanh 2 — Thăng (阳平)</h3>
+            <p>Giọng đi lên từ giữa lên cao, như hỏi lại "Hả?". Bắt đầu ở mức trung bình, kéo lên đỉnh.</p>
+            <div class="examples">
+              <span>麻 má (tê)</span>
+              <span>学 xué (học)</span>
+              <span>人 rén (người)</span>
+              <span>来 lái (đến)</span>
+            </div>
+          </div>
+          <div class="tone-card">
+            <div class="tone-mark">ǎ (mǎma)</div>
+            <h3>Thanh 3 — Khúc khuỷu (上声)</h3>
+            <p>Xuống rồi lên, như tiếng "ừm" khi suy nghĩ. Thực tế trong câu chỉ xuống (half third) nếu sau nó không phải thanh 3.</p>
+            <div class="examples">
+              <span>马 mǎ (ngựa)</span>
+              <span>你 nǐ (bạn)</span>
+              <span>水 shuǐ (nước)</span>
+              <span>好 hǎo (tốt)</span>
+            </div>
+          </div>
+          <div class="tone-card">
+            <div class="tone-mark">à (màma)</div>
+            <h3>Thanh 4 — Giáng mạnh (去声)</h3>
+            <p>Giọng xuống nhanh và mạnh từ cao xuống thấp, như khi ra lệnh hoặc ngạc nhiên "Ừ!" dứt khoát.</p>
+            <div class="examples">
+              <span>骂 mà (mắng)</span>
+              <span>大 dà (lớn)</span>
+              <span>是 shì (là)</span>
+              <span>去 qù (đi)</span>
+            </div>
+          </div>
+          <div class="tone-card">
+            <div class="tone-mark">a (ma·ma)</div>
+            <h3>Thanh nhẹ (轻声)</h3>
+            <p>Âm tiết ngắn, nhẹ, không có thanh rõ ràng. Thường gặp ở hạt từ cuối câu, phần lặp lại, hay đuôi từ.</p>
+            <div class="examples">
+              <span>吗 ma (câu hỏi)</span>
+              <span>的 de (của)</span>
+              <span>了 le (hoàn thành)</span>
+              <span>们 men (số nhiều)</span>
+            </div>
+          </div>
+          <div class="tone-card">
+            <div class="tone-mark" style="font-size:1.4rem">Biến điệu</div>
+            <h3>Quy tắc biến thanh</h3>
+            <p>Hai thanh 3 liền nhau: thanh 3 đầu đọc thành thanh 2. Ví dụ: 你好 (nǐ hǎo → ní hǎo). Số 一 (yī) và 不 (bù) cũng biến điệu tuỳ ngữ cảnh.</p>
+            <div class="examples">
+              <span>你好 → ní hǎo</span>
+              <span>一个 → yí gè</span>
+              <span>不去 → bú qù</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── GRAMMAR REFERENCE ── -->
+    <section class="section" id="grammar">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Ngữ pháp theo cấp</h2>
+          <p class="section-note">Tiếng Trung không chia động từ, không có giống số. Ngữ pháp dựa trên vị trí từ trong câu, từ hư và cấu trúc mẫu (pattern). Học theo mẫu, không cần thuộc lòng quy tắc.</p>
+        </div>
+        <div class="grammar-section">
+
+          <!-- HSK 1-2 Grammar -->
+          <div class="grammar-block">
+            <h3><span class="badge-sm">HSK 1-2</span> Cấu trúc nền tảng</h3>
+            <table class="grammar-table">
+              <thead>
+                <tr><th>Mẫu câu</th><th>Ví dụ tiếng Trung</th><th>Pinyin</th><th>Nghĩa tiếng Việt</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Câu khẳng định S + V + O</td>
+                  <td class="zh">我喜欢喝咖啡。</td>
+                  <td class="py">Wǒ xǐhuān hē kāfēi.</td>
+                  <td class="vi">Tôi thích uống cà phê.</td>
+                </tr>
+                <tr>
+                  <td>Câu hỏi Yes/No + 吗</td>
+                  <td class="zh">你是学生吗？</td>
+                  <td class="py">Nǐ shì xuésheng ma?</td>
+                  <td class="vi">Bạn là học sinh không?</td>
+                </tr>
+                <tr>
+                  <td>Câu hỏi WH (什么/哪/谁/怎么)</td>
+                  <td class="zh">这是什么？你去哪儿？</td>
+                  <td class="py">Zhè shì shénme? Nǐ qù nǎr?</td>
+                  <td class="vi">Đây là cái gì? Bạn đi đâu?</td>
+                </tr>
+                <tr>
+                  <td>Phủ định với 不 / 没</td>
+                  <td class="zh">我不喜欢。我没去。</td>
+                  <td class="py">Wǒ bù xǐhuān. Wǒ méi qù.</td>
+                  <td class="vi">Tôi không thích. Tôi không đi.</td>
+                </tr>
+                <tr>
+                  <td>Lượng từ (量词)</td>
+                  <td class="zh">一个苹果，两本书</td>
+                  <td class="py">yī gè píngguǒ, liǎng běn shū</td>
+                  <td class="vi">một quả táo, hai cuốn sách</td>
+                </tr>
+                <tr>
+                  <td>Thể hoàn thành 了 (le)</td>
+                  <td class="zh">我吃了。他来了。</td>
+                  <td class="py">Wǒ chī le. Tā lái le.</td>
+                  <td class="vi">Tôi ăn rồi. Anh ấy đến rồi.</td>
+                </tr>
+                <tr>
+                  <td>So sánh bằng 也/都</td>
+                  <td class="zh">我也去。他们都学习。</td>
+                  <td class="py">Wǒ yě qù. Tāmen dōu xuéxí.</td>
+                  <td class="vi">Tôi cũng đi. Họ đều học.</td>
+                </tr>
+                <tr>
+                  <td>Thể tiến hành 在…呢</td>
+                  <td class="zh">他在看书呢。</td>
+                  <td class="py">Tā zài kàn shū ne.</td>
+                  <td class="vi">Anh ấy đang đọc sách.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- HSK 3-4 Grammar -->
+          <div class="grammar-block">
+            <h3><span class="badge-sm">HSK 3-4</span> Cấu trúc trung cấp</h3>
+            <table class="grammar-table">
+              <thead>
+                <tr><th>Mẫu câu</th><th>Ví dụ tiếng Trung</th><th>Pinyin</th><th>Nghĩa tiếng Việt</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Cấu trúc 把 (xử lý tân ngữ)</td>
+                  <td class="zh">请把窗户关上。</td>
+                  <td class="py">Qǐng bǎ chuānghu guān shàng.</td>
+                  <td class="vi">Làm ơn đóng cửa sổ lại.</td>
+                </tr>
+                <tr>
+                  <td>Bị động 被 (bèi)</td>
+                  <td class="zh">我的钱包被偷了。</td>
+                  <td class="py">Wǒ de qiánbāo bèi tōu le.</td>
+                  <td class="vi">Ví tiền của tôi bị lấy cắp rồi.</td>
+                </tr>
+                <tr>
+                  <td>Giả thiết 如果…就</td>
+                  <td class="zh">如果明天下雨，我就不去了。</td>
+                  <td class="py">Rúguǒ míngtiān xià yǔ, wǒ jiù bú qù le.</td>
+                  <td class="vi">Nếu ngày mai mưa, tôi sẽ không đi.</td>
+                </tr>
+                <tr>
+                  <td>Nhân quả 因为…所以</td>
+                  <td class="zh">因为下雨，所以我没出去。</td>
+                  <td class="py">Yīnwèi xià yǔ, suǒyǐ wǒ méi chūqù.</td>
+                  <td class="vi">Vì trời mưa nên tôi không ra ngoài.</td>
+                </tr>
+                <tr>
+                  <td>Nhượng bộ 虽然…但是</td>
+                  <td class="zh">虽然很贵，但是质量好。</td>
+                  <td class="py">Suīrán hěn guì, dànshì zhìliàng hǎo.</td>
+                  <td class="vi">Mặc dù đắt nhưng chất lượng tốt.</td>
+                </tr>
+                <tr>
+                  <td>So sánh hơn 比 (bǐ)</td>
+                  <td class="zh">他比我高五厘米。</td>
+                  <td class="py">Tā bǐ wǒ gāo wǔ lí mǐ.</td>
+                  <td class="vi">Anh ấy cao hơn tôi 5 cm.</td>
+                </tr>
+                <tr>
+                  <td>Bổ ngữ khả năng V得/不了</td>
+                  <td class="zh">这么多饭我吃不了。</td>
+                  <td class="py">Zhème duō fàn wǒ chī bu liǎo.</td>
+                  <td class="vi">Nhiều cơm như vậy tôi không ăn hết được.</td>
+                </tr>
+                <tr>
+                  <td>Kinh nghiệm 过 (guò)</td>
+                  <td class="zh">我去过北京两次。</td>
+                  <td class="py">Wǒ qù guò Běijīng liǎng cì.</td>
+                  <td class="vi">Tôi đã từng đến Bắc Kinh hai lần.</td>
+                </tr>
+                <tr>
+                  <td>Nhấn mạnh 是…的</td>
+                  <td class="zh">我是昨天来的。</td>
+                  <td class="py">Wǒ shì zuótiān lái de.</td>
+                  <td class="vi">Tôi đến vào hôm qua (chứ không phải hôm nay).</td>
+                </tr>
+                <tr>
+                  <td>Liên tiếp 一边…一边</td>
+                  <td class="zh">他一边吃饭，一边看手机。</td>
+                  <td class="py">Tā yībiān chī fàn, yībiān kàn shǒujī.</td>
+                  <td class="vi">Anh ấy vừa ăn cơm vừa nhìn điện thoại.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- HSK 5-6 Grammar -->
+          <div class="grammar-block">
+            <h3><span class="badge-sm">HSK 5-6</span> Cấu trúc nâng cao</h3>
+            <table class="grammar-table">
+              <thead>
+                <tr><th>Mẫu câu</th><th>Ví dụ tiếng Trung</th><th>Pinyin</th><th>Nghĩa tiếng Việt</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Lựa chọn 与其…不如</td>
+                  <td class="zh">与其抱怨，不如采取行动。</td>
+                  <td class="py">Yǔqí bàoyuàn, bùrú cǎiqǔ xíngdòng.</td>
+                  <td class="vi">Thay vì phàn nàn, chi bằng hành động.</td>
+                </tr>
+                <tr>
+                  <td>Nhượng bộ mạnh 即使…也</td>
+                  <td class="zh">即使再忙，他也会抽时间陪家人。</td>
+                  <td class="py">Jíshǐ zài máng, tā yě huì chōu shíjiān péi jiārén.</td>
+                  <td class="vi">Dù bận đến mấy, anh ấy cũng dành thời gian cho gia đình.</td>
+                </tr>
+                <tr>
+                  <td>Nhấn mạnh phủ định 非…不可</td>
+                  <td class="zh">这件事非你去不可。</td>
+                  <td class="py">Zhè jiàn shì fēi nǐ qù bùkě.</td>
+                  <td class="vi">Việc này nhất định phải anh đi mới được.</td>
+                </tr>
+                <tr>
+                  <td>Chọn ít hơn 宁可…也不</td>
+                  <td class="zh">宁可慢慢来，也不要犯错。</td>
+                  <td class="py">Nìngkě màn màn lái, yě bú yào fàncuò.</td>
+                  <td class="vi">Thà làm chậm còn hơn mắc sai lầm.</td>
+                </tr>
+                <tr>
+                  <td>Phạm vi 无论…都/也</td>
+                  <td class="zh">无论发生什么，我们都要坚持。</td>
+                  <td class="py">Wúlùn fāshēng shénme, wǒmen dōu yào jiānchí.</td>
+                  <td class="vi">Dù chuyện gì xảy ra, chúng ta cũng phải kiên trì.</td>
+                </tr>
+                <tr>
+                  <td>Văn viết 于/对/据/由</td>
+                  <td class="zh">据报道，此次会议将于北京举行。</td>
+                  <td class="py">Jù bàodào, cǐcì huìyì jiāng yú Běijīng jǔxíng.</td>
+                  <td class="vi">Theo báo cáo, hội nghị lần này sẽ được tổ chức tại Bắc Kinh.</td>
+                </tr>
+                <tr>
+                  <td>Liên kết nâng cao 况且/然而/诚然</td>
+                  <td class="zh">诚然，他有不足之处，然而贡献不可忽视。</td>
+                  <td class="py">Chéngrán, tā yǒu bùzú zhī chù, rán'ér gòngxiàn bù kě hūshì.</td>
+                  <td class="vi">Thật ra anh ấy có điểm yếu, tuy nhiên đóng góp không thể bỏ qua.</td>
+                </tr>
+                <tr>
+                  <td>Thành ngữ 4 chữ (成语)</td>
+                  <td class="zh">半途而废 · 马到成功 · 实事求是</td>
+                  <td class="py">bàntú'érfèi · mǎdàochénggōng · shíshìqiúshì</td>
+                  <td class="vi">Bỏ giữa chừng · Thành công ngay lập tức · Thực sự cầu thị</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HANZI PLAN ── -->
+    <section class="section" id="hanzi">
+      <div class="shell split">
+        <div class="lesson-panel">
+          <div class="eyebrow"><span class="pulse"></span><span>汉字 · Chữ Hán giản thể</span></div>
+          <h2>Kế hoạch học Hanzi</h2>
+          <p class="section-note">Tiếng Trung hiện đại dùng chữ giản thể (简体字). Mục tiêu: HSK 1-2 ~300 chữ, HSK 3-4 ~1000 chữ, HSK 5-6 ~2500+ chữ. Học theo bộ thủ giúp đoán nghĩa chữ lạ.</p>
+          <div class="hanzi-flow">
+            <div class="hanzi-step">
+              <div class="step-num">1</div>
+              <div>
+                <strong>Nhận diện bộ thủ (部首)</strong>
+                <span>214 bộ thủ cơ bản quyết định nhóm nghĩa. Ví dụ: 氵(nước) → 海/河/泳/洗; 口(miệng) → 吃/喝/叫/说.</span>
+              </div>
+            </div>
+            <div class="hanzi-step">
+              <div class="step-num">2</div>
+              <div>
+                <strong>Học cấu trúc chữ</strong>
+                <span>Chữ Hán có 6 loại: chỉ sự, tượng hình, hình thanh (chiếm ~80%), hội ý, chuyển chú, giả tá. Nắm loại hình thanh giúp đoán âm đọc.</span>
+              </div>
+            </div>
+            <div class="hanzi-step">
+              <div class="step-num">3</div>
+              <div>
+                <strong>Từ ghép (词语)</strong>
+                <span>Không học chữ đơn lẻ: mỗi chữ cần 3-5 từ ghép thực tế. Ví dụ 学: 学生、学习、学校、大学、学问.</span>
+              </div>
+            </div>
+            <div class="hanzi-step">
+              <div class="step-num">4</div>
+              <div>
+                <strong>Câu ví dụ ngữ cảnh</strong>
+                <span>Mỗi từ ghép quan trọng cần 1-2 câu ví dụ thực tế. Não nhớ qua ngữ cảnh tốt hơn 5 lần so với học thuần từ rời.</span>
+              </div>
+            </div>
+            <div class="hanzi-step">
+              <div class="step-num">5</div>
+              <div>
+                <strong>Viết tay & nét bút</strong>
+                <span>Học thứ tự nét chuẩn (笔顺). 8 nét cơ bản: ngang, sổ, phẩy, mác, chấm, gãy, móc,折. Viết tay giúp nhớ lâu hơn gõ phím.</span>
+              </div>
+            </div>
+            <div class="hanzi-step">
+              <div class="step-num">6</div>
+              <div>
+                <strong>Ôn tập SRS (Anki)</strong>
+                <span>Lại: 1 ngày, Khó: 3 ngày, Tốt: 1 tuần, Dễ: 3 tuần. Mỗi ngày ôn 20-30 thẻ + học 5-10 chữ mới tùy cấp độ.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="visual-panel">
+          <div class="terminal">
+            <div class="terminal-head">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <pre>{
+  "hanzi": "学",
+  "pinyin": "xué",
+  "tone": 2,
+  "meaning_vi": "học",
+  "radical": "子 (con/nhỏ)",
+  "strokes": 8,
+  "vocabulary": [
+    { "word": "学生", "py": "xuésheng", "vi": "học sinh" },
+    { "word": "学习", "py": "xuéxí",   "vi": "học tập" },
+    { "word": "学校", "py": "xuéxiào", "vi": "trường học" },
+    { "word": "大学", "py": "dàxué",   "vi": "đại học" }
+  ],
+  "example": "我在大学学习中文。",
+  "example_vi": "Tôi học tiếng Trung ở đại học.",
+  "hsk_level": 1,
+  "review_state": "again | hard | good | easy"
+}</pre>
+          </div>
+          <div class="flow-steps">
+            <div class="flow-step"><code>HSK 1-2</code><p>~300 chữ. Học song song với từ vựng, nhận diện là đủ.</p></div>
+            <div class="flow-step"><code>HSK 3-4</code><p>~1000 chữ. Bắt đầu viết tay, nhóm theo bộ thủ và chủ đề.</p></div>
+            <div class="flow-step"><code>HSK 5-6</code><p>2500+ chữ. Học qua văn bản thật, sắc thái nghĩa và collocation.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── VOCAB TOPICS ── -->
+    <section class="section" id="vocab">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Chủ đề từ vựng theo cấp</h2>
+          <p class="section-note">Học từ vựng theo chủ đề giúp xây "mạng lưới nghĩa" trong não. Mỗi chủ đề học 20-30 từ cốt lõi + 10-15 từ mở rộng.</p>
+        </div>
+        <div class="topic-grid">
+          <div class="topic-chip"><strong>问候 HSK1</strong>Chào hỏi, giới thiệu, xã giao cơ bản</div>
+          <div class="topic-chip"><strong>家庭 HSK1</strong>Gia đình, người thân, mối quan hệ</div>
+          <div class="topic-chip"><strong>数字 HSK1</strong>Số đếm, thời gian, ngày tháng, tiền</div>
+          <div class="topic-chip"><strong>饮食 HSK2</strong>Ẩm thực, nhà hàng, đặt món, nấu ăn</div>
+          <div class="topic-chip"><strong>交通 HSK2</strong>Phương tiện, hỏi đường, mua vé</div>
+          <div class="topic-chip"><strong>购物 HSK2</strong>Mua sắm, giá cả, mặc cả, trả tiền</div>
+          <div class="topic-chip"><strong>学习 HSK3</strong>Trường học, môn học, thi cử, học online</div>
+          <div class="topic-chip"><strong>工作 HSK3</strong>Nghề nghiệp, văn phòng, họp hành</div>
+          <div class="topic-chip"><strong>身体 HSK3</strong>Cơ thể, sức khỏe, khám bệnh, thuốc</div>
+          <div class="topic-chip"><strong>旅游 HSK4</strong>Du lịch, khách sạn, tham quan, văn hóa</div>
+          <div class="topic-chip"><strong>情感 HSK4</strong>Cảm xúc, tính cách, mối quan hệ</div>
+          <div class="topic-chip"><strong>科技 HSK5</strong>Công nghệ, internet, mạng xã hội, AI</div>
+          <div class="topic-chip"><strong>经济 HSK5</strong>Kinh tế, kinh doanh, thị trường, đầu tư</div>
+          <div class="topic-chip"><strong>文化 HSK5</strong>Văn hóa, nghệ thuật, lịch sử, phong tục</div>
+          <div class="topic-chip"><strong>社会 HSK6</strong>Xã hội, môi trường, giáo dục, chính sách</div>
+          <div class="topic-chip"><strong>成语 HSK6</strong>Thành ngữ, tục ngữ, điển cố văn học</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DAILY SCHEDULE ── -->
+    <section class="section" id="daily">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Lịch học 60-90 phút/ngày</h2>
+          <p class="section-note">Chia nhỏ, đều đặn mỗi ngày quan trọng hơn học nhiều một lần/tuần. Cuối tuần làm mini mock test HSK và xem phim/nghe podcast tiếng Trung không áp lực.</p>
+        </div>
+        <div class="daily-grid">
+          <article class="source-card">
+            <h3>15 phút · Hanzi + Từ vựng</h3>
+            <p>5-10 chữ mới hoặc 20-30 thẻ ôn Anki. Luôn học kèm từ ghép và câu ví dụ. Không học chữ rời khỏi ngữ cảnh.</p>
+            <a href="#hanzi">Hanzi plan</a>
+          </article>
+          <article class="source-card">
+            <h3>15 phút · Ngữ pháp + Mẫu câu</h3>
+            <p>1-2 mẫu câu mới theo cấp HSK. Tự đặt 5-8 câu với mẫu câu đó. Ghi âm lại nếu có thể.</p>
+            <a href="#grammar">Ngữ pháp</a>
+          </article>
+          <article class="source-card">
+            <h3>20 phút · Luyện nghe</h3>
+            <p>Nghe đoạn phù hợp cấp: HSK 1-2 dùng ChinesePod Newbie/Elementary; HSK 3-4 dùng HSK Standard Course audio; HSK 5-6 dùng CCTV / podcast.</p>
+            <a href="#sources">Nguồn nghe</a>
+          </article>
+          <article class="source-card">
+            <h3>15 phút · Luyện đọc</h3>
+            <p>Đọc graded reader hoặc văn bản thật theo cấp. Gạch chân từ mới, đoán nghĩa qua bộ thủ rồi tra từ điển. Không tra ngay khi đọc lần đầu.</p>
+            <a href="#sources">Nguồn đọc</a>
+          </article>
+          <article class="source-card">
+            <h3>15 phút · Nói + Ghi âm</h3>
+            <p>Nhái lại câu từ bài nghe (shadowing), role-play tình huống ngắn, hoặc kể lại nội dung đã học bằng miệng. Tự nghe lại để sửa thanh điệu.</p>
+            <a href="#tones">Thanh điệu</a>
+          </article>
+          <article class="source-card">
+            <h3>Cuối tuần · Mock test</h3>
+            <p>Làm 1 phần đề thi HSK cấp hiện tại (nghe + đọc + viết). Ghi lại lỗi sai, phân tích nguyên nhân và ôn lại phần yếu nhất.</p>
+            <a href="#sources">Đề thi thử</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── OUTPUT GOALS ── -->
+    <section class="section" id="output">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Mục tiêu đầu ra theo cấp</h2>
+          <p class="section-note">Mỗi cấp cần chứng minh được bằng output thực tế, không chỉ làm đúng đề thi. Output đo năng lực thực dụng.</p>
+        </div>
+        <ul class="output-list">
+          <li><span class="icon">🟡</span><div><strong>HSK 1:</strong> Tự giới thiệu bản thân 1 phút không vấp; hỏi và trả lời câu hỏi Yes/No cơ bản; đọc thực đơn và biển hiệu đơn giản.</div></li>
+          <li><span class="icon">🟡</span><div><strong>HSK 2:</strong> Mô tả thói quen hằng ngày 2 phút; đặt đồ ăn, hỏi đường, mua vé thực tế hoặc role-play; nhắn tin WeChat ngắn bằng tiếng Trung.</div></li>
+          <li><span class="icon">🟠</span><div><strong>HSK 3:</strong> Kể chuyện đơn giản có mở đầu - diễn biến - kết thúc; gọi điện xử lý tình huống đơn giản; viết đoạn mô tả 100 chữ không tra từ điển liên tục.</div></li>
+          <li><span class="icon">🟠</span><div><strong>HSK 4:</strong> Thảo luận 2 chiều về chủ đề xã hội quen; trình bày quan điểm có lý lẽ 5 phút; viết email thông thường và bài luận ngắn 150 chữ.</div></li>
+          <li><span class="icon">🔴</span><div><strong>HSK 5:</strong> Xem phim Hoa ngữ với phụ đề tiếng Trung (không cần phụ đề tiếng Anh); đọc bài báo 400-600 chữ trong 5 phút; thuyết trình 7 phút không chuẩn bị nhiều.</div></li>
+          <li><span class="icon">🔴</span><div><strong>HSK 6:</strong> Đọc tác phẩm văn học đương đại; viết bài luận 400 chữ phân tích hoặc phê bình; nghe podcast/TED tiếng Trung không phụ đề; tranh luận học thuật tự nhiên.</div></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── ADVANCED MODULE ── -->
+    <section class="section" id="advanced">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Module nâng cao sau HSK 6</h2>
+          <p class="section-note">Sau HSK 6, mục tiêu học chuyển từ "đạt cấp" sang "dùng thực sự": đọc văn học, nghiên cứu chuyên ngành, giao tiếp bản địa tự nhiên và hiểu văn hóa sâu hơn.</p>
+        </div>
+        <div class="adv-grid">
+          <article class="adv-card">
+            <span class="module-num">C1</span>
+            <h3>Văn học & Báo chí</h3>
+            <p>Đọc tác phẩm văn học đương đại Trung Quốc (莫言, 余华, 张爱玲 bản rút ngắn), đọc báo Nhân Dân Nhật Báo và Caixin Weekly.</p>
+            <ul>
+              <li>Phân tích phong cách viết và lập luận</li>
+              <li>Nhận diện từ lóng, khẩu ngữ vùng miền</li>
+              <li>Tóm tắt bài dài theo quan điểm cá nhân</li>
+              <li>Viết bình luận ngắn phong cách báo chí</li>
+            </ul>
+          </article>
+          <article class="adv-card">
+            <span class="module-num">C2</span>
+            <h3>Tiếng Trung chuyên ngành</h3>
+            <p>Phát triển vốn từ trong lĩnh vực cụ thể: kinh doanh, IT, y học, luật pháp, kỹ thuật… theo nhu cầu nghề nghiệp thực tế.</p>
+            <ul>
+              <li>Đọc white paper, báo cáo thường niên, hợp đồng</li>
+              <li>Nghe hội thảo chuyên ngành trực tuyến</li>
+              <li>Viết email, báo cáo chuyên nghiệp</li>
+              <li>Dịch thuật hai chiều trong lĩnh vực chuyên môn</li>
+            </ul>
+          </article>
+          <article class="adv-card">
+            <span class="module-num">文</span>
+            <h3>Văn ngôn cơ bản (文言文)</h3>
+            <p>Nắm bắt văn ngôn cơ bản giúp hiểu thành ngữ, điển cố và đọc tài liệu lịch sử Trung Quốc. Không cần thông thạo, chỉ cần đọc hiểu cơ bản.</p>
+            <ul>
+              <li>Cấu trúc văn ngôn: 之/乎/者/也</li>
+              <li>Đọc trích đoạn 四书五经 đơn giản</li>
+              <li>Hiểu nguồn gốc thành ngữ và điển cố</li>
+              <li>Đọc truyện ngắn cổ điển có chú thích</li>
+            </ul>
+          </article>
+          <article class="adv-card">
+            <span class="module-num">方</span>
+            <h3>Nhận diện tiếng địa phương</h3>
+            <p>Tiếng Quảng Đông (粤语), tiếng Thượng Hải (吴语), Phúc Kiến (闽南语)... Không cần nói thành thạo, chỉ cần nhận biết và không bị bối rối.</p>
+            <ul>
+              <li>Khác biệt phát âm so với Phổ thông</li>
+              <li>Từ vựng khác biệt phổ biến (Quảng Đông)</li>
+              <li>Xem phim HK với phụ đề tiếng Trung</li>
+              <li>Nhận diện ngữ cảnh sử dụng phương ngôn</li>
+            </ul>
+          </article>
+          <article class="adv-card">
+            <span class="module-num">文化</span>
+            <h3>Văn hóa & Giao tiếp bản địa</h3>
+            <p>Hiểu văn hóa giúp dùng ngôn ngữ đúng hoàn cảnh: phép lịch sự, quan hệ xã hội (面子), biểu đạt gián tiếp, hài hước kiểu Trung Quốc.</p>
+            <ul>
+              <li>Khái niệm 面子 (mianzi) và 关系 (guanxi)</li>
+              <li>Cách nói từ chối lịch sự trong văn hóa Hoa</li>
+              <li>Internet slang và meme tiếng Trung hiện đại</li>
+              <li>Biểu đạt cảm xúc khác biệt Đông-Tây</li>
+            </ul>
+          </article>
+          <article class="adv-card">
+            <span class="module-num">试</span>
+            <h3>Luyện thi nâng cao</h3>
+            <p>Sau HSK 6 có thể thi HSK 6 Xuất sắc (优秀), BCT (Business Chinese Test) hoặc TOCFL cấp 5-6 cho người Đài Loan / doanh nghiệp.</p>
+            <ul>
+              <li>BCT — Tiếng Trung thương mại quốc tế</li>
+              <li>TOCFL — Chuẩn Đài Loan A1-C2</li>
+              <li>Phỏng vấn bằng tiếng Trung (模拟面试)</li>
+              <li>Viết luận thi chuẩn học bổng Chính phủ TQ</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SOURCES ── -->
+    <section class="section" id="sources">
+      <div class="shell">
+        <div class="section-head">
+          <h2>Nguồn học tổng hợp</h2>
+          <p class="section-note">Chọn nguồn phù hợp cấp hiện tại. Không cần dùng tất cả cùng lúc — tập trung 2-3 nguồn chính, mở rộng khi đã ổn định.</p>
+        </div>
+        <div class="source-grid">
+          <article class="source-card">
+            <h3>HSK Standard Course</h3>
+            <p>Giáo trình chính thức của BLCU (北京语言大学) — chuẩn nhất để luyện thi HSK 1-6, có audio bản gốc.</p>
+            <a href="https://www.blcup.com" target="_blank" rel="noreferrer">BLCU Press</a>
+          </article>
+          <article class="source-card">
+            <h3>Chinese Zero to Hero</h3>
+            <p>Video YouTube miễn phí, bài giảng theo cấp HSK rất chi tiết, giải thích ngữ pháp bằng tiếng Anh cho người mới.</p>
+            <a href="https://www.youtube.com/@ChineseZeroToHero" target="_blank" rel="noreferrer">YouTube</a>
+          </article>
+          <article class="source-card">
+            <h3>Pleco Dictionary</h3>
+            <p>Từ điển Trung-Anh tốt nhất, có flashcard, nhận dạng chữ viết tay, tra bộ thủ và audio phát âm chuẩn.</p>
+            <a href="https://www.pleco.com" target="_blank" rel="noreferrer">Pleco.com</a>
+          </article>
+          <article class="source-card">
+            <h3>Anki + HSK Deck</h3>
+            <p>SRS tốt nhất cho hanzi và từ vựng. Tải deck HSK 1-6 có sẵn với audio, ví dụ, Pinyin và nghĩa tiếng Việt.</p>
+            <a href="https://ankiweb.net/shared/decks/HSK" target="_blank" rel="noreferrer">AnkiWeb HSK</a>
+          </article>
+          <article class="source-card">
+            <h3>HelloChinese</h3>
+            <p>App gamified cho người mới bắt đầu đến HSK 3. Luyện phát âm 4 thanh rất tốt, nhận diện giọng bằng AI.</p>
+            <a href="https://www.hellochinese.cc" target="_blank" rel="noreferrer">HelloChinese</a>
+          </article>
+          <article class="source-card">
+            <h3>ChinesePod</h3>
+            <p>Podcast theo cấp Newbie → Advanced. Hội thoại tự nhiên, giải thích từ vựng và văn hóa trong ngữ cảnh thật.</p>
+            <a href="https://chinesepod.com" target="_blank" rel="noreferrer">ChinesePod</a>
+          </article>
+          <article class="source-card">
+            <h3>Du Chinese</h3>
+            <p>Graded reader tiếng Trung, hàng trăm bài đọc từ HSK 1 đến nâng cao. Mỗi chữ đều có thể nhấn để xem nghĩa.</p>
+            <a href="https://www.duchinese.net" target="_blank" rel="noreferrer">Du Chinese</a>
+          </article>
+          <article class="source-card">
+            <h3>CCTV 汉语国际推广</h3>
+            <p>Video bài học, phim tài liệu và tin tức tiếng Trung chuẩn mực. Nguồn nghe phong phú cho HSK 4-6.</p>
+            <a href="https://chinese.cctv.com" target="_blank" rel="noreferrer">CCTV Chinese</a>
+          </article>
+          <article class="source-card">
+            <h3>Bilibili (B站)</h3>
+            <p>Nền tảng video Trung Quốc: từ anime có phụ đề tiếng Trung, vlog, TED talks, đến nội dung giáo dục HSK.</p>
+            <a href="https://www.bilibili.com" target="_blank" rel="noreferrer">Bilibili</a>
+          </article>
+          <article class="source-card">
+            <h3>JLPT.cn / HSK Official</h3>
+            <p>Đề thi mẫu chính thức HSK 1-6, nghe audio đề thi, từ điển từ vựng thi chính thức của Hanban/CLEC.</p>
+            <a href="https://www.chinesetest.cn/goHome.do" target="_blank" rel="noreferrer">HSK Official</a>
+          </article>
+          <article class="source-card">
+            <h3>Yoyo Chinese</h3>
+            <p>Kênh YouTube giải thích ngữ pháp rất trực quan bằng tiếng Anh. Tốt cho người trung cấp muốn hiểu cấu trúc sâu.</p>
+            <a href="https://www.youtube.com/@YoyoChinese" target="_blank" rel="noreferrer">Yoyo Chinese</a>
+          </article>
+          <article class="source-card">
+            <h3>Mandarin Corner</h3>
+            <p>Video hội thoại thực tế với người bản ngữ, có phụ đề Pinyin + tiếng Trung. Rất tốt cho luyện nghe HSK 3-5.</p>
+            <a href="https://www.youtube.com/@MandarinCorner" target="_blank" rel="noreferrer">Mandarin Corner</a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell footer">Học tiếng Trung HSK 1-6. Lộ trình tổng hợp từ HSK Standard Course, Chinese Zero to Hero, Pleco, Du Chinese, HelloChinese, CCTV và HSK chính thức.</footer>
+</body>
+</html>

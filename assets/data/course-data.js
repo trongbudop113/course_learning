@@ -112,6 +112,16 @@ window.COURSE_DATA = {
         action: "Vào lab",
         href: "./agentic-it-team.html#sprint-lab",
         primary: false
+      },
+      {
+        code: "CN",
+        title: "Tiếng Trung HSK 1-6",
+        copy: "Lộ trình toàn diện từ căn bản đến nâng cao: 4 thanh điệu, chữ Hán (Hanzi), ngữ pháp theo cấp HSK, luyện nghe nói đọc viết thực tế và chinh phục kỳ thi HSK chính thức.",
+        meta: ["HSK 1-6", "Hanzi + Pinyin", "24-36 tháng"],
+        status: "Đang học",
+        action: "Vào khóa học",
+        href: "./chinese.html#roadmap",
+        primary: true
       }
     ],
     modules: [
@@ -455,6 +465,16 @@ Final JSON:
         action: "Open lab",
         href: "./agentic-it-team.html#sprint-lab",
         primary: false
+      },
+      {
+        code: "CN",
+        title: "Mandarin Chinese HSK 1-6",
+        copy: "A comprehensive path from beginner to advanced: 4 tones, Hanzi characters, HSK-level grammar, real listening/speaking/reading/writing practice, and official HSK exam preparation.",
+        meta: ["HSK 1-6", "Hanzi + Pinyin", "24-36 months"],
+        status: "Active",
+        action: "Open course",
+        href: "./chinese.html#roadmap",
+        primary: true
       }
     ],
     modules: [
