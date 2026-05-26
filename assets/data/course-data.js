@@ -76,8 +76,8 @@ window.COURSE_DATA = {
       {
         code: "VD",
         title: "Vibe design",
-        copy: "Học quy trình biến prompt thô thành design spec, Pencil render, QA, handoff, contract và codegen theo single-input-screen-pipeline.",
-        meta: ["Prompt -> Spec", "Pencil QA", "Handoff"],
+        copy: "Học quy trình biến prompt thô thành design spec, Pencil render, QA, handoff, contract và codegen, kèm nhiều bài thực hành nâng cao theo single-input-screen-pipeline.",
+        meta: ["Prompt -> Spec", "12 bài nâng cao", "Handoff"],
         status: "Đang học",
         action: "Vào bài học",
         href: "./vibe-design.html#map",
@@ -112,6 +112,16 @@ window.COURSE_DATA = {
         action: "Vào lab",
         href: "./agentic-it-team.html#sprint-lab",
         primary: false
+      },
+      {
+        code: "CN",
+        title: "Tiếng Trung HSK 1-6",
+        copy: "Lộ trình toàn diện từ căn bản đến nâng cao: 4 thanh điệu, chữ Hán (Hanzi), ngữ pháp theo cấp HSK, luyện nghe nói đọc viết thực tế và chinh phục kỳ thi HSK chính thức.",
+        meta: ["HSK 1-6", "Hanzi + Pinyin", "24-36 tháng"],
+        status: "Đang học",
+        action: "Vào khóa học",
+        href: "./chinese.html#roadmap",
+        primary: true
       }
     ],
     modules: [
@@ -419,8 +429,8 @@ Final JSON:
       {
         code: "VD",
         title: "Vibe design",
-        copy: "Learn the path from raw prompt to design spec, Pencil render, QA, handoff, contract, and codegen with single-input-screen-pipeline.",
-        meta: ["Prompt -> Spec", "Pencil QA", "Handoff"],
+        copy: "Learn the path from raw prompt to design spec, Pencil render, QA, handoff, contract, and codegen, with advanced practice labs for single-input-screen-pipeline.",
+        meta: ["Prompt -> Spec", "12 advanced labs", "Handoff"],
         status: "Active",
         action: "Open lesson",
         href: "./vibe-design.html#map",
@@ -455,6 +465,16 @@ Final JSON:
         action: "Open lab",
         href: "./agentic-it-team.html#sprint-lab",
         primary: false
+      },
+      {
+        code: "CN",
+        title: "Mandarin Chinese HSK 1-6",
+        copy: "A comprehensive path from beginner to advanced: 4 tones, Hanzi characters, HSK-level grammar, real listening/speaking/reading/writing practice, and official HSK exam preparation.",
+        meta: ["HSK 1-6", "Hanzi + Pinyin", "24-36 months"],
+        status: "Active",
+        action: "Open course",
+        href: "./chinese.html#roadmap",
+        primary: true
       }
     ],
     modules: [

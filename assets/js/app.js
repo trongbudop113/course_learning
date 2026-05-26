@@ -319,6 +319,13 @@ function initVibePracticeWorkspace() {
     output.textContent = "Đã nạp mẫu strict. Bấm “Tạo bài thực hành” để lưu run.";
   });
 
+  $("#loadAdvancedPractice")?.addEventListener("click", () => {
+    title.value = "Incident command center";
+    mode.value = "strict";
+    prompt.value = "Tạo màn incident command cho IT Ops: severity, affected service, timeline, owner, runbook, action approval, comms draft, realtime status, escalation, loading/error/empty states và approval gate trước mọi production action.";
+    output.textContent = "Đã nạp mẫu nâng cao strict. Bấm “Tạo bài thực hành” để lưu run.";
+  });
+
   $("#clearPracticeRuns")?.addEventListener("click", () => {
     localStorage.removeItem("vibe_practice_runs");
     output.textContent = "Đã xóa lịch sử thực hành trong trình duyệt này.";

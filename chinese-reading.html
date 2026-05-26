@@ -1,0 +1,1098 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Luyện đọc & nghe tiếng Trung HSK 1-6 | Course Learning</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+  <style>
+    :root {
+      --cn-red:  #d9534f;
+      --cn-gold: #c8922a;
+      --cn-dark: #1a0a00;
+    }
+
+    /* ── Page intro ── */
+    .reading-intro { padding: 44px 0 8px; }
+    .reading-intro h1 { margin-bottom: 8px; }
+    .reading-intro .lead { max-width: 640px; }
+
+    /* ── Level selector ── */
+    .level-nav {
+      position: sticky;
+      top: 68px;
+      z-index: 10;
+      background: rgba(247,243,234,.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--line);
+      padding: 10px 0;
+    }
+    .level-nav-inner {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .level-nav-btn {
+      padding: 6px 16px;
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: 20px;
+      font-size: .82rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--line);
+      transition: background .12s, color .12s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .level-nav-btn:hover { background: var(--ink); color: var(--paper); }
+    .level-nav-btn.active { background: var(--cn-red); color: #fff; border-color: var(--cn-red); box-shadow: 2px 2px 0 #8b1a18; }
+    .level-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .hsk1 { --lc: #4caf50; }
+    .hsk2 { --lc: #2196f3; }
+    .hsk3 { --lc: #ff9800; }
+    .hsk4 { --lc: #9c27b0; }
+    .hsk5 { --lc: var(--cn-red); }
+    .hsk6 { --lc: #333; }
+
+    .reading-page { padding: 40px 0 72px; }
+
+    /* ── Passage card ── */
+    .passage-card {
+      border: 2px solid var(--line);
+      box-shadow: 5px 5px 0 var(--line);
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    .passage-header {
+      padding: 18px 24px 14px;
+      border-bottom: 2px solid var(--line);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .passage-header-left { flex: 1; min-width: 0; }
+    .passage-level-badge {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 12px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .passage-header h2 {
+      font-size: 1.2rem;
+      margin: 0 0 4px;
+    }
+    .passage-meta {
+      font-size: .78rem;
+      color: var(--muted);
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* Audio controls */
+    .audio-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .audio-play-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 18px;
+      background: var(--cn-red);
+      color: #fff;
+      border: 2px solid #8b1a18;
+      border-radius: var(--radius);
+      font-size: .88rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 #8b1a18;
+      transition: opacity .15s;
+      white-space: nowrap;
+    }
+    .audio-play-btn:hover { opacity: .88; }
+    .audio-play-btn.playing {
+      background: #e53935;
+      animation: pulse-play .8s infinite alternate;
+    }
+    @keyframes pulse-play { to { box-shadow: 3px 3px 0 #8b1a18, 0 0 0 4px rgba(217,83,79,.25); } }
+    .audio-speed-btn {
+      padding: 6px 12px;
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      font-size: .78rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--line);
+    }
+    .audio-speed-btn.slow { color: var(--cn-gold); border-color: var(--cn-gold); }
+
+    /* Passage text */
+    .passage-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media (max-width: 640px) {
+      .passage-body { grid-template-columns: 1fr; }
+    }
+
+    .passage-zh {
+      padding: 24px 24px 20px;
+      border-right: 1px solid var(--line);
+      font-family: "Noto Serif SC", "SimSun", "Microsoft YaHei", serif;
+      font-size: 1.05rem;
+      line-height: 2;
+      color: var(--cn-dark);
+    }
+    @media (max-width: 640px) {
+      .passage-zh { border-right: none; border-bottom: 1px solid var(--line); }
+    }
+
+    .passage-vi {
+      padding: 24px 24px 20px;
+      font-size: .88rem;
+      line-height: 1.9;
+      color: var(--muted);
+    }
+
+    /* Highlighted word in passage */
+    .passage-zh .vocab-word {
+      cursor: pointer;
+      border-bottom: 1px dashed var(--cn-gold);
+      position: relative;
+    }
+    .passage-zh .vocab-word:hover { color: var(--cn-red); border-color: var(--cn-red); }
+
+    /* Vocabulary notes below passage */
+    .vocab-notes {
+      border-top: 2px solid var(--line);
+      padding: 16px 24px;
+      background: #faf8f3;
+    }
+    .vocab-notes h4 {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin: 0 0 10px;
+    }
+    .vocab-note-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .vocab-note-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 3px 10px 3px 8px;
+      background: #fff;
+      font-size: .78rem;
+      cursor: pointer;
+      transition: background .1s;
+    }
+    .vocab-note-pill:hover { background: var(--ink); color: var(--paper); }
+    .vocab-note-pill .vn-zh {
+      font-family: "Noto Serif SC", serif;
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--cn-dark);
+    }
+    .vocab-note-pill:hover .vn-zh { color: #fff; }
+    .vocab-note-pill .vn-py { font-style: italic; color: var(--cn-red); font-size: .72rem; }
+    .vocab-note-pill:hover .vn-py { color: #ffcdd2; }
+    .vocab-note-pill .vn-vi { color: var(--muted); font-size: .72rem; }
+    .vocab-note-pill:hover .vn-vi { color: rgba(255,255,255,.8); }
+
+    /* Quiz section */
+    .quiz-section {
+      border-top: 2px solid var(--line);
+      padding: 22px 24px 24px;
+    }
+    .quiz-section h3 {
+      font-size: .95rem;
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .quiz-section h3 .quiz-score {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    .comprehension-q {
+      margin-bottom: 18px;
+      padding: 14px 16px;
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+    .comprehension-q .cq-text {
+      font-size: .9rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--ink);
+    }
+    .cq-options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .cq-opt {
+      padding: 7px 12px;
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      font-size: .85rem;
+      cursor: pointer;
+      background: #fff;
+      text-align: left;
+      font-family: inherit;
+      transition: background .12s, border-color .12s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cq-opt .opt-label {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; font-weight: 700;
+      flex-shrink: 0;
+      background: #f7f3ea;
+    }
+    .cq-opt:hover:not(:disabled) { background: #f7f3ea; border-color: var(--cn-gold); }
+    .cq-opt.correct {
+      background: #e8f5e9;
+      border-color: #4caf50;
+      color: #1b5e20;
+    }
+    .cq-opt.correct .opt-label { background: #4caf50; border-color: #4caf50; color: #fff; }
+    .cq-opt.wrong {
+      background: #ffebee;
+      border-color: #e53935;
+      color: #b71c1c;
+    }
+    .cq-opt.wrong .opt-label { background: #e53935; border-color: #e53935; color: #fff; }
+    .cq-opt:disabled { cursor: default; }
+    .cq-explain {
+      display: none;
+      margin-top: 8px;
+      padding: 8px 10px;
+      background: #fff8e0;
+      border: 1px solid var(--yellow);
+      border-radius: 6px;
+      font-size: .8rem;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .cq-explain.visible { display: block; }
+
+    .quiz-check-btn {
+      margin-top: 14px;
+      padding: 9px 24px;
+      background: var(--ink);
+      color: var(--paper);
+      border: 2px solid var(--line);
+      border-radius: var(--radius);
+      font-size: .88rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 var(--line);
+      font-family: inherit;
+    }
+    .quiz-check-btn:hover { background: var(--cn-red); border-color: var(--cn-red); }
+    .quiz-check-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    .quiz-result-bar {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      border: 2px solid;
+      font-size: .88rem;
+      font-weight: 600;
+    }
+    .quiz-result-bar.pass { border-color: #4caf50; background: #e8f5e9; color: #1b5e20; }
+    .quiz-result-bar.fail { border-color: var(--cn-red); background: #ffebee; color: #b71c1c; }
+
+    /* No voice warn */
+    .voice-warn {
+      background: #fff8e0;
+      border: 2px solid var(--yellow);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      font-size: .85rem;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    /* Progress summary */
+    .progress-summary {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .prog-tile {
+      border: 2px solid var(--line);
+      box-shadow: 3px 3px 0 var(--line);
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 12px 18px;
+      text-align: center;
+      min-width: 80px;
+    }
+    .prog-tile .prog-num { font-size: 1.5rem; font-weight: 700; }
+    .prog-tile .prog-lbl { font-size: .72rem; color: var(--muted); }
+    .prog-tile.done .prog-num { color: #4caf50; }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="shell topbar-inner">
+    <a class="brand" href="./chinese.html#roadmap" aria-label="Tiếng Trung home">
+      <span class="mark">阅</span>
+      <span>Đọc hiểu tiếng Trung</span>
+    </a>
+    <nav class="nav">
+      <a href="./index.html#courses">Khóa học</a>
+      <a href="./chinese.html#roadmap">Lộ trình</a>
+      <a href="./chinese-vocab.html">Từ vựng</a>
+      <a href="./chinese-quiz.html">Kiểm tra</a>
+    </nav>
+  </div>
+</header>
+
+<div class="shell reading-intro">
+  <div class="eyebrow"><span class="pulse"></span><span>阅读理解 · Đọc hiểu</span></div>
+  <h1>Luyện đọc &amp; nghe tiếng Trung</h1>
+  <p class="lead">6 bài đọc theo cấp độ HSK 1-6, có bản dịch tiếng Việt song song, phát âm toàn bài và câu hỏi kiểm tra hiểu bài. Nghe thật chậm rồi đọc theo.</p>
+  <div id="voiceWarn" class="voice-warn">⚠️ Trình duyệt chưa tải được giọng tiếng Trung. Dùng Chrome hoặc Edge trên máy tính để có chất lượng tốt nhất.</div>
+</div>
+
+<!-- ── Level Nav ── -->
+<div class="level-nav">
+  <div class="shell level-nav-inner" id="levelNav">
+    <button class="level-nav-btn hsk1 active" data-level="1">
+      <span class="level-dot" style="background:var(--lc)"></span>HSK 1
+    </button>
+    <button class="level-nav-btn hsk2" data-level="2">
+      <span class="level-dot" style="background:var(--lc)"></span>HSK 2
+    </button>
+    <button class="level-nav-btn hsk3" data-level="3">
+      <span class="level-dot" style="background:var(--lc)"></span>HSK 3
+    </button>
+    <button class="level-nav-btn hsk4" data-level="4">
+      <span class="level-dot" style="background:var(--lc)"></span>HSK 4
+    </button>
+    <button class="level-nav-btn hsk5" data-level="5">
+      <span class="level-dot" style="background:var(--lc)"></span>HSK 5
+    </button>
+    <button class="level-nav-btn hsk6" data-level="6">
+      <span class="level-dot" style="background:var(--lc)"></span>HSK 6
+    </button>
+  </div>
+</div>
+
+<!-- ── PASSAGES ── -->
+<div class="shell reading-page" id="readingPage">
+  <!-- Rendered by JS -->
+</div>
+
+<footer class="shell footer">Luyện đọc &amp; nghe tiếng Trung HSK 1-6 · Phát âm qua Web Speech API (zh-CN) · Dùng Chrome/Edge để có giọng tốt nhất</footer>
+
+<script>
+/* ═══════════════════════════════════════════════
+   PASSAGE DATA  —  6 bài theo HSK 1-6
+═══════════════════════════════════════════════ */
+const PASSAGES = [
+
+/* ──────────────────────────────────────────────
+   HSK 1  (~60 chữ)  Chủ đề: Giới thiệu bản thân
+────────────────────────────────────────────── */
+{
+  level: 1,
+  title: "我叫李明",
+  title_vi: "Tôi tên là Lý Minh",
+  chars: 62,
+  topic: "Giới thiệu bản thân",
+  zh: `我叫李明，我是中国人。我二十岁，是学生。我有一个妹妹和一个弟弟。我们家在北京。我很喜欢学汉语，我的老师很好。我每天早上八点上学，下午五点回家。我喜欢吃苹果和喝茶。`,
+  vi: `Tôi tên là Lý Minh, tôi là người Trung Quốc. Tôi hai mươi tuổi, là học sinh. Tôi có một chị gái và một em trai. Nhà tôi ở Bắc Kinh. Tôi rất thích học tiếng Trung, giáo viên của tôi rất tốt. Mỗi ngày buổi sáng tám giờ tôi đi học, chiều năm giờ về nhà. Tôi thích ăn táo và uống trà.`,
+  vocab: [
+    ["叫","jiào","tên là"],
+    ["中国人","Zhōngguó rén","người Trung Quốc"],
+    ["学生","xuésheng","học sinh"],
+    ["喜欢","xǐhuān","thích"],
+    ["每天","měitiān","mỗi ngày"],
+    ["早上","zǎoshang","buổi sáng"],
+    ["上学","shàngxué","đi học"],
+    ["回家","huíjiā","về nhà"],
+  ],
+  questions: [
+    {
+      q: "李明今年多少岁？\nLý Minh năm nay bao nhiêu tuổi?",
+      opts: ["十八岁 (18)", "二十岁 (20)", "二十五岁 (25)", "三十岁 (30)"],
+      correct: 1,
+      explain: "文中说"我二十岁"— Trong bài nói "Tôi hai mươi tuổi".",
+    },
+    {
+      q: "李明住在哪里？\nLý Minh sống ở đâu?",
+      opts: ["上海 Shanghai", "广州 Quảng Châu", "北京 Bắc Kinh", "成都 Thành Đô"],
+      correct: 2,
+      explain: "文中说"我们家在北京"— Bài nói "Nhà tôi ở Bắc Kinh".",
+    },
+    {
+      q: "李明几点上学？\nLý Minh mấy giờ đi học?",
+      opts: ["七点 (7:00)", "八点 (8:00)", "九点 (9:00)", "十点 (10:00)"],
+      correct: 1,
+      explain: "文中说"每天早上八点上学"— Bài nói "Mỗi ngày 8 giờ sáng đi học".",
+    },
+    {
+      q: "李明喜欢喝什么？\nLý Minh thích uống gì?",
+      opts: ["咖啡 cà phê", "牛奶 sữa", "茶 trà", "水 nước"],
+      correct: 2,
+      explain: "文中说"喜欢吃苹果和喝茶"— Bài nói thích ăn táo và uống trà.",
+    },
+  ],
+},
+
+/* ──────────────────────────────────────────────
+   HSK 2  (~80 chữ)  Chủ đề: Mua sắm
+────────────────────────────────────────────── */
+{
+  level: 2,
+  title: "去商店买衣服",
+  title_vi: "Đi mua quần áo",
+  chars: 81,
+  topic: "Mua sắm",
+  zh: `今天是星期六，天气很好。我和妈妈一起去商店买衣服。商店里的衣服很多，颜色也很漂亮。我看见一件红色的裙子，很喜欢，但是价钱有一点贵。服务员说可以打八折。妈妈觉得还是有点贵，所以我们又看了别的衣服。最后我买了一件白色的T恤，便宜又好看。`,
+  vi: `Hôm nay là thứ Bảy, thời tiết rất đẹp. Tôi và mẹ cùng nhau đi mua quần áo. Cửa hàng có rất nhiều quần áo, màu sắc cũng rất đẹp. Tôi thấy một chiếc váy màu đỏ, rất thích, nhưng giá hơi đắt một chút. Nhân viên bán hàng nói có thể giảm còn 80%. Mẹ thấy vẫn còn hơi đắt, nên chúng tôi xem thêm những bộ quần áo khác. Cuối cùng tôi mua một chiếc áo phông màu trắng, rẻ mà lại đẹp.`,
+  vocab: [
+    ["星期六","xīngqīliù","thứ Bảy"],
+    ["一起","yīqǐ","cùng nhau"],
+    ["颜色","yánsè","màu sắc"],
+    ["价钱","jiàqian","giá cả"],
+    ["打折","dǎ zhé","giảm giá"],
+    ["服务员","fúwùyuán","nhân viên phục vụ"],
+    ["便宜","piányí","rẻ"],
+    ["最后","zuìhòu","cuối cùng"],
+  ],
+  questions: [
+    {
+      q: "他们为什么没买红色裙子？\nTại sao họ không mua chiếc váy đỏ?",
+      opts: ["太小了 quá nhỏ", "太大了 quá to", "太贵了 quá đắt", "没有红色 không có màu đỏ"],
+      correct: 2,
+      explain: "文中说"价钱有一点贵"— Vì giá quá đắt, dù giảm 20% mẹ vẫn thấy đắt.",
+    },
+    {
+      q: "最后买了什么？\nCuối cùng mua gì?",
+      opts: ["红色裙子 váy đỏ", "白色T恤 áo phông trắng", "黄色衬衣 áo vàng", "黑色裤子 quần đen"],
+      correct: 1,
+      explain: "文中说"买了一件白色的T恤"— Cuối cùng mua chiếc áo phông màu trắng.",
+    },
+    {
+      q: "服务员说可以打几折？\nNhân viên nói giảm còn bao nhiêu %?",
+      opts: ["九折 90%", "八折 80%", "七折 70%", "六折 60%"],
+      correct: 1,
+      explain: "文中说"可以打八折"— Nhân viên nói giảm còn 80% (tức giảm 20%).",
+    },
+    {
+      q: "今天的天气怎么样？\nThời tiết hôm nay thế nào?",
+      opts: ["下雨 mưa", "很冷 rất lạnh", "很好 rất đẹp", "刮风 có gió"],
+      correct: 2,
+      explain: "文中说"天气很好"— Thời tiết rất đẹp.",
+    },
+  ],
+},
+
+/* ──────────────────────────────────────────────
+   HSK 3  (~120 chữ)  Chủ đề: Du lịch
+────────────────────────────────────────────── */
+{
+  level: 3,
+  title: "暑假旅游",
+  title_vi: "Du lịch hè",
+  chars: 118,
+  topic: "Du lịch",
+  zh: `这个暑假，我和几个同学一起去了云南旅游。云南的自然风景非常漂亮，我们参观了著名的丽江古城，还爬了玉龙雪山。山上的空气很新鲜，但是天气变化很快，早上很冷，中午又非常热。我们在那里住了三天，每天都有很多活动。当地的食物也很特别，有很多我以前没吃过的东西。这次旅游让我觉得中国真的很大，很美，我希望以后还有机会去别的地方看看。`,
+  vi: `Kỳ nghỉ hè này, tôi và mấy người bạn cùng lớp đi du lịch Vân Nam. Phong cảnh thiên nhiên của Vân Nam rất đẹp, chúng tôi đã tham quan thành cổ Lệ Giang nổi tiếng, còn leo cả núi Ngọc Long Tuyết Sơn. Không khí trên núi rất trong lành, nhưng thời tiết thay đổi rất nhanh, buổi sáng rất lạnh, buổi trưa lại rất nóng. Chúng tôi ở đó ba ngày, mỗi ngày đều có rất nhiều hoạt động. Đồ ăn địa phương cũng rất đặc biệt, có rất nhiều thứ trước đây tôi chưa từng ăn. Chuyến du lịch lần này khiến tôi cảm thấy Trung Quốc thật sự rất rộng lớn, rất đẹp, tôi hi vọng sau này còn có cơ hội đến các nơi khác xem.`,
+  vocab: [
+    ["暑假","shǔjià","kỳ nghỉ hè"],
+    ["旅游","lǚyóu","du lịch"],
+    ["著名","zhùmíng","nổi tiếng"],
+    ["参观","cānguān","tham quan"],
+    ["空气","kōngqì","không khí"],
+    ["新鲜","xīnxiān","trong lành / tươi"],
+    ["活动","huódòng","hoạt động"],
+    ["当地","dāngdì","địa phương / nơi đó"],
+    ["希望","xīwàng","hi vọng"],
+    ["机会","jīhuì","cơ hội"],
+  ],
+  questions: [
+    {
+      q: "他们去哪里旅游了？\nHọ đi du lịch ở đâu?",
+      opts: ["西藏 Tây Tạng", "云南 Vân Nam", "北京 Bắc Kinh", "上海 Thượng Hải"],
+      correct: 1,
+      explain: "文中明确说"去了云南旅游"— Bài nói rõ là đi du lịch Vân Nam.",
+    },
+    {
+      q: "云南山上的天气有什么特点？\nThời tiết trên núi Vân Nam có đặc điểm gì?",
+      opts: ["一直很冷 lúc nào cũng lạnh", "一直很热 lúc nào cũng nóng", "早冷午热 sáng lạnh trưa nóng", "天天下雨 ngày nào cũng mưa"],
+      correct: 2,
+      explain: "文中说"早上很冷，中午又非常热"— Sáng rất lạnh, trưa lại rất nóng.",
+    },
+    {
+      q: "他们在云南住了几天？\nHọ ở Vân Nam mấy ngày?",
+      opts: ["一天 1 ngày", "两天 2 ngày", "三天 3 ngày", "四天 4 ngày"],
+      correct: 2,
+      explain: "文中说"住了三天"— Ở ba ngày.",
+    },
+    {
+      q: "这次旅游让他有什么感受？\nChuyến đi này khiến tác giả cảm thấy thế nào?",
+      opts: ["中国很小 Trung Quốc rất nhỏ", "旅游很贵 du lịch rất đắt", "中国很大很美 Trung Quốc rộng lớn và đẹp", "以后不想旅游 sau này không muốn du lịch nữa"],
+      correct: 2,
+      explain: "文中说"中国真的很大，很美"— Cảm thấy Trung Quốc thật sự rất rộng lớn và đẹp.",
+    },
+  ],
+},
+
+/* ──────────────────────────────────────────────
+   HSK 4  (~160 chữ)  Chủ đề: Công nghệ & cuộc sống
+────────────────────────────────────────────── */
+{
+  level: 4,
+  title: "手机改变了我们的生活",
+  title_vi: "Điện thoại thay đổi cuộc sống chúng ta",
+  chars: 158,
+  topic: "Công nghệ & xã hội",
+  zh: `随着科技的发展，智能手机已经成为人们生活中不可缺少的工具。它不仅可以打电话、发短信，还能上网、购物、导航，甚至可以帮助我们管理健康。现在，很多人出门不带钱包，只要有手机就可以解决所有问题。然而，手机的普及也带来了一些负面影响。许多人沉迷于刷视频和玩游戏，导致睡眠不足，影响了工作和学习的效率。另外，人们面对面交流的时间越来越少，亲密关系也可能因此而减弱。因此，我们应该合理使用手机，保持良好的生活习惯，才能让科技真正为我们服务。`,
+  vi: `Cùng với sự phát triển của khoa học công nghệ, điện thoại thông minh đã trở thành công cụ không thể thiếu trong cuộc sống của mọi người. Nó không chỉ có thể gọi điện, nhắn tin, mà còn có thể lên mạng, mua sắm, định vị, thậm chí có thể giúp chúng ta quản lý sức khỏe. Bây giờ, nhiều người ra ngoài không mang ví, chỉ cần có điện thoại là có thể giải quyết mọi vấn đề. Tuy nhiên, sự phổ biến của điện thoại cũng đã mang lại một số ảnh hưởng tiêu cực. Nhiều người nghiện xem video và chơi game, dẫn đến thiếu ngủ, ảnh hưởng đến hiệu quả công việc và học tập. Ngoài ra, thời gian giao tiếp trực tiếp của mọi người ngày càng ít, mối quan hệ thân mật cũng có thể vì thế mà trở nên yếu đi. Vì vậy, chúng ta nên sử dụng điện thoại hợp lý, duy trì thói quen sống tốt, mới có thể để công nghệ thực sự phục vụ cho chúng ta.`,
+  vocab: [
+    ["随着","suízhe","cùng với"],
+    ["科技","kējì","khoa học công nghệ"],
+    ["不可缺少","bùkě quēshǎo","không thể thiếu"],
+    ["导航","dǎoháng","định vị / điều hướng"],
+    ["普及","pǔjí","phổ biến"],
+    ["负面影响","fùmiàn yǐngxiǎng","ảnh hưởng tiêu cực"],
+    ["沉迷","chénmí","nghiện / đắm chìm"],
+    ["睡眠不足","shuìmián bùzú","thiếu ngủ"],
+    ["合理","hélǐ","hợp lý"],
+    ["习惯","xíguàn","thói quen"],
+  ],
+  questions: [
+    {
+      q: "智能手机有哪些功能？（选出文中没提到的）\nChức năng nào KHÔNG được đề cập trong bài?",
+      opts: ["打电话 gọi điện", "购物 mua sắm", "拍电影 quay phim", "导航 định vị"],
+      correct: 2,
+      explain: "文中提到：打电话、发短信、上网、购物、导航、管理健康，但没有提到拍电影。",
+    },
+    {
+      q: "手机的普及带来了哪些问题？\nSự phổ biến của điện thoại gây ra vấn đề gì?",
+      opts: [
+        "价格越来越贵 giá ngày càng đắt",
+        "睡眠不足、交流减少 thiếu ngủ, giao tiếp ít đi",
+        "电量消耗太快 hao pin quá nhanh",
+        "网络速度太慢 tốc độ mạng quá chậm",
+      ],
+      correct: 1,
+      explain: "文中提到两个负面影响：睡眠不足和面对面交流减少。",
+    },
+    {
+      q: "作者的建议是什么？\nTác giả đề xuất điều gì?",
+      opts: [
+        "不要用手机 không dùng điện thoại",
+        "多买新手机 mua nhiều điện thoại mới",
+        "合理使用手机 sử dụng điện thoại hợp lý",
+        "手机只能工作时用 điện thoại chỉ dùng khi làm việc",
+      ],
+      correct: 2,
+      explain: "最后一句说"应该合理使用手机，保持良好的生活习惯"。",
+    },
+    {
+      q: "文中说很多人出门不带什么？\nBài nói nhiều người ra ngoài không mang gì?",
+      opts: ["手机 điện thoại", "钥匙 chìa khóa", "钱包 ví", "证件 giấy tờ"],
+      correct: 2,
+      explain: "文中说"很多人出门不带钱包，只要有手机就可以解决所有问题"。",
+    },
+  ],
+},
+
+/* ──────────────────────────────────────────────
+   HSK 5  (~200 chữ)  Chủ đề: Giáo dục & áp lực
+────────────────────────────────────────────── */
+{
+  level: 5,
+  title: "教育压力与创新思维",
+  title_vi: "Áp lực giáo dục và tư duy sáng tạo",
+  chars: 198,
+  topic: "Giáo dục & xã hội",
+  zh: `近年来，随着竞争越来越激烈，中国的教育压力问题引发了广泛讨论。许多学生从小就承受着巨大的学习压力，每天不仅要完成大量作业，还要参加各种补习班和兴趣班，几乎没有自由支配的时间。这种高强度的学习模式虽然在短期内能提高考试成绩，但从长远来看，可能会抑制学生的创造力和独立思考能力。研究表明，真正的学习不仅仅是背诵知识，更重要的是培养学生发现问题、分析问题和解决问题的能力。一些教育专家指出，应当给予学生更多的探索空间，鼓励他们提出质疑，而不是一味地追求高分。只有当教育真正以学生的全面发展为目标时，才能培养出既有知识又有创造力的人才。`,
+  vi: `Những năm gần đây, cùng với sự cạnh tranh ngày càng khốc liệt, vấn đề áp lực giáo dục ở Trung Quốc đã gây ra nhiều cuộc thảo luận rộng rãi. Nhiều học sinh từ nhỏ đã phải chịu áp lực học tập rất lớn, mỗi ngày không chỉ phải hoàn thành lượng bài tập khổng lồ, còn phải tham gia các lớp học thêm và lớp năng khiếu, hầu như không có thời gian tự do. Phương thức học tập cường độ cao này tuy có thể nâng cao điểm thi trong ngắn hạn, nhưng nhìn về lâu dài có thể kìm hãm năng lực sáng tạo và khả năng tư duy độc lập của học sinh. Nghiên cứu chỉ ra rằng việc học thực sự không chỉ là ghi nhớ kiến thức, mà quan trọng hơn là bồi dưỡng năng lực phát hiện vấn đề, phân tích vấn đề và giải quyết vấn đề. Một số chuyên gia giáo dục chỉ ra rằng nên dành cho học sinh nhiều không gian khám phá hơn, khuyến khích họ đặt câu hỏi, thay vì chỉ truy cầu điểm cao một cách mù quáng. Chỉ khi nền giáo dục thực sự lấy sự phát triển toàn diện của học sinh làm mục tiêu, mới có thể đào tạo ra những nhân tài vừa có kiến thức vừa có năng lực sáng tạo.`,
+  vocab: [
+    ["竞争","jìngzhēng","cạnh tranh"],
+    ["引发","yǐnfā","gây ra / châm ngòi"],
+    ["承受","chéngshòu","chịu đựng"],
+    ["补习班","bǔxí bān","lớp học thêm"],
+    ["抑制","yìzhì","kìm hãm"],
+    ["创造力","chuàngzàolì","năng lực sáng tạo"],
+    ["背诵","bèisòng","ghi nhớ / học thuộc"],
+    ["培养","péiyǎng","bồi dưỡng"],
+    ["探索","tànsuǒ","khám phá"],
+    ["质疑","zhìyí","đặt câu hỏi / hoài nghi"],
+    ["全面发展","quánmiàn fāzhǎn","phát triển toàn diện"],
+  ],
+  questions: [
+    {
+      q: "文章认为高强度学习有什么长期危害？\nBài cho rằng học cường độ cao có tác hại lâu dài gì?",
+      opts: [
+        "身体变差 sức khỏe giảm sút",
+        "抑制创造力和独立思考 kìm hãm sáng tạo và tư duy độc lập",
+        "家庭关系紧张 quan hệ gia đình căng thẳng",
+        "经济负担加重 gánh nặng kinh tế tăng thêm",
+      ],
+      correct: 1,
+      explain: "文中说"可能会抑制学生的创造力和独立思考能力"。",
+    },
+    {
+      q: "教育专家建议应该怎么做？\nCác chuyên gia giáo dục đề xuất nên làm gì?",
+      opts: [
+        "增加作业量 tăng lượng bài tập",
+        "取消所有考试 bãi bỏ tất cả kỳ thi",
+        "给学生更多探索空间 dành cho học sinh nhiều không gian khám phá",
+        "减少学习时间 giảm thời gian học tập",
+      ],
+      correct: 2,
+      explain: "文中说"应当给予学生更多的探索空间，鼓励他们提出质疑"。",
+    },
+    {
+      q: "文章认为真正的学习最重要的是什么？\nBài cho rằng điều quan trọng nhất của việc học thực sự là gì?",
+      opts: [
+        "背诵更多知识 ghi nhớ nhiều kiến thức hơn",
+        "培养解决问题的能力 bồi dưỡng năng lực giải quyết vấn đề",
+        "考出最高分 đạt điểm cao nhất",
+        "参加更多比赛 tham gia nhiều cuộc thi hơn",
+      ],
+      correct: 1,
+      explain: "文中说"更重要的是培养学生发现问题、分析问题和解决问题的能力"。",
+    },
+    {
+      q: "什么样的人才是文章认为教育应该培养的？\nGiáo dục nên đào tạo những nhân tài như thế nào theo bài viết?",
+      opts: [
+        "只会考试的人 người chỉ biết thi cử",
+        "只会工作的人 người chỉ biết làm việc",
+        "既有知识又有创造力的人 người vừa có kiến thức vừa có sáng tạo",
+        "成绩最好的人 người có thành tích tốt nhất",
+      ],
+      correct: 2,
+      explain: "最后说"既有知识又有创造力的人才"。",
+    },
+  ],
+},
+
+/* ──────────────────────────────────────────────
+   HSK 6  (~250 chữ)  Chủ đề: Văn hóa & bản sắc
+────────────────────────────────────────────── */
+{
+  level: 6,
+  title: "传统文化的当代传承",
+  title_vi: "Sự kế thừa văn hóa truyền thống trong thời đại ngày nay",
+  chars: 247,
+  topic: "Văn hóa & bản sắc dân tộc",
+  zh: `在全球化浪潮的冲击下，传统文化面临着前所未有的挑战与机遇。一方面，现代化进程使得许多古老的民俗、技艺和礼仪日渐式微，年轻一代对传统文化的认同感也在悄然流失。另一方面，越来越多的有识之士意识到，传统文化不仅是民族精神的根基，更是构建文化自信的重要资源。
+
+如何在保护与传承之间寻求平衡，成为当今社会的重要课题。一些学者提倡将传统文化融入现代教育体系，通过课程改革和社会实践，让年轻人在亲身体验中理解并珍视祖先留下的智慧结晶。与此同时，数字技术的发展为文化传承提供了全新的可能，非物质文化遗产的数字化保存已成为各国的共同探索。
+
+真正意义上的文化传承，绝非简单的模仿与复制，而是要在理解其精髓的基础上，赋予传统文化以新的时代内涵，使其在当代语境中焕发新的生命力。只有实现创造性的转化与创新性的发展，传统文化才能真正成为连接过去与未来的精神纽带。`,
+  vi: `Trước làn sóng toàn cầu hóa, văn hóa truyền thống đang đối mặt với những thách thức và cơ hội chưa từng có. Một mặt, quá trình hiện đại hóa khiến nhiều phong tục dân gian, kỹ nghệ và lễ nghi cổ xưa ngày càng mai một, cảm giác nhận đồng với văn hóa truyền thống của thế hệ trẻ cũng đang dần phai nhạt. Mặt khác, ngày càng nhiều người có tầm nhìn nhận thức được rằng văn hóa truyền thống không chỉ là nền tảng tinh thần của dân tộc, mà còn là nguồn tài nguyên quan trọng để xây dựng niềm tự tin văn hóa.
+
+Làm thế nào để tìm kiếm sự cân bằng giữa bảo tồn và kế thừa đã trở thành vấn đề trọng yếu của xã hội ngày nay. Một số học giả đề xuất tích hợp văn hóa truyền thống vào hệ thống giáo dục hiện đại, thông qua cải cách chương trình và thực hành xã hội, để người trẻ trong quá trình trải nghiệm trực tiếp hiểu và trân trọng tinh hoa trí tuệ mà tổ tiên để lại. Đồng thời, sự phát triển của công nghệ số đã mang lại những khả năng hoàn toàn mới cho việc kế thừa văn hóa, việc số hóa di sản văn hóa phi vật thể đã trở thành hướng khám phá chung của các quốc gia.
+
+Sự kế thừa văn hóa đúng nghĩa, tuyệt đối không phải là sự bắt chước và sao chép đơn giản, mà là trên cơ sở hiểu được tinh túy của nó, trao cho văn hóa truyền thống những nội hàm thời đại mới, làm cho nó tỏa sáng sức sống mới trong bối cảnh đương đại. Chỉ khi thực hiện được sự chuyển hóa có tính sáng tạo và phát triển có tính đổi mới, văn hóa truyền thống mới có thể thực sự trở thành sợi dây tinh thần kết nối quá khứ và tương lai.`,
+  vocab: [
+    ["全球化","quánqiúhuà","toàn cầu hóa"],
+    ["冲击","chōngjī","xung kích / tác động mạnh"],
+    ["传承","chuánchéng","truyền thừa / kế thừa"],
+    ["民俗","mínsú","phong tục dân gian"],
+    ["日渐式微","rìjiàn shìwēi","ngày càng suy yếu"],
+    ["有识之士","yǒu shí zhī shì","người có tầm nhìn"],
+    ["精髓","jīngsuǐ","tinh túy"],
+    ["时代内涵","shídài nèihán","nội hàm thời đại"],
+    ["非物质文化遗产","fēi wùzhì wénhuà yíchǎn","di sản văn hóa phi vật thể"],
+    ["精神纽带","jīngshén niǔdài","sợi dây tinh thần"],
+  ],
+  questions: [
+    {
+      q: "文章认为全球化对传统文化有什么影响？\nBài cho rằng toàn cầu hóa có tác động gì đến văn hóa truyền thống?",
+      opts: [
+        "只有负面影响 chỉ có ảnh hưởng tiêu cực",
+        "只有正面影响 chỉ có ảnh hưởng tích cực",
+        "既有挑战也有机遇 vừa có thách thức vừa có cơ hội",
+        "没有任何影响 không có bất kỳ ảnh hưởng nào",
+      ],
+      correct: 2,
+      explain: "开篇说"面临着前所未有的挑战与机遇"——既有挑战也有机遇。",
+    },
+    {
+      q: "学者们提倡怎样保护传统文化？\nCác học giả đề xuất cách nào để bảo vệ văn hóa truyền thống?",
+      opts: [
+        "完全禁止现代化 cấm hoàn toàn hiện đại hóa",
+        "融入现代教育体系 tích hợp vào hệ thống giáo dục hiện đại",
+        "关闭所有外国文化 đóng cửa với mọi văn hóa nước ngoài",
+        "建立更多博物馆 xây dựng nhiều bảo tàng hơn",
+      ],
+      correct: 1,
+      explain: "文中说"提倡将传统文化融入现代教育体系，通过课程改革和社会实践"。",
+    },
+    {
+      q: "文中数字技术对文化传承有什么作用？\nCông nghệ số có vai trò gì đối với việc kế thừa văn hóa?",
+      opts: [
+        "让文化变得商业化 khiến văn hóa trở nên thương mại hóa",
+        "提供了全新的可能 mang lại những khả năng hoàn toàn mới",
+        "取代了传统学习方式 thay thế phương thức học truyền thống",
+        "加速了文化消亡 đẩy nhanh sự biến mất của văn hóa",
+      ],
+      correct: 1,
+      explain: "文中说"数字技术的发展为文化传承提供了全新的可能"。",
+    },
+    {
+      q: "真正的文化传承是什么？\nSự kế thừa văn hóa đúng nghĩa là gì?",
+      opts: [
+        "完整复制传统 sao chép hoàn toàn truyền thống",
+        "抛弃一切传统 từ bỏ tất cả truyền thống",
+        "赋予传统以新的时代内涵 trao cho truyền thống nội hàm thời đại mới",
+        "只保存不发展 chỉ bảo tồn không phát triển",
+      ],
+      correct: 2,
+      explain: "最后一段说"在理解其精髓的基础上，赋予传统文化以新的时代内涵"。",
+    },
+  ],
+},
+
+]; // end PASSAGES
+
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+const LEVEL_COLORS = {
+  1: "#4caf50", 2: "#2196f3", 3: "#ff9800",
+  4: "#9c27b0", 5: "#d9534f", 6: "#333",
+};
+
+let currentLevel = 1;
+
+/* SRS / progress tracking */
+let progress = {};
+try { progress = JSON.parse(localStorage.getItem("cn_reading_progress") || "{}"); } catch(e){}
+function saveProgress() { try { localStorage.setItem("cn_reading_progress", JSON.stringify(progress)); } catch(e){} }
+
+/* ═══════════════════════════════════════════════
+   SPEECH
+═══════════════════════════════════════════════ */
+let zhVoice   = null;
+let voiceReady = false;
+let currentUtterance = null;
+let isPlayingPassage = false;
+let activePlayBtn    = null;
+
+function initVoice() {
+  if (!window.speechSynthesis) return;
+  function find() {
+    const vs = speechSynthesis.getVoices();
+    zhVoice = vs.find(v => /zh[-_](CN|TW|HK)/i.test(v.lang)) || vs.find(v => /zh/i.test(v.lang));
+    voiceReady = !!zhVoice;
+    if (!voiceReady && vs.length > 0) document.getElementById("voiceWarn").style.display = "block";
+  }
+  find();
+  speechSynthesis.addEventListener("voiceschanged", () => {
+    find();
+    if (voiceReady) document.getElementById("voiceWarn").style.display = "none";
+  });
+}
+
+function speakText(text, rate, onDone) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang  = "zh-CN";
+  u.rate  = rate || 0.75;
+  u.pitch = 1;
+  if (zhVoice) u.voice = zhVoice;
+  if (onDone) u.onend = onDone;
+  u.onerror = () => { if (onDone) onDone(); };
+  currentUtterance = u;
+  speechSynthesis.speak(u);
+}
+
+function stopSpeech() {
+  speechSynthesis.cancel();
+  isPlayingPassage = false;
+  if (activePlayBtn) {
+    activePlayBtn.classList.remove("playing");
+    activePlayBtn.innerHTML = "🔊 Phát âm toàn bài";
+    activePlayBtn = null;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER PASSAGE
+═══════════════════════════════════════════════ */
+function renderPassage(p) {
+  const pid    = `passage-${p.level}`;
+  const color  = LEVEL_COLORS[p.level];
+  const prog   = progress[p.level] || { score: -1, answers: [] };
+
+  // Vocab pills
+  const vocabHtml = p.vocab.map(v =>
+    `<button class="vocab-note-pill" onclick="speakText('${v[0].replace(/'/g,"\\'")}')">
+      <span class="vn-zh">${v[0]}</span>
+      <span class="vn-py">${v[1]}</span>
+      <span class="vn-vi">${v[2]}</span>
+    </button>`
+  ).join("");
+
+  // Questions
+  const qHtml = p.questions.map((q, qi) => {
+    const answered = prog.answers[qi] !== undefined;
+    const chosenIdx = prog.answers[qi];
+    const isCorrect = chosenIdx === q.correct;
+    const optHtml = q.opts.map((opt, oi) => {
+      let cls = "cq-opt";
+      let disabled = "";
+      if (answered) {
+        disabled = "disabled";
+        if (oi === q.correct) cls += " correct";
+        else if (oi === chosenIdx) cls += " wrong";
+        else disabled += " disabled";
+      }
+      const label = String.fromCharCode(65 + oi); // A, B, C, D
+      return `<button class="${cls}" data-pid="${p.level}" data-qi="${qi}" data-oi="${oi}" ${disabled}>
+        <span class="opt-label">${label}</span>
+        <span>${opt}</span>
+      </button>`;
+    }).join("");
+    const explainVis = answered ? "visible" : "";
+    return `<div class="comprehension-q" id="${pid}-q${qi}">
+      <div class="cq-text">${qi + 1}. ${q.q.replace(/\n/g, '<br>')}</div>
+      <div class="cq-options">${optHtml}</div>
+      <div class="cq-explain ${explainVis}">${q.explain}</div>
+    </div>`;
+  }).join("");
+
+  const scoreHtml = prog.score >= 0
+    ? `<span class="quiz-score" id="${pid}-score">${prog.score}/${p.questions.length}</span>`
+    : `<span class="quiz-score" id="${pid}-score"></span>`;
+  const allAnswered = prog.answers.length === p.questions.length;
+  const resultDisplay = prog.score >= 0 ? "block" : "none";
+  const resultClass = prog.score >= 0 ? (prog.score / p.questions.length >= 0.75 ? "pass" : "fail") : "pass";
+  const resultMsg = prog.score >= 0
+    ? (prog.score === p.questions.length
+        ? "🏆 Hoàn hảo! Bạn đã hiểu toàn bộ bài đọc."
+        : prog.score / p.questions.length >= 0.75
+          ? `✓ Tốt! ${prog.score}/${p.questions.length} câu đúng.`
+          : `Cần ôn lại. ${prog.score}/${p.questions.length} câu đúng.`)
+    : "";
+
+  return `
+  <div class="passage-card" id="${pid}">
+    <div class="passage-header">
+      <div class="passage-header-left">
+        <span class="passage-level-badge" style="background:${color}">HSK ${p.level}</span>
+        <h2>${p.title} <span style="font-size:.85rem;font-weight:400;color:var(--muted)">· ${p.title_vi}</span></h2>
+        <div class="passage-meta">
+          <span>📝 ~${p.chars} chữ</span>
+          <span>🎯 ${p.topic}</span>
+          <span>❓ ${p.questions.length} câu hỏi</span>
+        </div>
+      </div>
+      <div class="audio-row">
+        <button class="audio-speed-btn slow" id="${pid}-slow" title="Phát chậm hơn (0.6x)">🐢 Chậm</button>
+        <button class="audio-play-btn" id="${pid}-play">🔊 Phát âm toàn bài</button>
+      </div>
+    </div>
+
+    <div class="passage-body">
+      <div class="passage-zh">${p.zh}</div>
+      <div class="passage-vi">${p.vi}</div>
+    </div>
+
+    <div class="vocab-notes">
+      <h4>📚 Từ vựng chú thích — nhấn để nghe</h4>
+      <div class="vocab-note-grid">${vocabHtml}</div>
+    </div>
+
+    <div class="quiz-section">
+      <h3>💬 Kiểm tra hiểu bài ${scoreHtml}</h3>
+      ${qHtml}
+      <button class="quiz-check-btn" id="${pid}-check" ${allAnswered ? "disabled" : ""}>
+        ${allAnswered ? "Đã nộp bài" : "Nộp bài kiểm tra"}
+      </button>
+      <div class="quiz-result-bar ${resultClass}" id="${pid}-result" style="display:${resultDisplay}">
+        ${resultMsg}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderPage() {
+  const p = PASSAGES.find(p => p.level === currentLevel);
+  if (!p) { document.getElementById("readingPage").innerHTML = ""; return; }
+  document.getElementById("readingPage").innerHTML = renderPassage(p);
+
+  // Attach audio button listeners
+  const pid     = `passage-${p.level}`;
+  const playBtn = document.getElementById(`${pid}-play`);
+  const slowBtn = document.getElementById(`${pid}-slow`);
+
+  playBtn.addEventListener("click", () => {
+    if (isPlayingPassage && activePlayBtn === playBtn) {
+      stopSpeech(); return;
+    }
+    stopSpeech();
+    isPlayingPassage = true;
+    activePlayBtn = playBtn;
+    playBtn.classList.add("playing");
+    playBtn.textContent = "⏹ Dừng lại";
+    speakText(p.zh, 0.75, () => {
+      isPlayingPassage = false;
+      playBtn.classList.remove("playing");
+      playBtn.innerHTML = "🔊 Phát âm toàn bài";
+      activePlayBtn = null;
+    });
+  });
+
+  slowBtn.addEventListener("click", () => {
+    if (isPlayingPassage && activePlayBtn === playBtn) {
+      stopSpeech(); return;
+    }
+    stopSpeech();
+    isPlayingPassage = true;
+    activePlayBtn = playBtn;
+    playBtn.classList.add("playing");
+    playBtn.textContent = "⏹ Dừng lại";
+    speakText(p.zh, 0.55, () => {
+      isPlayingPassage = false;
+      playBtn.classList.remove("playing");
+      playBtn.innerHTML = "🔊 Phát âm toàn bài";
+      activePlayBtn = null;
+    });
+  });
+
+  // Answer option listeners
+  document.querySelectorAll(`.cq-opt`).forEach(btn => {
+    if (btn.disabled) return;
+    btn.addEventListener("click", () => {
+      const level = +btn.dataset.pid;
+      const qi    = +btn.dataset.qi;
+      const oi    = +btn.dataset.oi;
+      const qItem = p.questions[qi];
+
+      // Record
+      if (!progress[level]) progress[level] = { score: -1, answers: [] };
+      progress[level].answers[qi] = oi;
+
+      // Lock this question
+      const qContainer = document.getElementById(`${pid}-q${qi}`);
+      qContainer.querySelectorAll(".cq-opt").forEach((b, i) => {
+        b.disabled = true;
+        if (i === qItem.correct) b.classList.add("correct");
+        if (i === oi && oi !== qItem.correct) b.classList.add("wrong");
+      });
+
+      // Show explain
+      const explain = qContainer.querySelector(".cq-explain");
+      if (explain) explain.classList.add("visible");
+
+      saveProgress();
+
+      // Check if all answered
+      const allDone = progress[level].answers.length === p.questions.length
+        && progress[level].answers.every(a => a !== undefined);
+      if (allDone) {
+        document.getElementById(`${pid}-check`).disabled = true;
+        document.getElementById(`${pid}-check`).textContent = "Đã nộp bài";
+      }
+    });
+  });
+
+  // Check / submit button
+  document.getElementById(`${pid}-check`).addEventListener("click", () => {
+    const level = currentLevel;
+    const prog  = progress[level] || { answers: [] };
+    const score = p.questions.reduce((acc, q, i) => acc + (prog.answers[i] === q.correct ? 1 : 0), 0);
+    if (!progress[level]) progress[level] = { answers: [] };
+    progress[level].score = score;
+    saveProgress();
+
+    const resultBar = document.getElementById(`${pid}-result`);
+    const cls  = score / p.questions.length >= 0.75 ? "pass" : "fail";
+    const msg  = score === p.questions.length
+      ? "🏆 Hoàn hảo! Bạn đã hiểu toàn bộ bài đọc."
+      : score / p.questions.length >= 0.75
+        ? `✓ Tốt! ${score}/${p.questions.length} câu đúng.`
+        : `Cần ôn lại. ${score}/${p.questions.length} câu đúng.`;
+    resultBar.className = `quiz-result-bar ${cls}`;
+    resultBar.textContent = msg;
+    resultBar.style.display = "block";
+
+    document.getElementById(`${pid}-score`).textContent = `${score}/${p.questions.length}`;
+    document.getElementById(`${pid}-check`).disabled = true;
+    document.getElementById(`${pid}-check`).textContent = "Đã nộp bài";
+
+    // Lock all remaining unanswered
+    document.querySelectorAll(".cq-opt:not([disabled])").forEach(b => {
+      b.disabled = true;
+      if (+b.dataset.oi === p.questions[+b.dataset.qi].correct) b.classList.add("correct");
+    });
+    document.querySelectorAll(".cq-explain").forEach(e => e.classList.add("visible"));
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   LEVEL NAV
+═══════════════════════════════════════════════ */
+document.querySelectorAll(".level-nav-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    stopSpeech();
+    document.querySelectorAll(".level-nav-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentLevel = +btn.dataset.level;
+    renderPage();
+    document.getElementById("readingPage").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+initVoice();
+renderPage();
+</script>
+</body>
+</html>
